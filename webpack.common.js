@@ -9,7 +9,7 @@ const envPath = `./.env.${ENV}`;
 const OUTPATH_MAP = {
     dev: 'dist',
     triliumTest: 'dist',
-    example: 'example',
+    example: 'docs',
     prod: 'release',
 };
 
