@@ -4,6 +4,7 @@ import ViewTrilium from '@/classes/view/ViewTrilium';
 import DataDev from '@/classes/data/DataDev';
 import DataTrilium from '@/classes/data/DataTrilium';
 import { EVENT_ENGINE, EVENT_DATA, isBrowser } from '@/constants';
+import { nap } from '@/utils';
 // el.*\.on
 // Data.on
 // Engine.on
@@ -60,6 +61,5 @@ class TriliumChat {
 Element.prototype.$qs = Element.prototype.querySelector;
 Document.prototype.$qs = Document.prototype.querySelector;
 
-window.requestIdleCallback(() => {
-    window._triliumChat = new TriliumChat();
-});
+await nap();
+window._triliumChat = new TriliumChat();

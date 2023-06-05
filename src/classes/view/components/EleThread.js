@@ -65,9 +65,7 @@ export default class EleThread {
     }
 
     scrolToBottom() {
-        window.requestIdleCallback(() => {
             this.$thread.scrollTop = 10e10;
-        });
     }
 
     getCurrentMsgDom() {
