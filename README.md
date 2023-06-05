@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Chat plugin for Trilium, currently supports Chatgpt.
+ The chat plugin for Trilium currently supports Chatgpt 
 
 
 
