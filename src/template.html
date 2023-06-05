@@ -35,7 +35,7 @@
             .chat-wrapper {
                 transform: translateZ(0);
                 display: none;
-                min-width: 0 !important;
+                /* min-width: 0 !important; */
             }
         </style>
     </head>
@@ -69,7 +69,18 @@
                 <div class="header_right"><i title="hide" class="header_hide bx bx-minus icon-action"></i></div>
             </div>
 
-            <div class="thread"></div>
+            <div class="thread">
+                <div class="thread-messages"></div>
+                <div class="msg-command">
+                    <div class="command_item" command="copy">copy thread</div>
+                    <div class="command_item" command="history">save to history</div>
+                    <div class="command_item" command="favor">favor in history</div>
+                    <div class="command_item" command="unfavor">unfavor in history</div>
+                    <div class="command_item" command="save">save to active note</div>
+                    <div class="command_item" command="append">append to active note</div>
+                    <div class="command_item" command="child">save to new child</div>
+                </div>
+            </div>
 
             <div class="prompt_content">
                 <div class="prompt_content_close flex-row-reverse">

@@ -1,34 +1,68 @@
 .chat-wrapper {
     .thread {
-        display: flex;
+        position: relative;
+        height: calc(100% - 247px);
         flex: 1;
-        flex-direction: column;
-        padding: 10px;
-        padding-bottom: 50px;
         border-bottom: 1px solid var(--main-border-color);
         background: var(--left-pane-background-color);
-        overflow-y: auto;
-        scroll-behavior: smooth;
+        transition: height 0.3s;
 
-        .message {
+        .thread-messages {
             display: flex;
-            max-width: 80%;
+            height: 100%;
             flex-direction: column;
-            padding: 8px 10px;
-            margin-bottom: 10px;
-        }
+            padding: 10px;
+            padding-bottom: 50px;
+            overflow-y: auto;
+            scroll-behavior: smooth;
 
-        .received {
-            align-self: flex-start;
-            background-color: var(--main-background-color);
-            border-radius: 2px 12px 12px;
-        }
+            .message {
+                position: relative;
+                display: flex;
+                max-width: 80%;
+                flex-direction: column;
+                padding: 8px 10px;
+                margin-bottom: 10px;
 
-        .sent {
-            align-self: flex-end;
-            background-color: var(--trilium-green);
-            border-radius: 12px 2px 12px 12px;
-            color: #fff;
+                .dot {
+                    position: absolute;
+                    top: 50%;
+                    right: -24px;
+                    display: none;
+                    width: 26px;
+                    height: 26px;
+                    padding: 0;
+                    background-color: var(--main-background-color);
+                    font-size: 1.2em;
+                    line-height: 24px;
+                    text-align: center;
+                    transform: translateY(-50%);
+                }
+
+                &:hover {
+                    .dot {
+                        display: block;
+                    }
+                }
+            }
+
+            .received {
+                align-self: flex-start;
+                background-color: var(--main-background-color);
+                border-radius: 2px 12px 12px;
+            }
+
+            .sent {
+                align-self: flex-end;
+                background-color: var(--trilium-green);
+                border-radius: 12px 2px 12px 12px;
+                color: #fff;
+
+                .dot {
+                    right: initial;
+                    left: -24px;
+                }
+            }
         }
     }
 }

@@ -26,6 +26,8 @@ export default class Popover {
 
         this.$triggerEle = $triggerEle;
 
+        this.$edgeEle = $edgeEle;
+
         if (text) {
             const $text = document.createElement('div');
             $text.classList.add('tooltip-text');
@@ -34,10 +36,8 @@ export default class Popover {
         } else {
             templateMap[contentSelector] = templateMap[contentSelector] || removeEle($edgeEle.$qs(contentSelector));
 
-            this.$content = templateMap[contentSelector];
+            this.$content = templateMap[contentSelector].cloneNode(true);
         }
-
-        this.$edgeEle = $edgeEle;
 
         this.$popover = null;
         this.isShow = false;
@@ -82,6 +82,9 @@ export default class Popover {
         const edgeRect = this.$edgeEle.getBoundingClientRect();
         const triggerRect = this.$triggerEle.getBoundingClientRect();
 
+        console.log(edgeRect);
+        console.log(triggerRect);
+
         const { top, left } = calculatePopoverPosition(
             edgeRect,
             triggerRect,
@@ -117,7 +120,7 @@ export default class Popover {
         [el.style.transformOrigin, el.style.transform] = map[this.placement];
 
         if (this.useTransition) {
-            el.style.transition = 'all .2s,opacity .15s';
+            el.style.transition = 'all .25s,opacity .2s';
         }
 
         this.$popover = el;

@@ -7,7 +7,7 @@ export default class EleCommand extends LittleEvent {
     constructor(view) {
         super();
         this.chatView = view;
-        this.$content = view.$chatView.$qs('.content_command');
+
         this.$showBtn = view.$chatView.$qs('.operate_btn_command');
         this.popover = new Popover({
             placement: 'top',
@@ -16,6 +16,8 @@ export default class EleCommand extends LittleEvent {
             $triggerEle: this.$showBtn,
             offset: 6,
         });
+
+        this.$content = this.popover.$content;
 
         this.bindShowClick();
         this.bindClickCommand();

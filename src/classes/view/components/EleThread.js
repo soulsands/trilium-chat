@@ -1,20 +1,36 @@
-import { throttle, removeEle } from '@/utils';
-import { EVENT_ENGINE, ROLE } from '@/constants';
+import { throttle, removeEle, closest, toggleClassName } from '@/utils';
+import { EVENT_ENGINE, EVENT_VIEW, ROLE } from '@/constants';
+import Popover from '../wrappers/Popover';
 
 export default class EleThread {
     constructor(view) {
         this.chatView = view;
         this.$thread = view.$chatView.$qs('.thread');
+        this.$threadMsgs = this.$thread.$qs('.thread-messages');
 
         this.isHovering = false;
+
+        this.Popover = new Popover({
+            contentSelector: '.msg-command',
+            $edgeEle: this.$thread,
+        });
 
         this.wrapFunction();
         this.bindThreadHover();
         this.bindEngineEvents();
+        this.bindDotClick();
+        this.bindThreadScroll();
+        this.bindPromptToggle();
     }
 
     wrapFunction() {
         this.scrolToBottom = throttle(this.scrolToBottom, 300);
+    }
+    bindPromptToggle() {
+        this.chatView.elePrompt.on(EVENT_VIEW.promptToggle, (height) => {
+            // hacky
+            this.$thread.style.height = `calc(100% - ${247 + height}px)`;
+        });
     }
 
     bindThreadHover() {
@@ -41,9 +57,44 @@ export default class EleThread {
             this.replaceCurrentElContent(data.content);
         });
     }
+    bindDotClick() {
+        this.$threadMsgs.addEventListener('click', (e) => {
+            const isDot = e.target.classList.contains('dot');
+            console.log(isDot);
+            if (isDot) {
+                if (!this.Popover.isShow) {
+                    this.showMsgCommand(e.target);
+                } else {
+                    this.Popover.hide();
+                }
+            }
+        });
+    }
+    bindThreadScroll() {
+        let willHide = false;
+        this.$threadMsgs.addEventListener('scroll', (e) => {
+            if (this.Popover.isShow && willHide === false) {
+                willHide = true;
+                setTimeout(() => {
+                    this.Popover.hide();
+                    willHide = false;
+                }, 100);
+            }
+        });
+    }
+    showMsgCommand($dot) {
+        this.Popover = new Popover({
+            placement: 'right',
+            contentSelector: '.msg-command',
+            $edgeEle: this.$thread,
+            $triggerEle: $dot,
+            offset: 0,
+        });
+        this.Popover.show();
+    }
 
     renderThread(thread) {
-        this.$thread.innerHTML = '';
+        this.$threadMsgs.innerHTML = '';
         thread.forEach((message) => {
             this.appendElByMessage(message);
         });
@@ -52,24 +103,26 @@ export default class EleThread {
     appendElByMessage(message) {
         if (message.role == ROLE.system) return;
 
-        const msgDom = document.createElement('div');
-        msgDom.classList.add('message');
-        msgDom.classList.add(message.role === 'user' ? 'sent' : 'received');
-        const child = document.createElement('div');
-        child.textContent = message.content;
-        msgDom.appendChild(child);
-        this.$thread.appendChild(msgDom);
+        const skeleton = `<div class='message ${message.role === 'user' ? 'sent' : 'received'}'><div>${
+            message.content
+        }</div><div class='bx bx-dots-vertical-rounded dot icon-action'></div></div>`;
+
+        const template = document.createElement('template');
+        template.innerHTML = skeleton;
+        const msgDom = template.content.lastChild;
+
+        this.$threadMsgs.appendChild(msgDom);
 
         this.scrolToBottom();
         return msgDom;
     }
 
     scrolToBottom() {
-            this.$thread.scrollTop = 10e10;
+        this.$threadMsgs.scrollTop = 10e10;
     }
 
     getCurrentMsgDom() {
-        const { children } = this.$thread;
+        const { children } = this.$threadMsgs;
         return children[children.length - 1];
     }
 

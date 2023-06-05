@@ -10,7 +10,7 @@ export default class ElePrompt extends LittleEvent {
         this.chatView = view;
         this.$promptContent = view.$chatView.$qs('.prompt_content');
 
-        this.$content = view.$chatView.$qs('.content_select_prompt');
+        // this.$content = view.$chatView.$qs('.content_select_prompt');
         this.$showBtn = view.$chatView.$qs('.operate_btn_prompt');
 
         //
@@ -22,6 +22,9 @@ export default class ElePrompt extends LittleEvent {
             offset: 5,
             popoverClass: 'popover_prompt',
         });
+
+        this.$content = this.Popover.$content;
+
         this.$num = this.$content.$qs('.select_num');
         this.$addBtn = this.$content.$qs('.select_add');
         this.$closeBtn = this.$content.$qs('.select_close');
@@ -64,7 +67,7 @@ export default class ElePrompt extends LittleEvent {
             toggleEleShow(this.$promptContent, false);
             this.clearContent();
 
-            this.emit(EVENT_VIEW.promptToggle, false);
+            this.emit(EVENT_VIEW.promptToggle, 0);
         });
     }
 
@@ -129,7 +132,7 @@ export default class ElePrompt extends LittleEvent {
         await nap();
         this.$promptContent.style.height = `${this.$text.offsetHeight + 40}px`;
 
-        this.emit(EVENT_VIEW.promptToggle, true);
+        this.emit(EVENT_VIEW.promptToggle, this.$text.offsetHeight + 40);
     }
 
     bindFormEvents() {

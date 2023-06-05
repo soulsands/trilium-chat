@@ -46,10 +46,10 @@ export default class View extends LittleEvent {
     }
 
     activateElements() {
-        this.eleThread = new EleThread(this);
-        this.eleResizer = new EleResizer(this);
-        this.eleGenerate = new EleGenerate(this);
         this.elePrompt = new ElePrompt(this);
+        this.eleResizer = new EleResizer(this);
+        this.eleThread = new EleThread(this);
+        this.eleGenerate = new EleGenerate(this);
         this.eleInput = new EleInput(this);
         this.eleStatus = new EleStatus(this);
         this.eleFace = new EleFace(this);
