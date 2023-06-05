@@ -9,13 +9,13 @@ const envPath = `./.env.${ENV}`;
 const OUTPATH_MAP = {
     dev: 'dist',
     triliumTest: 'dist',
-    example: 'docs',
+    preview: 'docs',
     prod: 'release',
 };
 
 let outputName = 'main.js';
 
-if (ENV === 'example') {
+if (ENV === 'preview') {
     outputName = 'main.[fullhash].js';
 }
 

@@ -42,7 +42,7 @@ const options = merge(common, {
 
 const { ENV } = process.env;
 
-const genHtml = ENV === 'example';
+const genHtml = ENV === 'preview';
 
 if (genHtml) {
     options.plugins.push(
