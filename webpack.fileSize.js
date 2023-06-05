@@ -14,7 +14,9 @@ class PluginGetFileSize {
             triliumTest: 'Test',
             prod: 'Prod',
         };
-        const file = map[ENV];
+        const fileName = map[ENV];
+
+        if (!fileName) return;
 
         compiler.hooks.done.tap('Get File Size', (stats) => {
             // Get output file
@@ -39,7 +41,7 @@ class PluginGetFileSize {
                 sizes[sizeType]
             } | ${fileSizeInBytes}\n`;
 
-            const logFile = path.join(__dirname, `./logs/fileSize${file}.log`);
+            const logFile = path.join(__dirname, `./logs/fileSize${fileName}.log`);
             fs.appendFileSync(logFile, logItem);
         });
     }

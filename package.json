@@ -15,7 +15,7 @@
         "build:test": "npm run html && cross-env ENV=triliumTest webpack --config webpack.prod.js && node syncDistToTrilium.js",
         "build:example": "npm run html && cross-env ENV=example webpack --config webpack.prod.js ",
         "html": "webpack --config webpack.html.js",
-        "build": "npm run html && cross-env ENV=prod webpack --config webpack.prod.js",
+        "build": "npm run html && cross-env ENV=prod webpack --config webpack.prod.js && npm run build:example",
         "lint:js": "eslint . --cache --fix",
         "lint:style": "stylelint \"**/*.less\" --fix",
         "lint": "npm run lint:js && npm run lint:style",
