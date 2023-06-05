@@ -20,10 +20,16 @@
                 flex-direction: column;
             }
 
+            .operation-wrapper {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
             .operation {
                 display: flex;
                 height: 40px;
-                flex-direction: row-reverse;
+
                 user-select: none;
             }
 
@@ -34,15 +40,17 @@
     </head>
 
     <body>
-        <div>apikey:<input type="text" id="apikey" /> <button id="keySave">Save</button></div>
+        <div class="operation-wrapper">
+            <div>apikey:<input type="text" id="apikey" /> <button id="keySave">Save</button></div>
+            <div class="operation"></div>
+        </div>
+
         <script>
             document.querySelector('#keySave').addEventListener('click', () => {
                 const apikey = document.querySelector('#apikey').value;
                 _triliumChat.chatData.setOption('apiKey', apikey);
             });
         </script>
-
-        <div class="operation"></div>
         <!-- skeleton-flag -->
         <div class="chat-wrapper">
             <div class="resizer"></div>
