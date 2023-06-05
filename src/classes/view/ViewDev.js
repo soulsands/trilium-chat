@@ -4,6 +4,7 @@ import View from './View';
 export default class ViewDev extends View {
     initSkeleton() {
         this.$chatView = document.$qs('.chat-wrapper');
+        this.$chatView.style.display = 'flex';
     }
 
     appendEleToHost() {
@@ -23,10 +24,6 @@ export default class ViewDev extends View {
         });
 
         eleOperation.appendChild(eleToggle);
-
-        setTimeout(() => {
-            this.toggleView();
-        }, 0);
     }
 
     appendCreateMsgBtn() {

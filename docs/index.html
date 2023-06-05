@@ -18,6 +18,7 @@
 
             .chat-wrapper {
                 transform: translateZ(0);
+                display: none;
             }</style><script defer="defer" src="template.js"></script><script defer="defer" src="main.js"></script></head><body><div class="operation-wrapper"><div>apikey:<input id="apikey"/> <button id="keySave">Save</button></div><div class="operation"></div></div><script>document.querySelector('#keySave').addEventListener('click', () => {
                 const apikey = document.querySelector('#apikey').value;
                 _triliumChat.chatData.setOption('apiKey', apikey);

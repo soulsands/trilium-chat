@@ -2,8 +2,6 @@ const fs = require('fs');
 const path = require('path');
 const packageJson = require('./package.json');
 
-const LOCAL_TEST = !!process.env.LOCAL_TEST;
-
 class PluginGetFileSize {
     constructor(file) {
         // receive file to get size
@@ -11,6 +9,13 @@ class PluginGetFileSize {
     }
 
     apply(compiler) {
+        const { ENV } = process.env;
+        const map = {
+            triliumTest: 'Test',
+            prod: 'Prod',
+        };
+        const file = map[ENV];
+
         compiler.hooks.done.tap('Get File Size', (stats) => {
             // Get output file
             const file = stats.compilation.assetsInfo.get(this.file);
@@ -34,7 +39,7 @@ class PluginGetFileSize {
                 sizes[sizeType]
             } | ${fileSizeInBytes}\n`;
 
-            const logFile = path.join(__dirname, `./logs/fileSize${LOCAL_TEST ? 'Test' : 'Prod'}.log`);
+            const logFile = path.join(__dirname, `./logs/fileSize${file}.log`);
             fs.appendFileSync(logFile, logItem);
         });
     }
