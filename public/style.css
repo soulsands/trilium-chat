@@ -1,0 +1,1035 @@
+/* @font-face {
+    font-family: Montserrat;
+    src: url(../fonts/Montserrat-Light.ttf);
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: Montserrat;
+    src: url(../fonts/Montserrat-SemiBold.ttf);
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: JetBrainsLight;
+    src: url(../fonts/JetBrainsMono-Light.woff2) format('woff');
+} */
+
+html {
+    /* this fixes FF filter vs. position fixed bug: https://github.com/zadam/trilium/issues/233 */
+    height: 100%;
+}
+
+body {
+    /* Fix for CKEditor block gutter icon "stretching" body and causing scrollbar to appear after pressing enter
+       on the last line of the editor. */
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: var(--main-background-color);
+    color: var(--main-text-color);
+    font-family: var(--main-font-family);
+    font-size: var(--main-font-size);
+}
+
+a, a:visited, a:hover {
+    color: var(--link-color);
+}
+
+input, select, textarea {
+    color: var(--input-text-color) !important;
+    background: var(--input-background-color) !important;
+}
+
+#left-pane input, select, textarea {
+    color: var(--left-pane-text-color) !important;
+    background: var(--left-pane-background-color) !important;
+}
+
+input::placeholder {
+    color: var(--muted-text-color);
+}
+
+table td, table th {
+    color: var(--main-text-color);
+}
+
+.ck .todo-list__checkmark {
+    top: 10px !important;
+}
+
+.modal-backdrop {
+    background-color: var(--modal-backdrop-color) !important;
+}
+
+.component {
+    contain: size;
+}
+
+code, kbd, pre, samp {
+    font-family: var(--monospace-font-family) !important;
+}
+
+.input-group-text {
+    background-color: var(--accented-background-color) !important;
+    color: var(--muted-text-color) !important;
+}
+
+button.close {
+    color: var(--main-text-color);
+}
+
+button.close:hover {
+    color: var(--hover-item-text-color);
+}
+
+.modal-content {
+    background-color: var(--modal-background-color) !important;
+}
+
+.nav-link.active {
+    background-color: inherit !important;
+    color: var(--main-text-color) !important;
+}
+
+.note-title[readonly] {
+    background: inherit;
+}
+
+.tdialog {
+    display: none;
+}
+
+.ui-autocomplete {
+    max-height: 300px;
+    overflow-y: auto;
+    /* prevent horizontal scrollbar */
+    overflow-x: hidden;
+}
+
+.icon-action {
+    border: 1px solid transparent;
+    padding: 5px;
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+    font-size: 1.5em;
+    color: var(--button-text-color);
+    background: var(--button-background-color);
+    border-radius: var(--button-border-radius);
+}
+
+.icon-action:hover:not(.disabled) {
+    text-decoration: none;
+    border-color: var(--button-border-color);
+}
+
+.icon-action.disabled {
+    color: var(--muted-text-color) !important;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.ui-widget-content a:not(.ui-tabs-anchor) {
+    color: #337ab7 !important;
+}
+
+div.ui-tooltip {
+    max-width: 600px;
+    max-height: 600px;
+    overflow: auto;
+}
+
+/*
+* .search-inactive is added to search window <webview> when the window
+* is inactive.
+*/
+.search-inactive {
+    visibility: hidden;
+}
+
+/*
+* .search-inactive is added to search window <webview> when the window
+* is active.
+*/
+.search-active {
+    visibility: visible;
+}
+
+.electronSearchText-box {
+    display: none;
+}
+.electronSearchText-visible {
+    display: block;
+}
+
+/* Allow to use <kbd> elements inside the title to define shortcut hints. */
+.ui-menu kbd, button kbd {
+    color: var(--muted-text-color);
+    border: none;
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.ui-menu kbd {
+    margin-left: 30px;
+    float: right;
+}
+
+.suppressed {
+    display: none;
+}
+
+.dropdown-menu {
+    border: 1px solid var(--dropdown-border-color);
+    color: var(--menu-text-color) !important;
+    background-color: var(--menu-background-color) !important;
+}
+
+.dropdown-menu .disabled {
+    color: #888 !important;
+    pointer-events: none;
+}
+
+.dropdown-menu a:hover:not(.disabled), .dropdown-item:hover:not(.disabled) {
+    color: var(--hover-item-text-color) !important;
+    background-color: var(--hover-item-background-color) !important;
+    border-color: var(--hover-item-border-color) !important;
+    cursor: pointer;
+}
+
+.dropdown-menu a:not(.selected) .check {
+    visibility: hidden;
+}
+
+.dropdown-menu kbd {
+    float: right;
+    color: var(--muted-text-color);
+    border: none;
+    background-color: transparent;
+    box-shadow: none;
+    /* 0 padding needed otherwise this increases the size of dropdown after dynamic positioning (which is then screwed) */
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.dropdown-item, .dropdown-header {
+    color: var(--menu-text-color) !important;
+    border: 1px solid transparent !important;
+}
+
+.dropdown-item.disabled, .dropdown-item.disabled kbd {
+    color: #aaa !important;
+}
+
+.dropdown-item.active, .dropdown-item:focus {
+    color: var(--active-item-text-color) !important;
+    background-color: var(--active-item-background-color) !important;
+    border-color: var(--active-item-border-color) !important;
+    outline: none;
+}
+
+.CodeMirror {
+    height: 100%;
+    background: inherit;
+}
+
+body .CodeMirror {
+    font-size: var(--monospace-font-size);
+}
+
+.CodeMirror-gutters {
+    background-color: inherit !important;
+    border-right: none;
+}
+
+.cm-matchhighlight {
+    background-color: #eeeeee
+}
+
+.CodeMirror pre.CodeMirror-placeholder {
+    color: #999 !important;
+}
+
+#sql-console-query {
+    height: 150px;
+    width: 100%;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+
+#sql-console-query .CodeMirror {
+    height: 150px;
+}
+
+#sql-console-query .CodeMirror-scroll {
+    min-height: inherit !important;
+}
+
+.btn {
+    border-radius: var(--button-border-radius);
+    border-color: var(--button-border-color);
+}
+
+button.btn, button.btn-sm {
+    font-size: inherit;
+}
+
+.btn-micro {
+    padding: 0 10px 0 10px;
+}
+
+.btn.btn-primary {
+    border-color: var(--primary-button-border-color);
+    background-color: var(--primary-button-background-color);
+    color: var(--primary-button-text-color);
+}
+
+.btn:not(:disabled):not(.disabled):active, .btn:not(:disabled):not(.disabled).active {
+    border-color: var(--primary-button-text-color);
+    background-color: var(--active-item-background-color);
+    color: var(--active-item-text-color);
+}
+
+.btn.btn-primary kbd {
+    color: var(--primary-button-text-color);
+}
+
+.btn:not(.btn-primary) {
+    background-color: var(--button-background-color);
+    color: var(--button-text-color);
+}
+
+#left-pane .btn:not(.btn-primary) {
+    background-color: var(--button-background-color);
+    color: var(--left-pane-text-color);
+}
+
+.btn.active:not(.btn-primary) {
+    background-color: var(--button-disabled-background-color) !important;
+    opacity: 0.4;
+}
+
+.ck.ck-block-toolbar-button {
+    transform: translateX(7px);
+    color: var(--muted-text-color);
+    background-color: var(--main-background-color);
+    /* Making this narrower because https://github.com/zadam/trilium/issues/502 (problem only in smaller font sizes) */
+    min-width: 0;
+    padding: 0;
+}
+
+pre:not(.CodeMirror-line) {
+    color: var(--main-text-color) !important;
+    white-space: pre-wrap;
+    font-size: 100%;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.show-recent-notes-button, .input-clearer-button, .go-to-selected-note-button {
+    padding-top: 8px;
+}
+
+.show-recent-notes-button {
+    cursor: pointer;
+    font-size: 1.3em;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.input-clearer-button {
+    cursor: pointer;
+    font-size: 1.3em;
+    background: inherit !important;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.open-external-link-button {
+    cursor: pointer;
+    font-size: 1.3em;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 8px;
+}
+
+.go-to-selected-note-button {
+    cursor: pointer;
+    font-size: 1.3em;
+    padding-left: 4px;
+    padding-right: 3px;
+}
+
+.go-to-selected-note-button.disabled, .go-to-selected-note-button.disabled:hover {
+    cursor: inherit;
+    color: var(--button-disabled-text-color) !important;
+    background-color: var(--button-disabled-background-color) !important;
+    text-decoration: none;
+}
+
+.note-autocomplete-input {
+    /* this is for seamless integration of "input clearer" button */
+    border-right: 0;
+}
+
+table.promoted-attributes-in-tooltip {
+    margin: auto;
+}
+
+table.promoted-attributes-in-tooltip td, table.promoted-attributes-in-tooltip th {
+    padding: 10px;
+}
+
+.tooltip {
+    font-size: var(--main-font-size) !important;
+}
+
+.bs-tooltip-bottom .arrow::before { border-bottom-color: var(--main-border-color) !important; }
+.bs-tooltip-top .arrow::before    { border-top-color: var(--main-border-color) !important; }
+.bs-tooltip-left .arrow::before   { border-left-color: var(--main-border-color) !important; }
+.bs-tooltip-right .arrow::before  { border-right-color: var(--main-border-color) !important; }
+
+.bs-tooltip-bottom .arrow::after { border-bottom-color: var(--tooltip-background-color) !important; }
+.bs-tooltip-top .arrow::after    { border-top-color: var(--tooltip-background-color) !important; }
+.bs-tooltip-left .arrow::after   { border-left-color: var(--tooltip-background-color) !important; }
+.bs-tooltip-right .arrow::after  { border-right-color: var(--tooltip-background-color) !important; }
+
+.tooltip .arrow::after {
+    position: absolute;
+    content: '';
+    border-color: transparent;
+    border-style: solid;
+}
+
+.bs-tooltip-auto[x-placement^='left'] .arrow::after,
+.bs-tooltip-left .arrow::after {
+    left: -1px;
+    border-width: 0.4rem 0 0.4rem 0.4rem;
+}
+
+.bs-tooltip-auto[x-placement^='bottom'] .arrow::after,
+.bs-tooltip-bottom .arrow::after {
+    bottom: -1px;
+    border-width: 0 0.4rem 0.4rem;
+}
+
+.bs-tooltip-auto[x-placement^='right'] .arrow::after,
+.bs-tooltip-right .arrow::after {
+    right: -1px;
+    border-width: 0.4rem 0.4rem 0.4rem 0;
+}
+
+.bs-tooltip-auto[x-placement^='top'] .arrow::after,
+.bs-tooltip-top .arrow::after {
+    top: -1px;
+    border-width: 0.4rem 0.4rem 0;
+}
+
+.note-tooltip.tooltip .arrow {
+    display: none;
+}
+
+.tooltip-inner {
+    padding: 15px;
+    background-color: var(--tooltip-background-color) !important;
+    border: 1px solid var(--main-border-color);
+    border-radius: 5px;
+    text-align: left;
+    color: var(--main-text-color) !important;
+    max-width: 500px;
+    box-shadow: 10px 10px 93px -25px #aaaaaa;
+}
+
+.tooltip-inner p:last-of-type {
+    margin-bottom: 0;
+}
+
+.rendered-note-attributes {
+    color: var(--muted-text-color);
+    margin-bottom: 7px;
+}
+
+.note-tooltip-title {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.note-tooltip-content {
+    /* height needs to stay small because tooltip has problem when it can't fit to either top or bottom of the cursor */
+    max-height: 300px;
+    overflow: hidden;
+}
+
+.note-tooltip-content .note-title-with-path .note-path {
+    font-size: small;
+}
+
+.note-tooltip-attributes {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.tooltip-inner img {
+    max-width: 250px;
+    max-height: 250px;
+}
+
+.tooltip-inner figure.image-style-side {
+    float: right;
+}
+
+.tooltip.show {
+    opacity: 1;
+}
+
+.algolia-autocomplete {
+    width: calc(100% - 30px);
+    z-index: 2000 !important;
+}
+
+.algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint {
+    width: 100%;
+}
+
+.algolia-autocomplete .aa-dropdown-menu {
+    width: 100%;
+    background-color: var(--main-background-color);
+    border: 1px solid var(--main-border-color);
+    border-top: none;
+    z-index: 2000 !important;
+    max-height: 500px;
+    overflow: auto;
+    padding: 0;
+    margin: 0;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
+    cursor: pointer;
+    padding: 5px;
+    margin: 0;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion p {
+    padding: 0;
+    margin: 0;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
+    color: var(--active-item-text-color);
+    background-color: var(--active-item-background-color);
+}
+
+.help-button {
+    float: right;
+    background: none;
+    font-weight: 900;
+    color: orange;
+    border: 0;
+    cursor: pointer;
+}
+
+.multiplicity {
+    font-size: 1.3em;
+}
+
+/* this is because bootstrap (?) sets code color to red for some reason */
+code {
+    color: inherit !important;
+}
+
+.animated {
+    animation-duration: 1s;
+    animation-fill-mode: both;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translate3d(0, -100%, 0);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+.fadeInDown {
+    animation-name: fadeInDown;
+}
+
+@keyframes fadeOutUp {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+        -webkit-transform: translate3d(0, -100%, 0);
+        transform: translate3d(0, -100%, 0);
+    }
+}
+
+.fadeOutUp {
+    animation-name: fadeOutUp;
+}
+
+div[data-notify="container"] {
+    text-align: center;
+}
+
+.saved-indicator {
+    font-size: 150%;
+}
+
+.ck-editor__is-empty.ck-content.ck-editor__editable::before {
+    content: 'You can start writing note here ...';
+    position: absolute;
+    display: block;
+
+    margin: var(--ck-spacing-large) 0;
+
+    color: var(--muted-text-color);
+}
+
+.ck-content .table table th {
+    background-color: var(--accented-background-color);
+}
+
+.ck-content .image > figcaption {
+    color: var(--main-text-color) !important;
+    background-color: var(--accented-background-color) !important;
+}
+
+#options-dialog input[type=number] {
+    text-align: right;
+}
+
+.help-cards ul {
+    padding-left: 20px;
+}
+
+.help-cards kbd {
+    color: var(--main-text-color);
+    background-color: var(--accented-background-color);
+    border: 1px solid var(--main-border-color);
+    padding: 2px;
+}
+
+
+
+a.external:not(.no-arrow):after, a[href^="http://"]:not(.no-arrow):after, a[href^="https://"]:not(.no-arrow):after {
+    font-size: smaller;
+    content: "\2197";
+    vertical-align: top;
+}
+
+.card {
+    background-color: inherit !important;
+    border-color: var(--main-border-color) !important;
+}
+
+.bx-empty {
+    width: 1em;
+    display: inline-block;
+}
+
+
+
+.note-detail-empty {
+    margin: 50px;
+}
+
+.modal-header {
+    padding: 0.7rem 1rem 0 1rem !important; /* make modal header padding slightly smaller */
+}
+
+#toast-container {
+    position: absolute;
+    width: 100%;
+    top: 20px;
+    pointer-events: none;
+}
+
+.toast {
+    background-color: var(--accented-background-color) !important;
+    color: var(--main-text-color) !important;
+    z-index: 9999999999 !important;
+    pointer-events: all;
+    flex-basis: 0; /* otherwise toast is always at least 350px tall (happens since 4.5.1, perhaps a bug) */
+}
+
+.toast-header {
+    background-color: var(--more-accented-background-color) !important;
+    color: var(--main-text-color) !important;
+}
+
+.ck-mentions .ck-button {
+    font-size: var(--detail-font-size) !important;
+    padding: 5px;
+}
+
+.ck-mentions .ck-button b {
+    font-size: var(--detail-font-size) !important;
+}
+
+.ck-mentions .ck-button.ck-on {
+    background-color: var(--active-item-background-color) !important;
+    color: var(--active-item-text-color) !important;
+}
+
+.ck-mentions .ck-button b {
+    font-weight: bold !important;
+    color: inherit !important;
+    vertical-align: baseline !important;
+}
+
+.ck-content .todo-list .todo-list__label > input:before {
+    border: 1px solid var(--muted-text-color) !important;
+}
+
+.ck-link-actions .ck-tooltip {
+    /* force hide the tooltip since it shows misleading "open link in new tab */
+    display: none !important;
+}
+
+.include-note {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: var(--accented-background-color);
+    display: flex; /* see https://github.com/zadam/trilium/issues/1590 */
+}
+
+.include-note.ck-placeholder::before { /* remove placeholder in otherwise empty note */
+    content: '' !important;
+}
+
+.include-note.box-size-small .include-note-content {
+    max-height: 10em;
+    overflow: auto;
+}
+
+.include-note.box-size-small .include-note-content.type-pdf {
+    height: 10em; /* PDF is rendered in iframe and must be sized absolutely */
+}
+
+.include-note.box-size-medium .include-note-content {
+    max-height: 20em;
+    overflow: auto;
+}
+
+.include-note.box-size-medium .include-note-content.type-pdf .rendered-note-content {
+    height: 20em; /* PDF is rendered in iframe and must be sized absolutely */
+}
+
+.include-note.box-size-full .include-note-content.type-pdf .rendered-note-content {
+    height: 50em; /* PDF is rendered in iframe and it's not possible to put full height so at least a large height */
+}
+
+.include-note-wrapper {
+    width: 100%;
+}
+
+.alert {
+    padding: 8px 14px;
+    width: auto;
+}
+
+.alert-warning, .alert-info {
+    color: var(--main-text-color) !important;
+    background-color: transparent !important;
+    border-color: var(--main-border-color) !important;
+}
+
+.gutter {
+    background: linear-gradient(to bottom, transparent, var(--accented-background-color), transparent);
+}
+
+.gutter:hover {
+    background: linear-gradient(to bottom, transparent, var(--main-border-color), transparent);
+}
+
+.gutter.gutter-horizontal {
+    cursor: col-resize;
+}
+
+.gutter.gutter-vertical {
+    cursor: row-resize;
+}
+
+.dropdown-menu {
+    font-size: inherit;
+}
+
+#context-menu-container {
+    max-height: 100vh;
+    /* !!! Cannot set overflow: auto, submenus will break !!! */
+}
+
+#context-menu-container, #context-menu-container .dropdown-menu {
+    padding: 3px 0 0;
+    z-index: 2000;
+}
+
+#context-menu-container .dropdown-item {
+    padding: 0 7px 0 10px;
+    cursor: pointer;
+}
+
+li.dropdown-submenu:hover > ul.dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu > .dropdown-menu {
+    top: 0;
+    left: calc(100% - 2px); /* -2px, otherwise there's a small gap between menu and submenu where the hover can disappear */
+    margin-top: -10px;
+    min-width: 15rem;
+    /* to make submenu scrollable https://github.com/zadam/trilium/issues/3136 */
+    max-height: 600px;
+    overflow: auto;
+}
+
+/* rotate caret on hover */
+.dropdown-menu > li > a:hover:after {
+    text-decoration: underline;
+    transform: rotate(-90deg);
+}
+
+body {
+    /* FF basic styling */
+    scrollbar-color: var(--active-item-background-color) var(--main-background-color);
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    border: 1px solid var(--scrollbar-border-color);
+    background-color: var(--active-item-background-color);
+}
+
+::-webkit-scrollbar-corner {
+    background-color: inherit;
+}
+
+[data-toggle="tooltip"]:not(.button-widget) span {
+    padding-bottom: 0;
+    border-bottom: 1px dotted;
+}
+
+.hidden-int, .hidden-ext {
+    display: none !important;
+}
+
+.ck.ck-mentions > .ck-list__item {
+    max-width: 700px;
+}
+
+.ck.ck-mentions > .ck-list__item .ck-button {
+    /* wrap text for very long note path title */
+    white-space: normal !important;
+}
+
+/**
+    ckeditor's autocomplete
+    should be higher than 1070 of tooltip
+*/
+.ck.ck-balloon-panel {
+    z-index: 1101;
+}
+
+.area-expander {
+    display: flex;
+    flex-direction: row;
+    color: var(--muted-text-color);
+    font-size: 90%;
+}
+
+.area-expander hr {
+    height: 1px;
+    border-color: var(--main-border-color);
+    position: relative;
+    top: 4px;
+    margin-top: 5px;
+}
+
+.area-expander-text {
+    padding-left: 20px;
+    padding-right: 20px;
+    white-space: nowrap;
+}
+
+.area-expander:hover {
+    cursor: pointer;
+}
+
+.area-expander:hover hr {
+    border-color: var(--main-text-color);
+}
+
+.area-expander:hover .area-expander-text {
+    color: var(--main-text-color);
+}
+
+.help-dropdown {
+    display: inline-block;
+}
+
+.help-dropdown .dropdown-menu {
+    border-radius: 10px;
+    border-width: 2px;
+    box-shadow: 10px 10px 93px -25px black;
+    padding: 10px 15px 10px 15px !important;
+    width: 600px;
+    white-space: normal;
+}
+
+.help-dropdown .dropdown-menu pre {
+    background-color: var(--accented-background-color);
+    padding: 10px;
+    margin: 10px;
+}
+
+#launcher-pane .launcher-button {
+    font-size: 150%;
+    display: inline-block;
+    padding: 13px 13px;
+    cursor: pointer;
+    border: none;
+    color: var(--launcher-pane-text-color);
+    background-color: var(--launcher-pane-background-color);
+    height: 53px;
+}
+
+#launcher-pane .icon-action:hover {
+    background-color: var(--hover-item-background-color);
+}
+
+#left-pane {
+    color: var(--left-pane-text-color);
+    background-color: var(--left-pane-background-color);
+}
+
+#launcher-pane {
+    color: var(--launcher-pane-text-color);
+    background-color: var(--launcher-pane-background-color);
+}
+
+input {
+    background-color: transparent !important;
+}
+
+
+#right-pane {
+    overflow: auto;
+}
+
+#right-pane .card {
+    border: 0;
+    display: flex;
+    flex-shrink: 0;
+    flex-direction: column;
+}
+
+#right-pane .card-header {
+    background: inherit;
+    padding: 6px 10px 3px 0;
+    width: 99%; /* to give minimal right margin */
+    background-color: var(--button-background-color);
+    border-color: var(--button-border-color);
+    border-width: 0 0 1px 0;
+    border-radius: 4px;
+    border-style: solid;
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--muted-text-color) !important;
+}
+
+#right-pane .body-wrapper {
+    overflow: auto;
+}
+
+#right-pane .card-body {
+    width: 100%;
+    padding: 8px;
+    border: 0;
+    height: 100%;
+    overflow: auto;
+}
+
+#right-pane .card-body ul {
+    padding-left: 25px;
+    margin-bottom: 5px;
+}
+
+.text-with-ellipsis {
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.note-split {
+    flex-basis: 0; /* so that each split has same width */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.note-split.full-content-width {
+    max-width: 999999px;
+}
+
+button.close:hover {
+    text-shadow: none;
+    color: currentColor;
+}
+
+.hidden-no-content {
+    display: none;
+}
+
+.reference-link .bx {
+    position: relative;
+    top: 1px;
+    margin-right: 3px;
+}
+
+.options-section:first-of-type h4 {
+    margin-top: 0;
+}
+
+.options-section h4 {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.options-section h5 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+textarea {
+    cursor: auto;
+}
+
+.table thead th,
+.table td, .table th {
+    /* Fix center vertical alignment of table cells */
+    vertical-align: middle;
+}

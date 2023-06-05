@@ -1,0 +1,105 @@
+.chat-wrapper {
+    .content_select {
+        display: flex;
+        height: 100%;
+        flex-direction: column;
+        user-select: none;
+
+        .select_top {
+            height: 44px;
+            padding-right: 4px;
+            padding-left: 16px;
+            border-bottom: 1px solid var(--main-border-color);
+        }
+
+        .select_search {
+            height: 40px;
+            padding: 0 10px;
+            border: 1px solid var(--main-border-color);
+            margin: 10px 16px;
+            border-radius: 8px;
+        }
+
+        .bx-search {
+            font-size: 120%;
+        }
+
+        .select_search_input {
+            flex: 1;
+            margin-left: 4px;
+        }
+
+        .select_list {
+            flex: 1;
+            padding: 0 16px;
+            overflow-y: auto;
+        }
+
+        .select_item {
+            position: relative;
+            padding: 8px;
+            border-radius: 8px;
+            color: var(--inactive-tab-text-color);
+            cursor: pointer;
+            font-size: 90%;
+
+            &::after {
+                position: absolute;
+                bottom: 0;
+                width: calc(100% - 16px);
+                border-bottom: 1px solid var(--left-pane-background-color);
+                content: '';
+            }
+
+            &:hover {
+                background: var(--left-pane-background-color);
+            }
+
+            .item_title {
+                color: var(--main-text-color);
+                font-weight: 700;
+            }
+
+            .item_stamp {
+                font-size: 80%;
+            }
+        }
+    }
+
+    .popover_prompt {
+        width: 100%;
+        height: 300px;
+        min-height: 300px;
+        background: var(--main-background-color);
+        box-shadow: 0 0 4px rgb(0 0 0 / 20%);
+    }
+
+    .content_select_prompt {
+        .item_up {
+            position: relative;
+        }
+
+        .item_title {
+            padding-right: 60px;
+        }
+
+        .item_op {
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: none;
+
+            .icon-action {
+                width: 24px;
+                height: 24px;
+                padding: 0;
+            }
+        }
+
+        .select_item:hover {
+            .item_op {
+                display: block;
+            }
+        }
+    }
+}

@@ -1,0 +1,9 @@
+node_modules
+.eslintcache
+
+# local 
+.env.dev
+.env.triliumTest
+
+
+/dist

@@ -1,0 +1,118 @@
+.chat-wrapper {
+    .chat_modal {
+        position: fixed;
+        z-index: 1000;
+        display: none;
+        inset: 0;
+
+        &.show {
+            display: block;
+        }
+
+        .modal_mask {
+            position: absolute;
+            z-index: -1;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            pointer-events: auto;
+            transition: all 0.3s;
+
+            &.fadein {
+                background: rgb(0 0 0 / 45%);
+            }
+        }
+
+        .content_wrapper {
+            position: absolute;
+            z-index: 1000;
+            background: var(--main-background-color);
+            transition: all 0.3s;
+            will-change: transform, opacity;
+        }
+
+        .content_wrapper_popup {
+            bottom: 0;
+            width: 100%;
+            height: 70%;
+            border-radius: 8px 8px 0 0;
+            transform: translateY(100%);
+
+            &.fadein {
+                transform: translateY(0);
+            }
+        }
+
+        .content_wrapper_dialog {
+            width: calc(100% - 40px);
+            border-radius: 8px;
+            opacity: 0;
+            transform: scale(0.1);
+
+            &.fadein {
+                top: 30% !important;
+                left: 20px !important;
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    }
+
+    .chat_popover {
+        position: absolute;
+        opacity: 0;
+        will-change: transform, opacity, top, left, right, top;
+
+        .tooltip-text {
+            padding: 6px;
+            border: 1px solid var(--main-border-color);
+            background: var(--main-background-color);
+            border-radius: 4px;
+        }
+
+        &.fadein {
+            opacity: 1;
+            transform: scale(1) !important;
+        }
+    }
+
+    .form_wrapper {
+        padding: 10px 16px;
+
+        .wapper_title {
+            font-size: 120%;
+        }
+
+        .wrapper_op {
+            margin-top: 3px;
+            text-align: right;
+        }
+
+        .chat_button {
+            display: inline-block;
+            width: 70px;
+            border-color: var(--main-text-color);
+        }
+
+        .wrapper_btn_save {
+            border: none;
+            background: var(--trilium-green);
+            color: var(--main-background-color);
+
+            &:hover {
+                opacity: 0.8;
+            }
+        }
+
+        .wrapper_btn_cancel {
+            border: 1px solid var(--main-border-color);
+            color: var(--main-border-color);
+
+            &:hover {
+                border: 1px solid var(--trilium-green);
+                color: var(--trilium-green);
+            }
+        }
+    }
+}
