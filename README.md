@@ -46,11 +46,7 @@ After save your Chatgpt apikey,  You can use most of the features, except those 
 
 
 
-
-
-
-
-![prompt](./media./prompt.gif)
+![prompt](./media/prompt.gif)
 
 
 
