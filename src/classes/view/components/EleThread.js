@@ -1,5 +1,5 @@
 import { throttle, removeEle } from '@/utils';
-import { EVENT_ENGINE } from '@/constants';
+import { EVENT_ENGINE, ROLE } from '@/constants';
 
 export default class EleThread {
     constructor(view) {
@@ -50,6 +50,8 @@ export default class EleThread {
     }
 
     appendElByMessage(message) {
+        if (message.role == ROLE.system) return;
+
         const msgDom = document.createElement('div');
         msgDom.classList.add('message');
         msgDom.classList.add(message.role === 'user' ? 'sent' : 'received');

@@ -7,13 +7,14 @@ const HINTS = {
 };
 
 export default class ChatGpt extends LittleEvent {
-    constructor({ apiKey, engineOptions }) {
+    constructor({ apiKey, engineOptions, systemPrompt }) {
         super();
         this.urls = {
             completion: 'https://api.openai.com/v1/chat/completions',
         };
         this.apiKey = apiKey;
         this.defaultOptions = engineOptions;
+        this.systemPrompt = systemPrompt;
     }
 
     get lastMessage() {
@@ -29,13 +30,13 @@ export default class ChatGpt extends LittleEvent {
         }
     }
 
-    newChat(systemPrompt) {
+    newChat() {
         const list = [];
 
-        if (systemPrompt) {
+        if (this.systemPrompt) {
             list.push({
                 role: ROLE.system,
-                content: systemPrompt,
+                content: this.systemPrompt,
                 status: STATUS_MESSAGE.success,
             });
         }

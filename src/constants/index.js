@@ -113,6 +113,7 @@ export const DEFAULT_OPTIONS = {
     // colors: ['#e47b19', '#50a52c', '#e23f3b'],
     colors: ['var(--muted-text-color)'],
     autoSave: true,
+    systemPrompt: 'You are a helpful assistant that integrates AI to Trilium note-taking.',
 };
 export const DEFAULT_PROMPTS = [
     {
