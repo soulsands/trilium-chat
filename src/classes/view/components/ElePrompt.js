@@ -109,7 +109,7 @@ export default class ElePrompt extends LittleEvent {
                     this.loadPrompts();
                     return;
                 }
-                console.log(target);
+                // console.log(target);
                 this.handlePromptContent(target);
                 this.Popover.hide();
             }
