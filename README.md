@@ -38,6 +38,22 @@ Chat plugin for Trilium, currently supports Chatgpt
 
 
 
+## DEMO
+
+https://soulsands.github.io/trilium-chat/
+
+After save your Chatgpt apikey,  You can use most of the features, except those that depend on Trilium. 
+
+
+
+
+
+
+
+![prompt](./media./prompt.gif)
+
+
+
 ## Contribute
 
 ```js
