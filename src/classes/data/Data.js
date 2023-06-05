@@ -185,14 +185,14 @@ export default class Data extends LittleEvent {
     }
 
     async saveRecordFromEngine(engine) {
-        const firstMsg = engine.thread[0];
-        if (!firstMsg) {
+        const firstUserMsg = engine.thread.find((msg) => msg.role === ROLE.user);
+        if (!firstUserMsg) {
             throwCommandError(COMMAND_TYPE.history, 'no content');
         }
 
         const newRecord = {
             id: engine.threadId,
-            originTitle: firstMsg.content,
+            originTitle: firstUserMsg.content,
             list: engine.thread.map((msg) => {
                 const record = { ...msg };
                 delete record.status;

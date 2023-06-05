@@ -165,6 +165,7 @@ export default class DataTrilium extends Data {
                 } else {
                     const homeNote = api.getNoteWithLabel(homeLabel) || api.currentNote;
 
+                    // allow user to modify history note's title
                     const newNote = api.createNewNote({
                         parentNoteId: homeNote.noteId,
                         title: _record.originTitle,

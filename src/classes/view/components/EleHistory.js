@@ -1,6 +1,6 @@
 import LittleEvent from '@/classes/LittleEvent';
 import { removeEle, timeAgo, closest } from '@/utils';
-import { EVENT_VIEW } from '@/constants';
+import { EVENT_VIEW, ROLE } from '@/constants';
 import Modal from '../wrappers/Modal';
 
 export default class EleHistory extends LittleEvent {
@@ -91,7 +91,7 @@ export default class EleHistory extends LittleEvent {
         const fragment = document.createDocumentFragment();
 
         list.forEach((record) => {
-            const firstRes = record.list[1];
+            const firstRes = record.list.find((msg) => msg.role === ROLE.assistant);
             const lastRes = record.list[record.list.length - 1];
 
             const $record = this.$recordTpl.cloneNode(true);
