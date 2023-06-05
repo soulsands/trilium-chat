@@ -25,7 +25,7 @@ try {
 
 const options = merge(common, {
     mode: 'production',
-    plugins: [new AddCode(), new PluginGetFileSize('main.js')],
+    plugins: [],
     module: {
         rules: [
             SkeletonCode && {
@@ -54,6 +54,8 @@ if (genHtml) {
             patterns: [{ from: 'public', to: '' }],
         })
     );
+} else {
+    options.plugins.push(new AddCode(), new PluginGetFileSize('main.js'));
 }
 
 module.exports = options;

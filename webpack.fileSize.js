@@ -9,15 +9,6 @@ class PluginGetFileSize {
     }
 
     apply(compiler) {
-        const { ENV } = process.env;
-        const map = {
-            triliumTest: 'Test',
-            prod: 'Prod',
-        };
-        const fileName = map[ENV];
-
-        if (!fileName) return;
-
         compiler.hooks.done.tap('Get File Size', (stats) => {
             // Get output file
             const file = stats.compilation.assetsInfo.get(this.file);
@@ -27,8 +18,8 @@ class PluginGetFileSize {
 
             // Get file size
             const fileSizeInBytes = file.size;
-
             // only used to convert
+
             const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
 
             // Get size type
