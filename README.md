@@ -1,4 +1,4 @@
-# trilium-chat
+# Trilium-chat
 
 ## Introduction
 
