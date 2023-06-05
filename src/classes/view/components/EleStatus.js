@@ -4,7 +4,7 @@ const STATUS_ENGINE = {
     [STATUS_MESSAGE.none]: '',
     [STATUS_MESSAGE.fetching]: 'Thinking...',
     [STATUS_MESSAGE.generating]: 'Typing...',
-    [STATUS_MESSAGE.success]: 'success',
+    // [STATUS_MESSAGE.success]: 'success',
     [STATUS_MESSAGE.faild]: STATUS_MESSAGE.faild,
     [STATUS_MESSAGE.cancel]: STATUS_MESSAGE.cancel,
 };
