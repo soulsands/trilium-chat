@@ -1,5 +1,8 @@
 # trilium-chat
-Chat plugin for Trilium, currently supports Chatgpt
+
+## Introduction
+
+Chat plugin for Trilium, currently supports Chatgpt.
 
 
 
@@ -58,6 +61,13 @@ yarn dev
 yarn build:test "{{temp file path}}" ## use open note externally/custom to create a temporary file
 ```
 
+Any contributions would be appreciated. If you have any questions or comments,  please feel free to reach out to me.
+
 ## Shoutout
 
 [Trilium](https://github.com/zadam/trilium)
+
+
+
+
+
