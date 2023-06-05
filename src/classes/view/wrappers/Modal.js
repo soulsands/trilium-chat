@@ -84,6 +84,9 @@ export default class Modal {
         const handleTransitionEnd = () => {
             toggleEleShow(this.$modal, false);
 
+            this.$contentWrapper.style.left = 'initial';
+            this.$contentWrapper.style.top = 'initial';
+
             this.$contentWrapper.classList.remove(this.wrapperClassName);
             removeEle(this.$modal);
 
