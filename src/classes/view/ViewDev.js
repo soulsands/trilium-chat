@@ -1,4 +1,4 @@
-import { ROLE } from '@/constants';
+import { ROLE, isDev } from '@/constants';
 import View from './View';
 
 export default class ViewDev extends View {
@@ -9,7 +9,9 @@ export default class ViewDev extends View {
 
     appendEleToHost() {
         this.appendToggleBtn();
-        this.appendCreateMsgBtn();
+        if (isDev) {
+            this.appendCreateMsgBtn();
+        }
     }
 
     appendToggleBtn() {
