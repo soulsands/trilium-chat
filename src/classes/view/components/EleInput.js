@@ -1,12 +1,12 @@
 import LittleEvent from '@/classes/LittleEvent';
 import { STATUS_MESSAGE, EVENT_ENGINE, EVENT_VIEW } from '@/constants';
+import { isMsgExpected } from '@/utils';
 
 export default class EleInput extends LittleEvent {
     constructor(view) {
         super();
         this.chatView = view;
         this.$userInput = view.$chatView.$qs('.input-area');
-
         this.$sendBtn = view.$chatView.$qs('.operate_send');
 
         this.engineStatus = STATUS_MESSAGE.none;
@@ -44,9 +44,7 @@ export default class EleInput extends LittleEvent {
     }
 
     async setBtnStyle() {
-        const allowSend = [STATUS_MESSAGE.none, STATUS_MESSAGE.success, STATUS_MESSAGE.cancel].includes(
-            this.engineStatus
-        );
+        const allowSend = isMsgExpected(this.engineStatus) || this.engineStatus === STATUS_MESSAGE.none;
 
         let hint = '';
         if (allowSend) {

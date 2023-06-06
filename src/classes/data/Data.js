@@ -1,5 +1,5 @@
 import { DEFAULT_OPTIONS, EVENT_DATA, STATUS_DATA, STATUS_MESSAGE, ROLE, COMMAND_TYPE } from '@/constants';
-import { throwImplementationError, checkNewKey, mergeOption, copy, throwCommandError } from '@/utils';
+import { throwImplementationError, checkNewKey, mergeOption, copy, throwCommandError, isMsgExpected } from '@/utils';
 import LittleEvent from '../LittleEvent';
 
 export default class Data extends LittleEvent {
@@ -176,7 +176,7 @@ export default class Data extends LittleEvent {
         if (!engine.thread.length) return;
 
         // should save on cancel?
-        const statusPass = [STATUS_MESSAGE.success, STATUS_MESSAGE.cancel].includes(status);
+        const statusPass = isMsgExpected(status);
         const rolePass = engine.lastMessage.role === ROLE.assistant;
 
         if (statusPass && rolePass) {

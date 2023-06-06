@@ -1,4 +1,4 @@
-import { SHOW_CLASS_NAME, FADE_CLASS_NAME } from '@/constants';
+import { SHOW_CLASS_NAME, FADE_CLASS_NAME, STATUS_MESSAGE } from '@/constants';
 
 const lock = {};
 // eslint-disable-next-line import/prefer-default-export
@@ -224,4 +224,8 @@ export const getParsedPromt = ($wrapper, promptContent) => {
 
     optionReg.lastIndex = 0;
     return parsed;
+};
+
+export const isMsgExpected = (status) => {
+    return [STATUS_MESSAGE.cancel, STATUS_MESSAGE.success].includes(status);
 };
