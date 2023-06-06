@@ -41,7 +41,9 @@ export default class EleFace {
                     true
                 );
             }
-        } catch (error) {}
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     refreshFace($face, options) {

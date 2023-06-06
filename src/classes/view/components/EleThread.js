@@ -1,6 +1,6 @@
-import { throttle, removeEle, closest, showTooltip } from '@/utils';
+import { throttle, removeEle, closest } from '@/utils';
 import { EVENT_ENGINE, EVENT_VIEW, ROLE } from '@/constants';
-import Popover from '../wrappers/Popover';
+import Popover, { showTooltip } from '../wrappers/Popover';
 
 export default class EleThread {
     constructor(view) {
@@ -22,6 +22,7 @@ export default class EleThread {
         this.bindThreadScroll();
         this.bindPromptToggle();
     }
+
     bindCommand() {
         this.Popover.$content.addEventListener('click', async (e) => {
             const $command = e.target;
@@ -41,6 +42,7 @@ export default class EleThread {
     wrapFunction() {
         this.scrolToBottom = throttle(this.scrolToBottom, 300);
     }
+
     bindPromptToggle() {
         this.chatView.elePrompt.on(EVENT_VIEW.promptToggle, (height) => {
             // hacky
@@ -72,6 +74,7 @@ export default class EleThread {
             this.replaceCurrentElContent(data.content);
         });
     }
+
     bindDotClick() {
         this.$threadMsgs.addEventListener('click', (e) => {
             const isDot = e.target.classList.contains('dot');
@@ -81,9 +84,10 @@ export default class EleThread {
             }
         });
     }
+
     bindThreadScroll() {
         let willHide = false;
-        this.$threadMsgs.addEventListener('scroll', (e) => {
+        this.$threadMsgs.addEventListener('scroll', () => {
             if (this.Popover.isShow && willHide === false) {
                 willHide = true;
                 setTimeout(() => {
@@ -93,6 +97,7 @@ export default class EleThread {
             }
         });
     }
+
     showMsgCommand($dot) {
         const placement = closest('.message', $dot).classList.contains('sent') ? 'left' : 'right';
 
@@ -114,7 +119,7 @@ export default class EleThread {
     }
 
     appendElByMessage(message) {
-        if (message.role == ROLE.system) return;
+        if (message.role === ROLE.system) return;
 
         const skeleton = `<div class='message ${message.role === 'user' ? 'sent' : 'received'}'><div>${
             message.content

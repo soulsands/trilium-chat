@@ -1,5 +1,4 @@
 import { SHOW_CLASS_NAME, FADE_CLASS_NAME, STATUS_MESSAGE } from '@/constants';
-import Popover from '@/classes/view/wrappers/Popover';
 
 const lock = {};
 // eslint-disable-next-line import/prefer-default-export
@@ -233,13 +232,9 @@ export const getParsedPromt = ($wrapper, promptContent) => {
     return parsed;
 };
 
-export const isMsgExpected = (status) => {
-    return [STATUS_MESSAGE.cancel, STATUS_MESSAGE.success].includes(status);
-};
+export const isMsgExpected = (status) => [STATUS_MESSAGE.cancel, STATUS_MESSAGE.success].includes(status);
 
-export const random = (arr) => {
-    return arr[Math.floor(Math.random() * arr.length)];
-};
+export const random = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
 const enterElSet = new WeakSet();
 
@@ -253,15 +248,3 @@ window.addEventListener('keydown', (e) => {
     if (!enterElSet.has(e.target)) return;
     e.target.dispatchEvent(new CustomEvent('enter'));
 });
-
-export const showTooltip = (text, $triggerEle, $edgeEle) => {
-    const tooltip = new Popover({
-        placement: 'right',
-        text,
-        $edgeEle,
-        $triggerEle,
-        offset: 0,
-        hideDelay: 1000,
-    });
-    tooltip.show();
-};

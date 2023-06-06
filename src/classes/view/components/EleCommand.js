@@ -1,7 +1,6 @@
 import LittleEvent from '@/classes/LittleEvent';
-import { EVENT_VIEW } from '@/constants';
-import { closest, showTooltip } from '@/utils';
-import Popover from '../wrappers/Popover';
+import { closest } from '@/utils';
+import Popover, { showTooltip } from '../wrappers/Popover';
 
 export default class EleCommand extends LittleEvent {
     constructor(view) {

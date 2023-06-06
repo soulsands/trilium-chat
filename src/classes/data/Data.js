@@ -1,4 +1,4 @@
-import { DEFAULT_OPTIONS, EVENT_DATA, STATUS_DATA, STATUS_MESSAGE, ROLE, COMMAND_TYPE } from '@/constants';
+import { DEFAULT_OPTIONS, EVENT_DATA, STATUS_DATA, ROLE, COMMAND_TYPE } from '@/constants';
 import { throwImplementationError, checkNewKey, mergeOption, copy, throwOpError, isMsgExpected } from '@/utils';
 import LittleEvent from '../LittleEvent';
 

@@ -1,4 +1,4 @@
-import { toggleEleShow, toggleEleFade, removeEle, nap, calculatePopoverPosition } from '@/utils';
+import { toggleEleFade, removeEle, nap, calculatePopoverPosition } from '@/utils';
 
 import { clickOutside, zindexInfo } from './share';
 
@@ -138,3 +138,15 @@ export default class Popover {
         this.isShow = false;
     }
 }
+
+export const showTooltip = (text, $triggerEle, $edgeEle) => {
+    const tooltip = new Popover({
+        placement: 'right',
+        text,
+        $edgeEle,
+        $triggerEle,
+        offset: 0,
+        hideDelay: 1000,
+    });
+    tooltip.show();
+};

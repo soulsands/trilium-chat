@@ -213,7 +213,7 @@ export default class DataTrilium extends Data {
     async handleAppend(engine) {
         const text = this.threadToText(engine, COMMAND_TYPE.append);
 
-        //todo: use frontedend api ，use editor instance. check  text/code
+        // todo: use frontedend api ，use editor instance. check  text/code
         const acviteNote = api.getActiveContextNote();
 
         try {
@@ -261,9 +261,7 @@ export default class DataTrilium extends Data {
     // << options
     async goOptions() {
         const optionNote = await api.runOnBackend(
-            async (label) => {
-                return api.getNoteWithLabel(label);
-            },
+            async (label) => api.getNoteWithLabel(label),
             [DATA_KEYS.CHAT_OPTIONS]
         );
         api.activateNote(optionNote.noteId);
