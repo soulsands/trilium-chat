@@ -96,6 +96,12 @@ export default class EleHistory extends LittleEvent {
 
             const $record = this.$recordTpl.cloneNode(true);
 
+            if (record.favor) {
+                const $fovar = document.createElement('div');
+                $fovar.classList.add('favor');
+                $record.appendChild($fovar);
+            }
+
             $record.setAttribute('data-id', record.id);
 
             $record.$qs('.item_title').textContent = record.title || record.originTitle;
