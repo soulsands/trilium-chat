@@ -1,6 +1,10 @@
 export const isDev = process.env.NODE_ENV === 'development';
 export const isBrowser = !!process.env.IS_BROWSER;
 
+if (isDev && !process.env.APIKEY) {
+    throw new Error('APIKEY not found, please create .env.dev and set your APIKEY');
+}
+
 export const ROLE = {
     system: 'system',
     user: 'user',
@@ -65,10 +69,6 @@ export const OPTION_KEY = {
     colors: 'colors',
 };
 
-if (isDev && !process.env.APIKEY) {
-    throw new Error('APIKEY not found, please create .env.dev and set your APIKEY');
-}
-
 export const TRILIUM_ONLY = 'TRILIUM_ONLY';
 
 export const DATA_KEYS = {
@@ -119,13 +119,13 @@ export const DEFAULT_PROMPTS = [
     {
         id: 'official-0',
         name: 'translate',
-        content: 'Translate the following content to {{language:English|Chinese|Franch}} language: \n {{message}}',
+        content: 'Translate the following content to {{language:English|Chinese|Czech}} language: \n {{message}}',
         order: 0,
     },
     {
         id: 'official-1',
         name: 'translateNote',
-        content: 'Translate the following content to {{language:English|Chinese|Franch}} language: \n {{activeNote}}',
+        content: 'Translate the following content to {{language:English|Chinese|Czech}} language: \n {{activeNote}}',
         order: 1,
     },
 ];
