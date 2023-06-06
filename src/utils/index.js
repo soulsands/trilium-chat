@@ -242,7 +242,6 @@ export const bindEnter = (el, func) => {
 };
 
 window.addEventListener('keydown', (e) => {
-    console.log(e);
     if (e.key !== 'Enter') return;
     if (!enterElSet.has(e.target)) return;
     e.target.dispatchEvent(new CustomEvent('enter'));

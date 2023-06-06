@@ -82,8 +82,8 @@ export default class Popover {
         const edgeRect = this.$edgeEle.getBoundingClientRect();
         const triggerRect = this.$triggerEle.getBoundingClientRect();
 
-        console.log(edgeRect);
-        console.log(triggerRect);
+        // console.log(edgeRect);
+        // console.log(triggerRect);
 
         const { top, left } = calculatePopoverPosition(
             edgeRect,
