@@ -82,6 +82,9 @@ export const DEFAULT_OPTIONS = {
     viewWidth: 400,
     engine: 'chatGpt',
     apiKey: process.env.APIKEY,
+    requestUrls: {
+        completion: 'https://api.openai.com/v1/chat/completions',
+    },
     engineOptions: {
         model: 'gpt-3.5-turbo',
         max_tokens: 2500,

@@ -8,11 +8,9 @@ const HINTS = {
 };
 
 export default class ChatGpt extends LittleEvent {
-    constructor({ apiKey, engineOptions, systemPrompt }) {
+    constructor({ apiKey, engineOptions, systemPrompt, requestUrls }) {
         super();
-        this.urls = {
-            completion: 'https://api.openai.com/v1/chat/completions',
-        };
+        this.urls = requestUrls;
         this.apiKey = apiKey;
         this.defaultOptions = engineOptions;
         this.systemPrompt = systemPrompt;
