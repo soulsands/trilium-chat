@@ -1,5 +1,5 @@
 import LittleEvent from '@/classes/LittleEvent';
-import { removeEle, closest, promptToHtml, getParsedPromt, nap, toggleEleShow } from '@/utils';
+import { removeEle, closest, promptToHtml, getParsedPromt, nap, toggleEleShow, bindEnter } from '@/utils';
 import { EVENT_VIEW } from '@/constants';
 import Popover from '../wrappers/Popover';
 import ModalFormWrapper from '../wrappers/ModalFormWrapper';
@@ -55,6 +55,8 @@ export default class ElePrompt extends LittleEvent {
     bindEvents() {
         this.$showBtn.addEventListener('click', async (e) => {
             this.Popover.show(e);
+            this.$search.focus();
+
             this.loadPrompts();
         });
 
@@ -189,6 +191,11 @@ export default class ElePrompt extends LittleEvent {
 
         list.forEach((prompt) => {
             const $prompt = this.$promptTpl.cloneNode(true);
+
+            bindEnter($prompt, () => {
+                this.handlePromptContent(prompt);
+                this.Popover.hide();
+            });
 
             $prompt.setAttribute('data-id', prompt.id);
 

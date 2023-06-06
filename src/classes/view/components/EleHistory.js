@@ -1,5 +1,5 @@
 import LittleEvent from '@/classes/LittleEvent';
-import { removeEle, timeAgo, closest } from '@/utils';
+import { removeEle, timeAgo, closest, bindEnter, sleep } from '@/utils';
 import { EVENT_VIEW, ROLE } from '@/constants';
 import Modal from '../wrappers/Modal';
 
@@ -36,6 +36,9 @@ export default class EleHistory extends LittleEvent {
         this.$showBtn.addEventListener('click', async (e) => {
             this.Modal.show(e);
             this.loadHistory();
+
+            await sleep(300);
+            this.$search.focus();
         });
         this.$closeBtn.addEventListener('click', () => {
             this.hide();
@@ -95,6 +98,11 @@ export default class EleHistory extends LittleEvent {
             const lastRes = record.list[record.list.length - 1];
 
             const $record = this.$recordTpl.cloneNode(true);
+
+            bindEnter($record, () => {
+                this.Modal.hide();
+                this.view.chatEngine.loadThread(record);
+            });
 
             if (record.favor) {
                 const $fovar = document.createElement('div');

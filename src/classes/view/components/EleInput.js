@@ -29,6 +29,9 @@ export default class EleInput extends LittleEvent {
             this.enableUserInput(status !== STATUS_MESSAGE.faild);
             this.handleMsgStatus(status);
         });
+        this.chatView.chatEngine.on(EVENT_ENGINE.load, async () => {
+            this.$userInput.focus();
+        });
     }
 
     bindPromptStatus() {
@@ -56,6 +59,7 @@ export default class EleInput extends LittleEvent {
 
             this.$sendBtn.classList.remove('freezed');
             hint = 'Send(Enter to send, Shift+Enter to break line)';
+            this.$userInput.focus();
         } else {
             this.$sendBtn.classList.add('freezed');
             if (this.engineStatus === STATUS_MESSAGE.faild) {

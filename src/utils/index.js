@@ -233,3 +233,17 @@ export const isMsgExpected = (status) => {
 export const random = (arr) => {
     return arr[Math.floor(Math.random() * arr.length)];
 };
+
+const enterElSet = new WeakSet();
+
+export const bindEnter = (el, func) => {
+    enterElSet.add(el);
+    el.addEventListener('enter', func);
+};
+
+window.addEventListener('keydown', (e) => {
+    console.log(e);
+    if (e.key !== 'Enter') return;
+    if (!enterElSet.has(e.target)) return;
+    e.target.dispatchEvent(new CustomEvent('enter'));
+});
