@@ -15,31 +15,33 @@ export default class EleFace {
 
     async handleCheckUpdates($face, options) {
         if (!options.checkUpdates) return;
+        try {
+            const URL = 'https://api.github.com/repos/soulsands/trilium-chat/releases/latest';
+            const resp = await fetch(URL);
+            const info = await resp.json();
 
-        const URL = 'https://api.github.com/repos/soulsands/trilium-chat/releases/latest';
-        const resp = await fetch(URL);
-        const info = await resp.json();
-        const latestVersion = info?.tag_name;
-        const current = window.__triliumChatVersion || '1.1.1'; // dev test
+            const latestVersion = info?.tag_name;
+            const current = window.__triliumChatVersion || '1.1.1'; // dev test
 
-        if (latestVersion > current) {
-            $face.classList.add('dot');
-            $face.setAttribute('title', 'New version found, click to download');
+            if (latestVersion > current) {
+                $face.classList.add('dot');
+                $face.setAttribute('title', 'New version found, click to download');
 
-            $face.addEventListener(
-                'click',
-                async (e) => {
-                    e.preventDefault();
-                    try {
-                        const downloadUrl = info.assets[0].browser_download_url;
-                        window.open(downloadUrl);
-                    } catch (error) {
-                        console.error(error);
-                    }
-                },
-                true
-            );
-        }
+                $face.addEventListener(
+                    'click',
+                    async (e) => {
+                        e.preventDefault();
+                        try {
+                            const downloadUrl = info.assets[0].browser_download_url;
+                            window.open(downloadUrl);
+                        } catch (error) {
+                            console.error(error);
+                        }
+                    },
+                    true
+                );
+            }
+        } catch (error) {}
     }
 
     refreshFace($face, options) {

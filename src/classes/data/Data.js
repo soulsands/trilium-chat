@@ -111,11 +111,11 @@ export default class Data extends LittleEvent {
         }
     }
 
-    threadToText(engine, type, isCopy) {
-        let text = engine.thread.map((v) => `<p>role: ${v.role}</p><p>${v.content}</p>`).join('');
+    threadToText(engine, type, html) {
+        let text = engine.thread.map((v) => `role: ${v.role}\n${v.content}`).join('\n');
 
-        if (isCopy) {
-            text = engine.thread.map((v) => `role: ${v.role}\n${v.content}`).join('\n');
+        if (html) {
+            text = engine.thread.map((v) => `<p>role: ${v.role}</p><p>${v.content}</p>`).join('');
         }
 
         if (!text) {

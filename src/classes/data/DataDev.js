@@ -119,7 +119,7 @@ export default class DataDev extends Data {
 
     // << options
     async goOptions() {
-        window.alert('options is stored in localstorage');
+        window.alert('preview: options is stored in localstorage');
     }
     // >> options
 }

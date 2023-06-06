@@ -1,4 +1,5 @@
 import { SHOW_CLASS_NAME, FADE_CLASS_NAME, STATUS_MESSAGE } from '@/constants';
+import Popover from '@/classes/view/wrappers/Popover';
 
 const lock = {};
 // eslint-disable-next-line import/prefer-default-export
@@ -252,3 +253,15 @@ window.addEventListener('keydown', (e) => {
     if (!enterElSet.has(e.target)) return;
     e.target.dispatchEvent(new CustomEvent('enter'));
 });
+
+export const showTooltip = (text, $triggerEle, $edgeEle) => {
+    const tooltip = new Popover({
+        placement: 'right',
+        text,
+        $edgeEle,
+        $triggerEle,
+        offset: 0,
+        hideDelay: 1000,
+    });
+    tooltip.show();
+};

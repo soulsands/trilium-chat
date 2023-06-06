@@ -1,4 +1,4 @@
-import { throttle, removeEle, closest, toggleClassName } from '@/utils';
+import { throttle, removeEle, closest, showTooltip } from '@/utils';
 import { EVENT_ENGINE, EVENT_VIEW, ROLE } from '@/constants';
 import Popover from '../wrappers/Popover';
 
@@ -14,13 +14,28 @@ export default class EleThread {
             contentSelector: '.msg-command',
             $edgeEle: this.$thread,
         });
-
+        this.bindCommand();
         this.wrapFunction();
         this.bindThreadHover();
         this.bindEngineEvents();
         this.bindDotClick();
         this.bindThreadScroll();
         this.bindPromptToggle();
+    }
+    bindCommand() {
+        this.Popover.$content.addEventListener('click', async (e) => {
+            const $command = e.target;
+            const command = $command.getAttribute('command');
+
+            const { $chatView, chatEngine, chatData } = this.chatView;
+            try {
+                await chatData.handleCommand(command, chatEngine);
+                showTooltip('success', $command, $chatView);
+            } catch (error) {
+                console.error(error);
+                showTooltip(JSON.parse(error.message).reason, $command, $chatView);
+            }
+        });
     }
 
     wrapFunction() {
