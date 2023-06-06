@@ -266,7 +266,7 @@ export default class DataTrilium extends Data {
             },
             [DATA_KEYS.CHAT_OPTIONS]
         );
-        api.activeNote(optionNote.noteId);
+        api.activateNote(optionNote.noteId);
     }
     // >> options
 }
