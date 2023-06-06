@@ -190,7 +190,7 @@ export function calculatePopoverPosition(edgeRect, triggerRect, contentWidth, co
         top = viewportHeight - contentHeight;
     }
 
-    return { left, top };
+    return { left, top, placement };
 }
 
 export const copy = (text) => {
