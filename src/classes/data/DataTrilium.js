@@ -257,4 +257,16 @@ export default class DataTrilium extends Data {
         }
     }
     // << command
+
+    // << options
+    async goOptions() {
+        const optionNote = await api.runOnBackend(
+            async (label) => {
+                return api.getNoteWithLabel(label);
+            },
+            [DATA_KEYS.CHAT_OPTIONS]
+        );
+        api.activeNote(optionNote.noteId);
+    }
+    // >> options
 }

@@ -203,4 +203,10 @@ export default class Data extends LittleEvent {
         await this.saveRecord(newRecord);
     }
     // << history
+
+    // << options
+    async goOptions() {
+        throwImplementationError();
+    }
+    // >> options
 }

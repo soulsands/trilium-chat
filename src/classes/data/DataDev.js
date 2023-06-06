@@ -116,4 +116,10 @@ export default class DataDev extends Data {
     handleSaveChild() {
         this.emitTriliumOnly(COMMAND_TYPE.child);
     }
+
+    // << options
+    async goOptions() {
+        window.alert('options is storaged in localstorage');
+    }
+    // >> options
 }
