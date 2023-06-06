@@ -36,7 +36,7 @@ export const COMMAND_TYPE = {
     history: 'history',
     favor: 'favor',
     unfavor: 'unfavor',
-    save: 'save',
+    set: 'set',
     append: 'append',
     child: 'child',
 };

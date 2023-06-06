@@ -105,8 +105,8 @@ export default class DataDev extends Data {
         throwOpError(type, TRILIUM_ONLY);
     }
 
-    handleSaveNote() {
-        this.emitTriliumOnly(COMMAND_TYPE.save);
+    handleSetNote() {
+        this.emitTriliumOnly(COMMAND_TYPE.set);
     }
 
     handleAppend() {

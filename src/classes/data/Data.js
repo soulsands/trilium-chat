@@ -101,7 +101,7 @@ export default class Data extends LittleEvent {
             copy: this.handleCopy.bind(this),
             favor: this.handleFavor.bind(this),
             unfavor: this.handleUnfavor.bind(this),
-            save: this.handleSaveNote.bind(this),
+            set: this.handleSetNote.bind(this),
             append: this.handleAppend.bind(this),
             child: this.handleSaveChild.bind(this),
             history: this.handleSaveHistory.bind(this),
@@ -146,7 +146,7 @@ export default class Data extends LittleEvent {
         await this.saveRecord(record);
     }
 
-    handleSaveNote() {
+    handleSetNote() {
         throwImplementationError();
     }
 

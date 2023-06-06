@@ -185,8 +185,8 @@ export default class DataTrilium extends Data {
     // <<history
 
     // >> command
-    async handleSaveNote(engine) {
-        const text = this.threadToText(engine, COMMAND_TYPE.save);
+    async handleSetNote(engine) {
+        const text = this.threadToText(engine, COMMAND_TYPE.set);
         const acviteNote = api.getActiveContextNote();
 
         try {
@@ -201,7 +201,7 @@ export default class DataTrilium extends Data {
                 [acviteNote.noteId, text]
             );
         } catch (error) {
-            this.throwServerError(COMMAND_TYPE.save, error.message);
+            this.throwServerError(COMMAND_TYPE.set, error.message);
         }
     }
 
@@ -229,7 +229,7 @@ export default class DataTrilium extends Data {
                 [acviteNote.noteId, text]
             );
         } catch (error) {
-            this.throwServerError(COMMAND_TYPE.save, error.message);
+            this.throwServerError(COMMAND_TYPE.append, error.message);
         }
     }
 
@@ -253,7 +253,7 @@ export default class DataTrilium extends Data {
                 [acviteNote.noteId, firstMsg.content, text]
             );
         } catch (error) {
-            this.throwServerError(COMMAND_TYPE.save, error.message);
+            this.throwServerError(COMMAND_TYPE.child, error.message);
         }
     }
     // << command
