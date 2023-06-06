@@ -177,7 +177,9 @@
         }
     }
 
-    .content_command {
+    .content_command,
+    .msg-command {
+        overflow: hidden;
         // border: 1px solid var(--main-border-color);
         background: var(--main-background-color);
         border-radius: 8px;
@@ -198,6 +200,10 @@
                 background: var(--left-pane-background-color);
             }
         }
+    }
+
+    .msg-command {
+        box-shadow: 0 0 4px rgb(0 0 0 / 60%);
     }
 
     .content_prompt_form {

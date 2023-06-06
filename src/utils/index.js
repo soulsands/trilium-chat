@@ -141,7 +141,6 @@ export function closest(selector, element) {
 export function calculatePopoverPosition(edgeRect, triggerRect, contentWidth, contentHeight, distance, placement) {
     let left;
     let top;
-
     // console.log(edgeRect, triggerRect, contentHeight, contentWidth, distance, placement);
     switch (placement) {
         case 'top':
@@ -174,8 +173,15 @@ export function calculatePopoverPosition(edgeRect, triggerRect, contentWidth, co
 
     if (left < 0) {
         left = 0;
+        if (placement === 'left') {
+            return calculatePopoverPosition(edgeRect, triggerRect, contentWidth, contentHeight, distance, 'right');
+        }
     } else if (left + contentWidth > viewportWidth) {
         left = viewportWidth - contentWidth;
+
+        if (placement === 'right') {
+            return calculatePopoverPosition(edgeRect, triggerRect, contentWidth, contentHeight, distance, 'left');
+        }
     }
 
     if (top < 0) {

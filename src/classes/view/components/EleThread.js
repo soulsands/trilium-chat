@@ -62,11 +62,7 @@ export default class EleThread {
             const isDot = e.target.classList.contains('dot');
             console.log(isDot);
             if (isDot) {
-                if (!this.Popover.isShow) {
-                    this.showMsgCommand(e.target);
-                } else {
-                    this.Popover.hide();
-                }
+                this.showMsgCommand(e.target);
             }
         });
     }
@@ -83,8 +79,10 @@ export default class EleThread {
         });
     }
     showMsgCommand($dot) {
+        const placement = closest('.message', $dot).classList.contains('sent') ? 'left' : 'right';
+
         this.Popover = new Popover({
-            placement: 'right',
+            placement,
             contentSelector: '.msg-command',
             $edgeEle: this.$thread,
             $triggerEle: $dot,
