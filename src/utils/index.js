@@ -36,7 +36,7 @@ export function throwImplementationError(value) {
         throw new Error(`should implement in child classes`);
     }
 }
-export function throwCommandError(type, reason) {
+export function throwOpError(type, reason) {
     throw new Error(JSON.stringify({ type, reason }));
 }
 
@@ -228,4 +228,8 @@ export const getParsedPromt = ($wrapper, promptContent) => {
 
 export const isMsgExpected = (status) => {
     return [STATUS_MESSAGE.cancel, STATUS_MESSAGE.success].includes(status);
+};
+
+export const random = (arr) => {
+    return arr[Math.floor(Math.random() * arr.length)];
 };
