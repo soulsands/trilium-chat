@@ -25,7 +25,9 @@ export default class ElePrompt extends LittleEvent {
 
         this.$content = this.Popover.$content;
 
-        this.$num = this.$content.$qs('.select_num');
+        this.$count = this.$content.$qs('.select_count');
+        this.$countNum = this.$count.$qs('.select_num');
+
         this.$addBtn = this.$content.$qs('.select_add');
         this.$closeBtn = this.$content.$qs('.select_close');
         this.$search = this.$content.$qs('.select_search_input');
@@ -77,6 +79,10 @@ export default class ElePrompt extends LittleEvent {
     }
 
     bindListEvents() {
+        this.$count.addEventListener('click', () => {
+            window.open('https://prompts.chat/#using-promptschat');
+        });
+
         this.$addBtn.addEventListener('click', async (e) => {
             this.ModalForm.show(e, { title: 'Add temlate' });
         });
@@ -173,7 +179,7 @@ export default class ElePrompt extends LittleEvent {
     }
 
     renderCount(num) {
-        this.$num.textContent = num;
+        this.$countNum.textContent = num;
     }
 
     renderList(list) {
