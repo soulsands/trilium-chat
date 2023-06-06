@@ -1,5 +1,5 @@
 import { DEFAULT_OPTIONS, EVENT_DATA, STATUS_DATA, STATUS_MESSAGE, ROLE, COMMAND_TYPE } from '@/constants';
-import { throwImplementationError, checkNewKey, mergeOption, copy, throwCommandError, isMsgExpected } from '@/utils';
+import { throwImplementationError, checkNewKey, mergeOption, copy, throwOpError, isMsgExpected } from '@/utils';
 import LittleEvent from '../LittleEvent';
 
 export default class Data extends LittleEvent {
@@ -119,7 +119,7 @@ export default class Data extends LittleEvent {
         }
 
         if (!text) {
-            throwCommandError(type, 'no content');
+            throwOpError(type, 'no content');
         }
         return text;
     }
@@ -140,7 +140,7 @@ export default class Data extends LittleEvent {
     async toggleFavor(engine, favor) {
         const record = await this.getRecord(engine.threadId);
         if (!record) {
-            throwCommandError(favor ? COMMAND_TYPE.favor : COMMAND_TYPE.unfavor, 'no thread');
+            throwOpError(favor ? COMMAND_TYPE.favor : COMMAND_TYPE.unfavor, 'no thread');
         }
         record.favor = favor;
         await this.saveRecord(record);
@@ -187,7 +187,7 @@ export default class Data extends LittleEvent {
     async saveRecordFromEngine(engine) {
         const firstUserMsg = engine.thread.find((msg) => msg.role === ROLE.user);
         if (!firstUserMsg) {
-            throwCommandError(COMMAND_TYPE.history, 'no content');
+            throwOpError(COMMAND_TYPE.history, 'no content');
         }
 
         const newRecord = {

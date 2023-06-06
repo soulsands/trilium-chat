@@ -1,4 +1,4 @@
-import { nap, sleep, throwCommandError } from '@/utils';
+import { nap, sleep, throwOpError } from '@/utils';
 import {
     DEFAULT_OPTIONS,
     DEFAULT_PROMPTS,
@@ -102,7 +102,7 @@ export default class DataDev extends Data {
     // << history
 
     emitTriliumOnly(type) {
-        throwCommandError(type, TRILIUM_ONLY);
+        throwOpError(type, TRILIUM_ONLY);
     }
 
     handleSaveNote() {

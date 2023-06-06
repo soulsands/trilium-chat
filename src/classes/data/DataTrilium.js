@@ -1,5 +1,5 @@
 import { DEFAULT_OPTIONS, DATA_KEYS, COMMAND_TYPE, DEFAULT_PROMPTS, EVENT_DATA, STATUS_DATA } from '@/constants';
-import { throwCommandError } from '@/utils';
+import { throwOpError } from '@/utils';
 
 import Data from './Data';
 
@@ -207,11 +207,13 @@ export default class DataTrilium extends Data {
 
     throwServerError(type, msg) {
         const normalizedMsg = msg.match(/\[(.*)\]/)[1];
-        throwCommandError(type, normalizedMsg);
+        throwOpError(type, normalizedMsg);
     }
 
     async handleAppend(engine) {
         const text = this.threadToText(engine, COMMAND_TYPE.append);
+
+        //todo: use frontedend api ，use editor instance. check  text/code
         const acviteNote = api.getActiveContextNote();
 
         try {
