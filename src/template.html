@@ -71,6 +71,10 @@
 
             <div class="thread">
                 <div class="thread-messages"></div>
+
+                <button class="thread_op thread_op_stop">stop generating</button>
+                <button class="thread_op thread_op_regenerate">regenerate</button>
+
                 <div class="msg-command">
                     <div class="command_item" command="copy">copy thread</div>
                     <div class="command_item" command="history">save to history</div>
@@ -111,12 +115,7 @@
                         class="operate_send bx bx-paper-plane icon-action"
                     ></i>
                 </div>
-                <div class="operate_bottom flex-center-between">
-                    <div>
-                        <button class="thread_op thread_op_stop">stop generating</button>
-                        <button class="thread_op thread_op_regenerate">regenerate</button>
-                    </div>
-
+                <div class="operate_bottom flex-row-reverse">
                     <div class="operate_status"></div>
                 </div>
             </div>

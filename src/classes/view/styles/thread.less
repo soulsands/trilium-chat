@@ -64,5 +64,26 @@
                 }
             }
         }
+
+        .thread_op {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            display: none;
+            padding: 4px 8px;
+            border: 1px solid var(--button-border-color);
+            background: var(--main-background-color);
+            border-radius: 8px;
+            transform: translateX(-50%);
+            transition: all 0.3s;
+
+            &:hover {
+                border-color: var(--trilium-green);
+            }
+
+            &.show {
+                display: block;
+            }
+        }
     }
 }
