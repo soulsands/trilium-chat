@@ -16,8 +16,6 @@ export default class EleInput extends LittleEvent {
 
         this.bindEngineEvents();
         this.bindPromptStatus();
-
-        this.lastSetBtnStyle = this.setBtnStyle();
     }
 
     bindInput() {
@@ -46,8 +44,6 @@ export default class EleInput extends LittleEvent {
     }
 
     async setBtnStyle() {
-        await this.lastSetBtnStyle;
-
         const allowSend = [STATUS_MESSAGE.none, STATUS_MESSAGE.success, STATUS_MESSAGE.cancel].includes(
             this.engineStatus
         );
