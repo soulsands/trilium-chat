@@ -14,6 +14,7 @@ import EleHistory from './components/EleHistory';
 import EleNewChat from './components/EleNewChat';
 import EleCommand from './components/EleCommand';
 import ElePrompt from './components/ElePrompt';
+import EleOption from './components/EleOption';
 
 export default class View extends LittleEvent {
     constructor({ options, chatData, chatEngine }) {
@@ -57,6 +58,7 @@ export default class View extends LittleEvent {
         this.eleHistory = new EleHistory(this);
         this.eleNewChat = new EleNewChat(this);
         this.eleCommand = new EleCommand(this);
+        new EleOption(this);
     }
 
     initViewWidth() {
