@@ -111,6 +111,30 @@ export default class Data extends LittleEvent {
         }
     }
 
+    async handleMsgCommand(command, msg) {
+        console.log(command, msg);
+        const map = {
+            copy: this.msgCopy.bind(this),
+            insert: this.msgInsert.bind(this),
+            append: this.msgAppend.bind(this),
+            set: this.msgSet.bind(this),
+            child: this.msgChild.bind(this),
+        };
+        if (map[command]) {
+            await map[command](msg);
+        }
+    }
+
+    msgCopy(msg) {}
+
+    msgInsert(msg) {}
+
+    msgAppend(msg) {}
+
+    msgSet(msg) {}
+
+    msgChild(msg) {}
+
     threadToText(engine, type, html) {
         let text = engine.thread.map((v) => `role: ${v.role}\n${v.content}`).join('\n');
 
@@ -125,7 +149,7 @@ export default class Data extends LittleEvent {
     }
 
     handleCopy(engine) {
-        const text = this.threadToText(engine, COMMAND_TYPE.copy, true);
+        const text = this.threadToText(engine, COMMAND_TYPE.copy);
         copy(text);
     }
 

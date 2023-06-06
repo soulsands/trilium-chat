@@ -39,6 +39,7 @@ export const COMMAND_TYPE = {
     set: 'set',
     append: 'append',
     child: 'child',
+    insert: 'insert',
 };
 
 export const EVENT_DATA = {

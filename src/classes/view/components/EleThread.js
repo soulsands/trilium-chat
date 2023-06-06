@@ -14,49 +14,22 @@ export default class EleThread {
             contentSelector: '.msg-command',
             $edgeEle: this.$thread,
         });
-        this.bindCommand();
+
+        this.clickedMsg = '';
+
         this.wrapFunction();
-        this.bindThreadHover();
+
         this.bindEngineEvents();
+
+        this.bindThreadHover();
+        this.bindPromptToggle();
+
         this.bindDotClick();
         this.bindThreadScroll();
-        this.bindPromptToggle();
-    }
-
-    bindCommand() {
-        this.Popover.$content.addEventListener('click', async (e) => {
-            const $command = e.target;
-            const command = $command.getAttribute('command');
-
-            const { $chatView, chatEngine, chatData } = this.chatView;
-            try {
-                await chatData.handleCommand(command, chatEngine);
-                showTooltip('success', $command, $chatView);
-            } catch (error) {
-                console.error(error);
-                showTooltip(JSON.parse(error.message).reason, $command, $chatView);
-            }
-        });
     }
 
     wrapFunction() {
         this.scrolToBottom = throttle(this.scrolToBottom, 300);
-    }
-
-    bindPromptToggle() {
-        this.chatView.elePrompt.on(EVENT_VIEW.promptToggle, (height) => {
-            // hacky
-            this.$thread.style.height = `calc(100% - ${247 + height}px)`;
-        });
-    }
-
-    bindThreadHover() {
-        this.$thread.addEventListener('mouseenter', () => {
-            this.isHovering = true;
-        });
-        this.$thread.addEventListener('mouseleave', () => {
-            this.isHovering = false;
-        });
     }
 
     bindEngineEvents() {
@@ -75,25 +48,31 @@ export default class EleThread {
         });
     }
 
+    bindThreadHover() {
+        this.$thread.addEventListener('mouseenter', () => {
+            this.isHovering = true;
+        });
+        this.$thread.addEventListener('mouseleave', () => {
+            this.isHovering = false;
+        });
+    }
+
+    bindPromptToggle() {
+        this.chatView.elePrompt.on(EVENT_VIEW.promptToggle, (height) => {
+            // hacky
+            this.$thread.style.height = `calc(100% - ${247 + height}px)`;
+        });
+    }
+
     bindDotClick() {
         this.$threadMsgs.addEventListener('click', (e) => {
             const isDot = e.target.classList.contains('dot');
             console.log(isDot);
+
+            this.clickedMsg = e.target.previousSibling.textContent;
+
             if (isDot) {
                 this.showMsgCommand(e.target);
-            }
-        });
-    }
-
-    bindThreadScroll() {
-        let willHide = false;
-        this.$threadMsgs.addEventListener('scroll', () => {
-            if (this.Popover.isShow && willHide === false) {
-                willHide = true;
-                setTimeout(() => {
-                    this.Popover.hide();
-                    willHide = false;
-                }, 100);
             }
         });
     }
@@ -109,6 +88,37 @@ export default class EleThread {
             offset: 0,
         });
         this.Popover.show();
+
+        this.bindCommand();
+    }
+
+    bindCommand() {
+        this.Popover.$content.addEventListener('click', async (e) => {
+            const $command = e.target;
+            const command = $command.getAttribute('command');
+
+            const { $chatView, chatEngine, chatData } = this.chatView;
+            try {
+                await chatData.handleMsgCommand(command, chatEngine);
+                showTooltip('success', $command, $chatView);
+            } catch (error) {
+                console.error(error);
+                showTooltip(JSON.parse(error.message).reason, $command, $chatView);
+            }
+        });
+    }
+
+    bindThreadScroll() {
+        let willHide = false;
+        this.$threadMsgs.addEventListener('scroll', () => {
+            if (this.Popover.isShow && willHide === false) {
+                willHide = true;
+                setTimeout(() => {
+                    this.Popover.hide();
+                    willHide = false;
+                }, 100);
+            }
+        });
     }
 
     renderThread(thread) {

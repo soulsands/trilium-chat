@@ -36,7 +36,7 @@ export default class Popover {
         } else {
             templateMap[contentSelector] = templateMap[contentSelector] || removeEle($edgeEle.$qs(contentSelector));
 
-            this.$content = templateMap[contentSelector];
+            this.$content = templateMap[contentSelector].cloneNode(true);
         }
 
         this.$popover = null;
