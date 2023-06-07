@@ -69,7 +69,7 @@ The prompt supports customizable options, making it highly flexible to use.
 
 The `{{language:English|Chinese|French}}` will be rendered as a dropdown component, allowing you to select the desired option directly when using it.
 
-![image-20230607233913358](./media/image-20230607233913358.png)
+<img src="./media/image-20230607233913358.png" alt="image-20230607233913358" style="zoom:33%;" />
 
 In addition, it also supports `{{activeNote}}`. However, finding a suitable method to parse notes hasn't been discovered yet. Handling simple plain text notes would be more feasible. For example, you can write an article and ask the chat to summarize or translate it. If you have any ideas or suggestions on how to handle parsing, I would be happy to provide assistance.
 
@@ -81,7 +81,7 @@ Prompts will be stored under the `#CHAT_PROMPTS` note. You can manually modify t
 
 #### thread 
 
-![image-20230607234407989](./media/image-20230607234407989.png)
+<img src="./media/image-20230607234407989.png" alt="image-20230607234407989" style="zoom:33%;" />
 
 The `favor` command will prioritize the entry in the chat history and display a flag indicating its importance.
 
@@ -91,7 +91,7 @@ The `append` command inserts the current note at the end of the note. It support
 
 #### message
 
-![image-20230607234443677](./media/image-20230607234443677.png)
+<img src="./media/image-20230607234443677.png" alt="image-20230607234443677" style="zoom:33%;" />
 
 Introducing a new command, `insert`, which allows you to insert the current message at the selected position of the cursor. It supports undoing the action using the editor.
 
@@ -99,7 +99,7 @@ The `set`, `insert`, and `append` commands support both text and code note types
 
 ### History
 
-![image-20230607235219388](./media/image-20230607235219388.png)
+<img src="./media/image-20230607235219388.png" alt="image-20230607235219388" style="zoom:33%;" />
 
 The chat history will be stored under the note labeled with `CHAT_HISTORY_HOME`. If such a note doesn't exist, it will be stored under the default "trilium-chat" note.
 
