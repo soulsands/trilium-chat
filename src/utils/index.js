@@ -266,10 +266,16 @@ export const getFirstUserContentOrThrow = (engine) => {
 };
 
 export const showTooltip = (text, isError) => {
-    if (isError) {
-        api.showError(text, 3000);
-    } else {
-        api.showMessage(text);
+    try {
+        if (isError) {
+            api.showError(text, 3000);
+        } else {
+            api.showMessage(text);
+        }
+    } catch (error) {
+        if (process.env.IS_BROWSER) {
+            window.alert('trilium only');
+        }
     }
 };
 
