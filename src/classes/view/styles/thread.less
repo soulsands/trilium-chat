@@ -24,17 +24,23 @@
                 padding: 8px 10px;
                 margin-bottom: 10px;
 
+                .message-text {
+                    white-space: pre-wrap;
+                    word-wrap: break-word;
+                }
+
                 .dot {
                     position: absolute;
                     top: 50%;
-                    right: -24px;
+                    right: -10px;
                     display: none;
-                    width: 26px;
-                    height: 26px;
+                    width: 20px;
+                    height: 20px;
                     padding: 0;
                     background-color: var(--main-background-color);
-                    font-size: 1.2em;
-                    line-height: 24px;
+                    box-shadow: 0 0 4px rgb(0 0 0 / 20%);
+                    font-size: 1em;
+                    line-height: 18px;
                     text-align: center;
                     transform: translateY(-50%);
                 }
@@ -60,7 +66,7 @@
 
                 .dot {
                     right: initial;
-                    left: -24px;
+                    left: -10px;
                 }
             }
         }

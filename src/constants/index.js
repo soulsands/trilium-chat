@@ -81,7 +81,7 @@ export const DATA_KEYS = {
 
 export const DEFAULT_OPTIONS = {
     viewWidth: 400,
-    engine: 'chatGpt',
+    engine: 'ChatGpt',
     apiKey: process.env.APIKEY,
     requestUrls: {
         completion: 'https://api.openai.com/v1/chat/completions',

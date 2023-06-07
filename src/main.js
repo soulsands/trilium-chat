@@ -37,8 +37,7 @@ class TriliumChat {
 
     getEngine(options) {
         let chatEngine;
-
-        if (options.engine === 'chatGpt') {
+        if (options.engine.toLowerCase() === 'chatgpt') {
             chatEngine = new ChatGpt(options);
         }
 

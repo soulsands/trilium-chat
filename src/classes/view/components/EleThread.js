@@ -69,9 +69,9 @@ export default class EleThread {
             const isDot = e.target.classList.contains('dot');
             console.log(isDot);
 
-            this.clickedMsg = e.target.previousSibling.textContent;
-
             if (isDot) {
+                this.clickedMsg = e.target.previousSibling.textContent;
+
                 this.showMsgCommand(e.target);
             }
         });
@@ -131,7 +131,9 @@ export default class EleThread {
     appendElByMessage(message) {
         if (message.role === ROLE.system) return;
 
-        const skeleton = `<div class='message ${message.role === 'user' ? 'sent' : 'received'}'><div>${
+        const skeleton = `<div class='message ${
+            message.role === 'user' ? 'sent' : 'received'
+        }'><div class='message-text'>${
             message.content
         }</div><div class='bx bx-dots-vertical-rounded dot icon-action'></div></div>`;
 
