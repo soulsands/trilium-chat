@@ -72,7 +72,7 @@ export default class ChatGpt extends LittleEvent {
     }
 
     createMessage(content, role = ROLE.user) {
-        const message = { role, content };
+        const message = { role, content, stamp: Date.now() };
         this.thread.push(message);
 
         const status = role === ROLE.user ? STATUS_MESSAGE.success : STATUS_MESSAGE.fetching;
