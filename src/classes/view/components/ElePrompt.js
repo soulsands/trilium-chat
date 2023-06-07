@@ -1,5 +1,5 @@
 import LittleEvent from '@/classes/LittleEvent';
-import { removeEle, closest, promptToHtml, getParsedPromt, nap, toggleEleShow } from '@/utils';
+import { removeEle, closest, promptToHtml, getParsedPromt, nap, toggleEleShow, bindEnter } from '@/utils';
 import { EVENT_VIEW } from '@/constants';
 import Popover from '../wrappers/Popover';
 import ModalFormWrapper from '../wrappers/ModalFormWrapper';
@@ -10,7 +10,7 @@ export default class ElePrompt extends LittleEvent {
         this.chatView = view;
         this.$promptContent = view.$chatView.$qs('.prompt_content');
 
-        this.$content = view.$chatView.$qs('.content_select_prompt');
+        // this.$content = view.$chatView.$qs('.content_select_prompt');
         this.$showBtn = view.$chatView.$qs('.operate_btn_prompt');
 
         //
@@ -22,7 +22,12 @@ export default class ElePrompt extends LittleEvent {
             offset: 5,
             popoverClass: 'popover_prompt',
         });
-        this.$num = this.$content.$qs('.select_num');
+
+        this.$content = this.Popover.$content;
+
+        this.$count = this.$content.$qs('.select_count');
+        this.$countNum = this.$count.$qs('.select_num');
+
         this.$addBtn = this.$content.$qs('.select_add');
         this.$closeBtn = this.$content.$qs('.select_close');
         this.$search = this.$content.$qs('.select_search_input');
@@ -50,6 +55,8 @@ export default class ElePrompt extends LittleEvent {
     bindEvents() {
         this.$showBtn.addEventListener('click', async (e) => {
             this.Popover.show(e);
+            this.$search.focus();
+
             this.loadPrompts();
         });
 
@@ -64,7 +71,7 @@ export default class ElePrompt extends LittleEvent {
             toggleEleShow(this.$promptContent, false);
             this.clearContent();
 
-            this.emit(EVENT_VIEW.promptToggle, false);
+            this.emit(EVENT_VIEW.promptToggle, 0);
         });
     }
 
@@ -74,6 +81,10 @@ export default class ElePrompt extends LittleEvent {
     }
 
     bindListEvents() {
+        this.$count.addEventListener('click', () => {
+            window.open('https://prompts.chat/#using-promptschat');
+        });
+
         this.$addBtn.addEventListener('click', async (e) => {
             this.ModalForm.show(e, { title: 'Add temlate' });
         });
@@ -129,7 +140,7 @@ export default class ElePrompt extends LittleEvent {
         await nap();
         this.$promptContent.style.height = `${this.$text.offsetHeight + 40}px`;
 
-        this.emit(EVENT_VIEW.promptToggle, true);
+        this.emit(EVENT_VIEW.promptToggle, this.$text.offsetHeight + 40);
     }
 
     bindFormEvents() {
@@ -170,7 +181,7 @@ export default class ElePrompt extends LittleEvent {
     }
 
     renderCount(num) {
-        this.$num.textContent = num;
+        this.$countNum.textContent = num;
     }
 
     renderList(list) {
@@ -180,6 +191,11 @@ export default class ElePrompt extends LittleEvent {
 
         list.forEach((prompt) => {
             const $prompt = this.$promptTpl.cloneNode(true);
+
+            bindEnter($prompt, () => {
+                this.handlePromptContent(prompt);
+                this.Popover.hide();
+            });
 
             $prompt.setAttribute('data-id', prompt.id);
 

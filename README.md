@@ -40,10 +40,8 @@ After save your Chatgpt apikey and refresh the page, You can use most of the fea
 
 ## TODO
 
--   [ ] per message command
--   [ ] self upgrade
--   [ ] prompts market
 -   [ ] operation shortcut
+-   [ ] new bing
 
 ## Contribute
 

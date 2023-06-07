@@ -1,12 +1,12 @@
 import LittleEvent from '@/classes/LittleEvent';
 import { STATUS_MESSAGE, EVENT_ENGINE, EVENT_VIEW } from '@/constants';
+import { isMsgExpected } from '@/utils';
 
 export default class EleInput extends LittleEvent {
     constructor(view) {
         super();
         this.chatView = view;
         this.$userInput = view.$chatView.$qs('.input-area');
-
         this.$sendBtn = view.$chatView.$qs('.operate_send');
 
         this.engineStatus = STATUS_MESSAGE.none;
@@ -16,8 +16,6 @@ export default class EleInput extends LittleEvent {
 
         this.bindEngineEvents();
         this.bindPromptStatus();
-
-        this.lastSetBtnStyle = this.setBtnStyle();
     }
 
     bindInput() {
@@ -30,6 +28,9 @@ export default class EleInput extends LittleEvent {
         this.chatView.chatEngine.on(EVENT_ENGINE.setStatus, (status) => {
             this.enableUserInput(status !== STATUS_MESSAGE.faild);
             this.handleMsgStatus(status);
+        });
+        this.chatView.chatEngine.on(EVENT_ENGINE.load, async () => {
+            this.$userInput.focus();
         });
     }
 
@@ -46,11 +47,7 @@ export default class EleInput extends LittleEvent {
     }
 
     async setBtnStyle() {
-        await this.lastSetBtnStyle;
-
-        const allowSend = [STATUS_MESSAGE.none, STATUS_MESSAGE.success, STATUS_MESSAGE.cancel].includes(
-            this.engineStatus
-        );
+        const allowSend = isMsgExpected(this.engineStatus) || this.engineStatus === STATUS_MESSAGE.none;
 
         let hint = '';
         if (allowSend) {
@@ -62,6 +59,7 @@ export default class EleInput extends LittleEvent {
 
             this.$sendBtn.classList.remove('freezed');
             hint = 'Send(Enter to send, Shift+Enter to break line)';
+            this.$userInput.focus();
         } else {
             this.$sendBtn.classList.add('freezed');
             if (this.engineStatus === STATUS_MESSAGE.faild) {
@@ -103,6 +101,7 @@ export default class EleInput extends LittleEvent {
         let finalMsg = parsedPrompt;
         const regMsg = /{{message}}/g;
         const regNote = /{{activeNote}}/g;
+        const regClip = /{{clipboard}}/g;
         if (regMsg.test(finalMsg)) {
             finalMsg = finalMsg.replace(regMsg, userInput);
         }
@@ -112,8 +111,12 @@ export default class EleInput extends LittleEvent {
                 finalMsg = finalMsg.replace(regNote, await this.chatView.chatData.getAcitveNoteContent());
             } catch (error) {
                 console.error(error);
-                return null;
             }
+        }
+
+        if (regClip.test(finalMsg)) {
+            const clipText = await this.chatView.chatData.getClip();
+            finalMsg = finalMsg.replace(regClip, clipText);
         }
 
         /* console.error(parsedPrompt);

@@ -71,6 +71,7 @@ module.exports = {
     ],
     globals: {
         api: true,
+        glob: true,
         $: true,
     },
     parserOptions: {
@@ -84,6 +85,7 @@ module.exports = {
         'no-underscore-dangle': 'off',
         'import/no-extraneous-dependencies': 'off',
         'class-methods-use-this': 'off',
+        'no-param-reassign': 'off',
     },
     settings: {
         'import/resolver': {

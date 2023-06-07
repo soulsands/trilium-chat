@@ -1,4 +1,4 @@
-import { toggleEleShow, toggleEleFade, removeEle, nap, calculatePopoverPosition } from '@/utils';
+import { toggleEleFade, removeEle, nap, calculatePopoverPosition } from '@/utils';
 
 import { clickOutside, zindexInfo } from './share';
 
@@ -26,6 +26,8 @@ export default class Popover {
 
         this.$triggerEle = $triggerEle;
 
+        this.$edgeEle = $edgeEle;
+
         if (text) {
             const $text = document.createElement('div');
             $text.classList.add('tooltip-text');
@@ -34,10 +36,8 @@ export default class Popover {
         } else {
             templateMap[contentSelector] = templateMap[contentSelector] || removeEle($edgeEle.$qs(contentSelector));
 
-            this.$content = templateMap[contentSelector];
+            this.$content = templateMap[contentSelector].cloneNode(true);
         }
-
-        this.$edgeEle = $edgeEle;
 
         this.$popover = null;
         this.isShow = false;
@@ -53,8 +53,7 @@ export default class Popover {
         this.$edgeEle.appendChild(this.$popover);
         this.$popover.appendChild(this.$content);
 
-        this.setPopoverStyle();
-        toggleEleShow(this.$popover, true);
+        this.setPopoverStyle(this.$popover);
 
         await nap();
 
@@ -78,25 +77,38 @@ export default class Popover {
         }
     }
 
-    setPopoverStyle() {
+    async setPopoverStyle($popover) {
         const edgeRect = this.$edgeEle.getBoundingClientRect();
         const triggerRect = this.$triggerEle.getBoundingClientRect();
 
-        const { top, left } = calculatePopoverPosition(
+        const { top, left, placement } = calculatePopoverPosition(
             edgeRect,
             triggerRect,
-            this.$popover.offsetWidth,
-            this.$popover.offsetHeight,
+            $popover.offsetWidth,
+            $popover.offsetHeight,
             this.offset,
             this.placement
         );
 
-        this.$popover.style.top = `${top}px`;
-        this.$popover.style.left = `${left}px`;
-        this.$popover.style.bottom = `initial`;
+        const map = {
+            top: ['bottom', 'scaleY(0.01)'],
+            bottom: ['top', 'scaleY(0.01)'],
+            left: ['right', 'scaleX(0.01)'],
+            right: ['left', 'scaleX(0.01)'],
+        };
 
+        [$popover.style.transformOrigin, $popover.style.transform] = map[placement];
+
+        $popover.style.top = `${top}px`;
+        $popover.style.left = `${left}px`;
+        $popover.style.zIndex = zindexInfo.global;
         zindexInfo.global += 1;
-        this.$popover.style.zIndex = zindexInfo.global;
+
+        await nap();
+
+        if (this.useTransition) {
+            $popover.style.transition = 'all .25s,opacity .2s';
+        }
     }
 
     initPopover() {
@@ -107,19 +119,6 @@ export default class Popover {
             el.classList.add(this.popoverClass);
         }
 
-        const map = {
-            top: ['bottom', 'scaleY(0.01)'],
-            bottom: ['top', 'scaleY(0.01)'],
-            left: ['right', 'scaleX(0.01)'],
-            right: ['left', 'scaleX(0.01)'],
-        };
-
-        [el.style.transformOrigin, el.style.transform] = map[this.placement];
-
-        if (this.useTransition) {
-            el.style.transition = 'all .2s,opacity .15s';
-        }
-
         this.$popover = el;
     }
 
@@ -127,7 +126,6 @@ export default class Popover {
         if (!this.isShow) return;
 
         const handleTransitionEnd = () => {
-            toggleEleShow(this.$popover, false);
             removeEle(this.$content);
             removeEle(this.$popover);
 
@@ -140,3 +138,15 @@ export default class Popover {
         this.isShow = false;
     }
 }
+
+export const showPoptip = (text, $triggerEle, $edgeEle, placement = 'right') => {
+    const tooltip = new Popover({
+        placement,
+        text,
+        $edgeEle,
+        $triggerEle,
+        offset: 0,
+        hideDelay: 1000,
+    });
+    tooltip.show();
+};

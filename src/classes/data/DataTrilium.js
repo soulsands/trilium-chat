@@ -1,7 +1,90 @@
-import { DEFAULT_OPTIONS, DATA_KEYS, COMMAND_TYPE, DEFAULT_PROMPTS, EVENT_DATA, STATUS_DATA } from '@/constants';
-import { throwCommandError } from '@/utils';
+import { DEFAULT_OPTIONS, DATA_KEYS, DEFAULT_PROMPTS, EVENT_DATA, STATUS_DATA, NOT_SUPPORTED } from '@/constants';
+import { throwError, threadToText } from '@/utils';
 
 import Data from './Data';
+
+async function getActiveEditor(content) {
+    const isThread = Array.isArray(content);
+
+    await glob.appContext.initialized;
+    const activeNote = api.getActiveContextNote();
+    if (!activeNote) throwError('no active note');
+
+    const noteCtx = glob.appContext.tabManager.children.find((ctx) => ctx.noteId === activeNote.noteId);
+    if (noteCtx && (await noteCtx.isReadOnly())) {
+        throwError('note is readOnly');
+    }
+
+    let editor;
+    if (activeNote.type === 'text') {
+        editor = await api.getActiveContextTextEditor();
+        return {
+            insert() {
+                editor.model.change((writer) => {
+                    const insertPosition = editor.model.document.selection.getLastPosition();
+                    writer.insertText(content, insertPosition);
+                });
+            },
+            set() {
+                if (isThread) {
+                    content = threadToText(content, true);
+                }
+
+                editor.setData(content);
+            },
+            //  content could be engine if append a thread
+            //  editor.setData(editor.get()+content) lose the state, while in this way users can use undo
+            append() {
+                editor.model.change((writer) => {
+                    let ckEles;
+                    const p = 'paragraph';
+                    // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_model-Model.html#function-insertContent
+                    if (isThread) {
+                        ckEles = content.reduce((frag, msg) => {
+                            const role = writer.createElement(p);
+                            writer.insertText(`${msg.role}:`, role);
+
+                            const _content = writer.createElement(p);
+                            writer.insertText(msg.content, _content);
+
+                            writer.append(role, frag);
+                            writer.append(_content, frag);
+
+                            return frag;
+                        }, writer.createDocumentFragment());
+                    } else {
+                        ckEles = writer.createElement(p);
+                        writer.appendText(content, ckEles);
+                    }
+                    writer.append(ckEles, editor.model.document.getRoot());
+                });
+            },
+        };
+    }
+    if (activeNote.type === 'code') {
+        editor = await api.getActiveContextCodeEditor();
+
+        return {
+            insert() {
+                const doc = editor.getDoc();
+                const cursor = doc.getCursor();
+
+                doc.replaceRange(content, cursor);
+            },
+            set() {
+                if (isThread) {
+                    content = threadToText(content);
+                }
+
+                editor.getDoc().setValue(content);
+            },
+            append() {
+                editor.replaceRange(content, { line: Infinity });
+            },
+        };
+    }
+    throwError('support text/code');
+}
 
 export default class DataTrilium extends Data {
     // >>options
@@ -100,12 +183,13 @@ export default class DataTrilium extends Data {
     /**
      * @returns {Promise}
      */
+    // todo: rewrite
     async getAcitveNoteContent() {
         const acviteNote = api.getActiveContextNote();
         let content = null;
         if (acviteNote.type === 'text') {
             const editWidget = document.querySelector('.note-detail-editable-text');
-            const isEdit = window.getComputedStyle(editWidget).display === 'block';
+            const isEdit = editWidget && window.getComputedStyle(editWidget).display === 'block';
             if (isEdit) {
                 content = editWidget.querySelector('.note-detail-editable-text-editor').textContent;
             } else {
@@ -119,15 +203,16 @@ export default class DataTrilium extends Data {
             this.emit(EVENT_DATA.setStatus, {
                 status: STATUS_DATA.faild,
                 key: 'acitveNote',
-                value: `type ${acviteNote.type} not supported`,
+                value: `type ${acviteNote.type} ${NOT_SUPPORTED}`,
             });
-            throw new Error(`not supported`);
+            throwError(NOT_SUPPORTED);
         }
         this.emit(EVENT_DATA.setStatus, {
             status: STATUS_DATA.success,
         });
         return content;
     }
+
     // <<prompts
 
     // >>history
@@ -185,74 +270,44 @@ export default class DataTrilium extends Data {
     // <<history
 
     // >> command
-    async handleSaveNote(engine) {
-        const text = this.threadToText(engine, COMMAND_TYPE.save);
-        const acviteNote = api.getActiveContextNote();
-
-        try {
-            await api.runOnBackend(
-                async (id, content) => {
-                    const activeNote = api.getNote(id);
-                    if (!activeNote) throw new Error('[no active note]');
-                    if (activeNote.type !== 'text') throw new Error('[not text note]');
-                    activeNote.setContent(content);
-                    return true;
-                },
-                [acviteNote.noteId, text]
-            );
-        } catch (error) {
-            this.throwServerError(COMMAND_TYPE.save, error.message);
-        }
+    async setNoteWith(text) {
+        (await getActiveEditor(text)).set();
     }
 
-    throwServerError(type, msg) {
-        const normalizedMsg = msg.match(/\[(.*)\]/)[1];
-        throwCommandError(type, normalizedMsg);
+    async appendToNote(text) {
+        (await getActiveEditor(text)).append();
     }
 
-    async handleAppend(engine) {
-        const text = this.threadToText(engine, COMMAND_TYPE.append);
+    async saveToChild(_title, _content) {
         const acviteNote = api.getActiveContextNote();
+        await api.runOnBackend(
+            async (id, title, content) => {
+                const activeNote = api.getNote(id);
+                if (!activeNote) throw new Error('no active note');
 
-        try {
-            await api.runOnBackend(
-                async (id, content) => {
-                    const activeNote = api.getNote(id);
-                    if (!activeNote) throw new Error('[no active note]');
-                    if (activeNote.type !== 'text') throw new Error('[not text note]');
-
-                    const oldContent = activeNote.getContent();
-                    activeNote.setContent(`${oldContent}${content}`);
-                },
-                [acviteNote.noteId, text]
-            );
-        } catch (error) {
-            this.throwServerError(COMMAND_TYPE.save, error.message);
-        }
+                return api.createNewNote({
+                    parentNoteId: id,
+                    title,
+                    content,
+                    type: 'text',
+                }).note;
+            },
+            [acviteNote.noteId, _title, _content]
+        );
     }
 
-    async handleSaveChild(engine) {
-        const text = this.threadToText(engine, COMMAND_TYPE.child);
-        const acviteNote = api.getActiveContextNote();
-        const firstMsg = engine.thread[0];
-        try {
-            await api.runOnBackend(
-                async (id, title, content) => {
-                    const activeNote = api.getNote(id);
-                    if (!activeNote) throw new Error('[no active note]');
-
-                    return api.createNewNote({
-                        parentNoteId: id,
-                        title,
-                        content,
-                        type: 'text',
-                    }).note;
-                },
-                [acviteNote.noteId, firstMsg.content, text]
-            );
-        } catch (error) {
-            this.throwServerError(COMMAND_TYPE.save, error.message);
-        }
+    async insertContent(text) {
+        (await getActiveEditor(text)).insert();
     }
     // << command
+
+    // << options
+    async goOptions() {
+        const optionNote = await api.runOnBackend(
+            async (label) => api.getNoteWithLabel(label),
+            [DATA_KEYS.CHAT_OPTIONS]
+        );
+        api.activateNote(optionNote.noteId);
+    }
+    // >> options
 }

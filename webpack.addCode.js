@@ -26,7 +26,7 @@ class AddCode {
                     name: 'AddCode',
                     stage: Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE,
                 },
-                (assets) => {
+                (/* assets */) => {
                     const file = compilation.getAsset('main.js');
                     const finalCode = `${versionCode}\n ${file.source.source()}`;
                     compilation.updateAsset('main.js', new sources.RawSource(finalCode));

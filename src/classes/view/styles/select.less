@@ -32,6 +32,7 @@
         .select_list {
             flex: 1;
             padding: 0 16px;
+            padding-bottom: 20px;
             overflow-y: auto;
         }
 
@@ -53,6 +54,14 @@
 
             &:hover {
                 background: var(--left-pane-background-color);
+            }
+
+            .favor {
+                position: absolute;
+                top: 2px;
+                right: 8px;
+                border: 8px solid transparent;
+                border-top-color: var(--trilium-green);
             }
 
             .item_title {

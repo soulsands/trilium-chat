@@ -1,6 +1,10 @@
 export const isDev = process.env.NODE_ENV === 'development';
 export const isBrowser = !!process.env.IS_BROWSER;
 
+if (isDev && !process.env.APIKEY) {
+    throw new Error('APIKEY not found, please create .env.dev and set your APIKEY');
+}
+
 export const ROLE = {
     system: 'system',
     user: 'user',
@@ -32,9 +36,10 @@ export const COMMAND_TYPE = {
     history: 'history',
     favor: 'favor',
     unfavor: 'unfavor',
-    save: 'save',
+    set: 'set',
     append: 'append',
     child: 'child',
+    insert: 'insert',
 };
 
 export const EVENT_DATA = {
@@ -65,10 +70,6 @@ export const OPTION_KEY = {
     colors: 'colors',
 };
 
-if (isDev && !process.env.APIKEY) {
-    throw new Error('APIKEY not found, please create .env.dev and set your APIKEY');
-}
-
 export const TRILIUM_ONLY = 'TRILIUM_ONLY';
 
 export const DATA_KEYS = {
@@ -80,8 +81,11 @@ export const DATA_KEYS = {
 
 export const DEFAULT_OPTIONS = {
     viewWidth: 400,
-    engine: 'chatGpt',
+    engine: 'ChatGpt',
     apiKey: process.env.APIKEY,
+    requestUrls: {
+        completion: 'https://api.openai.com/v1/chat/completions',
+    },
     engineOptions: {
         model: 'gpt-3.5-turbo',
         max_tokens: 2500,
@@ -113,19 +117,25 @@ export const DEFAULT_OPTIONS = {
     // colors: ['#e47b19', '#50a52c', '#e23f3b'],
     colors: ['var(--muted-text-color)'],
     autoSave: true,
-    systemPrompt: 'You are a helpful assistant that integrates AI to Trilium note-taking.',
+    // systemPrompt: 'You are a helpful assistant for Trilium note-taking.',
+    systemPrompt: '',
+    checkUpdates: true,
 };
 export const DEFAULT_PROMPTS = [
     {
         id: 'official-0',
         name: 'translate',
-        content: 'Translate the following content to {{language:English|Chinese|Franch}} language: \n {{message}}',
+        content: 'Translate the following content to {{language:English|Chinese|Czech}} language: \n{{message}}',
         order: 0,
     },
     {
         id: 'official-1',
         name: 'translateNote',
-        content: 'Translate the following content to {{language:English|Chinese|Franch}} language: \n {{activeNote}}',
+        content: 'Translate the following content to {{language:English|Chinese|Czech}} language: \n{{activeNote}}',
         order: 1,
     },
 ];
+
+export const NOT_SUPPORTED = 'NOT SUPPORTED';
+
+export const NO_THREAD = 'No thread';

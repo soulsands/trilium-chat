@@ -1,4 +1,5 @@
 import { ROLE, EVENT_ENGINE, STATUS_MESSAGE } from '@/constants';
+import { isMsgExpected } from '@/utils';
 import Streamer from '../Streamer';
 import LittleEvent from '../LittleEvent';
 
@@ -7,11 +8,9 @@ const HINTS = {
 };
 
 export default class ChatGpt extends LittleEvent {
-    constructor({ apiKey, engineOptions, systemPrompt }) {
+    constructor({ apiKey, engineOptions, systemPrompt, requestUrls }) {
         super();
-        this.urls = {
-            completion: 'https://api.openai.com/v1/chat/completions',
-        };
+        this.urls = requestUrls;
         this.apiKey = apiKey;
         this.defaultOptions = engineOptions;
         this.systemPrompt = systemPrompt;
@@ -57,14 +56,14 @@ export default class ChatGpt extends LittleEvent {
 
     isEngineAvailable() {
         if (!this.lastMessage) return true;
-        return [STATUS_MESSAGE.success, STATUS_MESSAGE.cancel].includes(this.lastMessage.status);
+        return isMsgExpected(this.lastMessage.status);
     }
 
     setLastMessageStatus(status) {
         if (this.lastMessage.status !== status) {
             this.lastMessage.status = status;
 
-            if (status === STATUS_MESSAGE.success) {
+            if (isMsgExpected(status)) {
                 this.lastMessage.stamp = Date.now();
             }
 
@@ -73,7 +72,7 @@ export default class ChatGpt extends LittleEvent {
     }
 
     createMessage(content, role = ROLE.user) {
-        const message = { role, content };
+        const message = { role, content, stamp: Date.now() };
         this.thread.push(message);
 
         const status = role === ROLE.user ? STATUS_MESSAGE.success : STATUS_MESSAGE.fetching;
@@ -116,7 +115,7 @@ export default class ChatGpt extends LittleEvent {
 
     async sendRequest(overrideOptions = {}) {
         const messages = this.thread.reduce((handleMessages, msg) => {
-            if (msg.status === STATUS_MESSAGE.success || msg.status === STATUS_MESSAGE.cancel) {
+            if (isMsgExpected(msg.status)) {
                 handleMessages.push({ role: msg.role, content: msg.content });
             }
             return handleMessages;

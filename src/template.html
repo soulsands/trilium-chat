@@ -11,8 +11,8 @@
         <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css" />
         <link rel="stylesheet" href="./boxicons/css/boxicons.min.css" />
         <link rel="stylesheet" href="./style.css" />
-        <link rel="stylesheet" href="./theme-light.css" />
-        <!-- <link rel="stylesheet" href="./theme-dark.css" /> -->
+        <!-- <link rel="stylesheet" href="./theme-light.css" /> -->
+        <link rel="stylesheet" href="./theme-dark.css" />
 
         <style>
             body {
@@ -35,7 +35,7 @@
             .chat-wrapper {
                 transform: translateZ(0);
                 display: none;
-                min-width: 0 !important;
+                /* min-width: 0 !important; */
             }
         </style>
     </head>
@@ -59,17 +59,30 @@
             <div class="header">
                 <div class="header_left flex-center">
                     <a
-                        class="link link_face flex-center no-arrow"
+                        class="link flex-center no-arrow"
                         href="https://github.com/soulsands/trilium-chat"
                         target="_blank"
                     >
-                        <i class="header_face bx icon-view" title="HomePage"></i>
+                        <i class="header_face bx icon-view" title="home"></i>
                     </a>
                 </div>
                 <div class="header_right"><i title="hide" class="header_hide bx bx-minus icon-action"></i></div>
             </div>
 
-            <div class="thread"></div>
+            <div class="thread">
+                <div class="thread-messages"></div>
+
+                <button class="thread_op thread_op_stop">stop generating</button>
+                <button class="thread_op thread_op_regenerate">regenerate</button>
+
+                <div class="msg-command">
+                    <div class="command_item" command="copy" title="Copy">Copy</div>
+                    <div class="command_item" command="insert" title="Insert to caret">Insert</div>
+                    <div class="command_item" command="append" title="Append to active notet">Append</div>
+                    <div class="command_item" command="set" title="Set to active note">Set</div>
+                    <div class="command_item" command="child" title="Save to new child">Child</div>
+                </div>
+            </div>
 
             <div class="prompt_content">
                 <div class="prompt_content_close flex-row-reverse">
@@ -87,9 +100,10 @@
                             title="Prompt"
                         ></div>
                         <div class="operate_btn operate_btn_command bx bx-terminal icon-action" title="Command"></div>
+                        <div class="operate_btn operate_btn_history bx bx-history icon-action" title="History"></div>
                     </div>
                     <div class="operate_top_right">
-                        <div class="operate_btn operate_btn_history bx bx-history icon-action" title="History"></div>
+                        <div class="operate_btn operate_btn_option bx bx-cog icon-action" title="Options"></div>
                     </div>
                 </div>
 
@@ -100,12 +114,7 @@
                         class="operate_send bx bx-paper-plane icon-action"
                     ></i>
                 </div>
-                <div class="operate_bottom flex-center-between">
-                    <div>
-                        <button class="thread_op thread_op_stop">stop generating</button>
-                        <button class="thread_op thread_op_regenerate">regenerate</button>
-                    </div>
-
+                <div class="operate_bottom flex-row-reverse">
                     <div class="operate_status"></div>
                 </div>
             </div>
@@ -113,7 +122,7 @@
             <div class="content_select content_select_prompt">
                 <div class="select_top flex-center-between">
                     <div class="flex-center">
-                        <div class="select_count">Prompt(<span class="select_num">0</span>)</div>
+                        <div class="select_count pointer">Prompt(<span class="select_num">0</span>)</div>
                         <div class="ml-2 select_add bx bx-plus icon-action"></div>
                     </div>
                     <div class="select_close bx bx-chevron-down icon-action"></div>
@@ -123,7 +132,7 @@
                     <input class="select_search_input" placeholder="Search" type="text" />
                 </div>
                 <div class="select_list">
-                    <div class="select_item">
+                    <div class="select_item" tabindex="0">
                         <div class="item_up">
                             <div class="item_title one-line"></div>
                             <div class="item_op no-shrink">
@@ -158,7 +167,7 @@
                     <input class="select_search_input" placeholder="Search" type="text" />
                 </div>
                 <div class="select_list">
-                    <div class="select_item">
+                    <div class="select_item" tabindex="0">
                         <div class="flex-center-between item_up">
                             <div class="item_title one-line"></div>
                             <div class="item_stamp no-shrink"></div>
@@ -176,13 +185,13 @@
             <div class="content_command">
                 <div class="command_title">Commands</div>
                 <div class="command_list">
-                    <div class="command_item" command="copy">copy thread</div>
-                    <div class="command_item" command="history">save to history</div>
-                    <div class="command_item" command="favor">favor in history</div>
-                    <div class="command_item" command="unfavor">unfavor in history</div>
-                    <div class="command_item" command="save">save to active note</div>
-                    <div class="command_item" command="append">append to active note</div>
-                    <div class="command_item" command="child">save to new child</div>
+                    <div class="command_item" command="copy">Copy thread</div>
+                    <div class="command_item" command="history">Save to history</div>
+                    <div class="command_item" command="favor">Favor in history</div>
+                    <div class="command_item" command="unfavor">Unfavor in history</div>
+                    <div class="command_item" command="set">Set to active note</div>
+                    <div class="command_item" command="append">Append to active note</div>
+                    <div class="command_item" command="child">Save to new child</div>
                 </div>
             </div>
         </div>

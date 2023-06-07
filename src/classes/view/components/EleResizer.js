@@ -1,6 +1,6 @@
 import LittleEvent from '@/classes/LittleEvent';
 import { animationFrame } from '@/utils';
-import { EVENT_VIEW, OPTION_KEY } from '@/constants';
+import { OPTION_KEY } from '@/constants';
 
 export default class EleResizer extends LittleEvent {
     constructor(view) {

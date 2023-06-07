@@ -1,33 +1,64 @@
 import { OPTION_KEY, EVENT_VIEW } from '@/constants';
+import { random } from '@/utils';
 
 export default class EleFace {
     constructor(view) {
-        this.options = view.options;
         this.view = view;
-
-        this.$face = view.$chatView.$qs('.header_face');
+        const $face = view.$chatView.$qs('.header_face');
 
         view.on(EVENT_VIEW.viewShow, () => {
-            this.refreshFace();
+            this.refreshFace($face, view.options);
         });
+
+        this.handleCheckUpdates($face, view.options);
     }
 
-    refreshFace() {
-        const faceArray = this.options[OPTION_KEY.faces];
-        const colors = this.options[OPTION_KEY.colors];
+    async handleCheckUpdates($face, options) {
+        if (!options.checkUpdates) return;
+        try {
+            const URL = 'https://api.github.com/repos/soulsands/trilium-chat/releases/latest';
+            const resp = await fetch(URL);
+            const info = await resp.json();
 
-        const faceIndex = Math.floor(Math.random() * faceArray.length);
-        const randomFace = faceArray[faceIndex];
+            const latestVersion = info?.tag_name;
+            const current = window.__triliumChatVersion || '1.1.1'; // dev test
 
-        const colorIndex = Math.floor(Math.random() * colors.length);
-        const color = colors[colorIndex];
+            if (latestVersion > current) {
+                $face.classList.add('dot');
+                $face.setAttribute('title', 'New version found, click to download');
 
-        this.$face.classList.forEach((name) => {
+                $face.addEventListener(
+                    'click',
+                    async (e) => {
+                        e.preventDefault();
+                        try {
+                            const downloadUrl = info.assets[0].browser_download_url;
+                            window.open(downloadUrl);
+                        } catch (error) {
+                            console.error(error);
+                        }
+                    },
+                    true
+                );
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    refreshFace($face, options) {
+        const faceArray = options[OPTION_KEY.faces];
+        const colors = options[OPTION_KEY.colors];
+
+        const randomFace = random(faceArray);
+        const randomColor = random(colors);
+
+        $face.classList.forEach((name) => {
             if (/bx.+/.test(name)) {
-                this.$face.classList.remove(name);
+                $face.classList.remove(name);
             }
         });
-        this.$face.style.color = color;
-        this.$face.classList.add(randomFace);
+        $face.style.color = randomColor;
+        $face.classList.add(randomFace);
     }
 }

@@ -1,34 +1,96 @@
 .chat-wrapper {
     .thread {
-        display: flex;
+        position: relative;
+        height: calc(100% - 247px);
         flex: 1;
-        flex-direction: column;
-        padding: 10px;
-        padding-bottom: 50px;
         border-bottom: 1px solid var(--main-border-color);
         background: var(--left-pane-background-color);
-        overflow-y: auto;
-        scroll-behavior: smooth;
+        transition: height 0.3s;
 
-        .message {
+        .thread-messages {
             display: flex;
-            max-width: 80%;
+            height: 100%;
             flex-direction: column;
-            padding: 8px 10px;
-            margin-bottom: 10px;
+            padding: 10px;
+            padding-bottom: 50px;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+
+            .message {
+                position: relative;
+                display: flex;
+                max-width: 80%;
+                flex-direction: column;
+                padding: 8px 10px;
+                margin-bottom: 10px;
+
+                .message-text {
+                    white-space: pre-wrap;
+                    word-wrap: break-word;
+                }
+
+                .dot {
+                    position: absolute;
+                    top: 50%;
+                    right: -10px;
+                    display: none;
+                    width: 20px;
+                    height: 20px;
+                    padding: 0;
+                    background-color: var(--main-background-color);
+                    box-shadow: 0 0 4px rgb(0 0 0 / 20%);
+                    font-size: 1em;
+                    line-height: 18px;
+                    text-align: center;
+                    transform: translateY(-50%);
+                }
+
+                &:hover {
+                    .dot {
+                        display: block;
+                    }
+                }
+            }
+
+            .received {
+                align-self: flex-start;
+                background-color: var(--main-background-color);
+                border-radius: 2px 12px 12px;
+            }
+
+            .sent {
+                align-self: flex-end;
+                background-color: var(--trilium-green);
+                border-radius: 12px 2px 12px 12px;
+                color: #fff;
+
+                .dot {
+                    right: initial;
+                    left: -10px;
+                }
+            }
         }
 
-        .received {
-            align-self: flex-start;
-            background-color: var(--main-background-color);
-            border-radius: 2px 12px 12px;
-        }
+        .thread_op {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            display: none;
+            padding: 4px 8px;
+            border: 1px solid var(--button-border-color);
+            background: var(--main-background-color);
+            border-radius: 8px;
+            color: var(--main-text-color);
+            transform: translateX(-50%);
+            transition: all 0.3s;
 
-        .sent {
-            align-self: flex-end;
-            background-color: var(--trilium-green);
-            border-radius: 12px 2px 12px 12px;
-            color: #fff;
+            &:hover {
+                border-color: var(--trilium-green);
+            }
+
+            &.show {
+                display: block;
+            }
         }
     }
 }

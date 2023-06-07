@@ -1,13 +1,12 @@
 import LittleEvent from '@/classes/LittleEvent';
-import { EVENT_VIEW } from '@/constants';
-import { closest } from '@/utils';
+import { closest, getFirstUserContentOrThrow, showTooltip } from '@/utils';
 import Popover from '../wrappers/Popover';
 
 export default class EleCommand extends LittleEvent {
     constructor(view) {
         super();
         this.chatView = view;
-        this.$content = view.$chatView.$qs('.content_command');
+
         this.$showBtn = view.$chatView.$qs('.operate_btn_command');
         this.popover = new Popover({
             placement: 'top',
@@ -17,8 +16,10 @@ export default class EleCommand extends LittleEvent {
             offset: 6,
         });
 
+        this.$content = this.popover.$content;
+
         this.bindShowClick();
-        this.bindClickCommand();
+        this.bindCommand();
         this.checkAutoSave();
     }
 
@@ -34,7 +35,7 @@ export default class EleCommand extends LittleEvent {
         });
     }
 
-    bindClickCommand() {
+    bindCommand() {
         this.$content.addEventListener('click', (e) => {
             const $command = closest('[command]', e.target);
             if (!$command) return;
@@ -45,40 +46,14 @@ export default class EleCommand extends LittleEvent {
     }
 
     async excuteCommand(command) {
+        const { chatEngine, chatData } = this.chatView;
         try {
-            await this.chatView.chatData.handleCommand(command, this.chatView.chatEngine);
-            this.handleCommandSuccess(command);
+            getFirstUserContentOrThrow(chatEngine);
+
+            await chatData.handleCommand(command, chatEngine);
+            showTooltip('success');
         } catch (error) {
-            console.error(error);
-            this.handleCommandFail(JSON.parse(error.message));
+            showTooltip(`${command}:${error.message}`, true);
         }
-    }
-
-    get$commandByType(command) {
-        return this.$content.$qs(`[command=${command}]`);
-    }
-
-    showTooltip(text, $command) {
-        const tooltip = new Popover({
-            placement: 'right',
-            text,
-            $edgeEle: this.chatView.$chatView,
-            $triggerEle: $command,
-            offset: 0,
-            hideDelay: 1000,
-        });
-        tooltip.show();
-    }
-
-    handleCommandSuccess(command) {
-        const $command = this.get$commandByType(command);
-
-        this.showTooltip('success', $command);
-    }
-
-    handleCommandFail({ type, reason }) {
-        const $command = this.get$commandByType(type);
-
-        this.showTooltip(reason, $command);
     }
 }
