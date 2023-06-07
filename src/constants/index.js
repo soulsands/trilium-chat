@@ -117,7 +117,7 @@ export const DEFAULT_OPTIONS = {
     // colors: ['#e47b19', '#50a52c', '#e23f3b'],
     colors: ['var(--muted-text-color)'],
     autoSave: true,
-    systemPrompt: 'You are a helpful assistant that integrates AI to Trilium note-taking.',
+    systemPrompt: 'You are a helpful assistant for Trilium note-taking.',
     checkUpdates: true,
 };
 export const DEFAULT_PROMPTS = [
@@ -134,3 +134,5 @@ export const DEFAULT_PROMPTS = [
         order: 1,
     },
 ];
+
+export const NOT_SUPPORTED = 'NOT SUPPORTED';

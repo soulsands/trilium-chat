@@ -1,4 +1,12 @@
-import { DEFAULT_OPTIONS, DATA_KEYS, COMMAND_TYPE, DEFAULT_PROMPTS, EVENT_DATA, STATUS_DATA } from '@/constants';
+import {
+    DEFAULT_OPTIONS,
+    DATA_KEYS,
+    COMMAND_TYPE,
+    DEFAULT_PROMPTS,
+    EVENT_DATA,
+    STATUS_DATA,
+    NOT_SUPPORTED,
+} from '@/constants';
 import { throwOpError } from '@/utils';
 
 import Data from './Data';
@@ -119,15 +127,16 @@ export default class DataTrilium extends Data {
             this.emit(EVENT_DATA.setStatus, {
                 status: STATUS_DATA.faild,
                 key: 'acitveNote',
-                value: `type ${acviteNote.type} not supported`,
+                value: `type ${acviteNote.type} ${NOT_SUPPORTED}`,
             });
-            throw new Error(`not supported`);
+            throw new Error(NOT_SUPPORTED);
         }
         this.emit(EVENT_DATA.setStatus, {
             status: STATUS_DATA.success,
         });
         return content;
     }
+
     // <<prompts
 
     // >>history

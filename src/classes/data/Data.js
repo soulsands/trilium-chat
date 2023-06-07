@@ -92,6 +92,14 @@ export default class Data extends LittleEvent {
         throwImplementationError();
     }
 
+    async getClip() {
+        try {
+            return await navigator.clipboard.readText();
+        } catch (error) {
+            return NOT_SUPPORTED;
+        }
+    }
+
     // <<prompt
 
     // >> command

@@ -101,6 +101,7 @@ export default class EleInput extends LittleEvent {
         let finalMsg = parsedPrompt;
         const regMsg = /{{message}}/g;
         const regNote = /{{activeNote}}/g;
+        const regClip = /{{clipboard}}/g;
         if (regMsg.test(finalMsg)) {
             finalMsg = finalMsg.replace(regMsg, userInput);
         }
@@ -110,8 +111,12 @@ export default class EleInput extends LittleEvent {
                 finalMsg = finalMsg.replace(regNote, await this.chatView.chatData.getAcitveNoteContent());
             } catch (error) {
                 console.error(error);
-                return null;
             }
+        }
+
+        if (regClip.test(finalMsg)) {
+            const clipText = await this.chatView.chatData.getClip();
+            finalMsg = finalMsg.replace(regClip, clipText);
         }
 
         /* console.error(parsedPrompt);
