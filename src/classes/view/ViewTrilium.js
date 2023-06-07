@@ -1,7 +1,7 @@
 import './styles/trilium.less';
+import { htmlStrToElement } from '@/utils';
 import View from './View';
 import ViewTriliumToggle from './ViewTriliumToggle';
-
 /* skeleton-flag */
 const skeleton = ` `;
 /* skeleton-flag */
@@ -9,10 +9,7 @@ const skeleton = ` `;
 export default class ViewTrilium extends View {
     initSkeleton(wrapperSelector = 'body') {
         const wrapper = document.$qs(wrapperSelector);
-        const template = document.createElement('template');
-        template.innerHTML = skeleton;
-
-        this.$chatView = template.content.lastChild;
+        this.$chatView = htmlStrToElement(skeleton);
 
         wrapper.appendChild(this.$chatView);
     }

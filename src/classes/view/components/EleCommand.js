@@ -1,6 +1,6 @@
 import LittleEvent from '@/classes/LittleEvent';
-import { closest } from '@/utils';
-import Popover, { showTooltip } from '../wrappers/Popover';
+import { closest, getFirstUserContentOrThrow, showTooltip } from '@/utils';
+import Popover from '../wrappers/Popover';
 
 export default class EleCommand extends LittleEvent {
     constructor(view) {
@@ -41,18 +41,19 @@ export default class EleCommand extends LittleEvent {
             if (!$command) return;
             const command = $command.getAttribute('command');
 
-            this.excuteCommand(command, $command);
+            this.excuteCommand(command);
         });
     }
 
-    async excuteCommand(command, $command) {
-        const { $chatView, chatEngine, chatData } = this.chatView;
+    async excuteCommand(command) {
+        const { chatEngine, chatData } = this.chatView;
         try {
+            getFirstUserContentOrThrow(chatEngine);
+
             await chatData.handleCommand(command, chatEngine);
-            showTooltip('success', $command, $chatView);
+            showTooltip('success');
         } catch (error) {
-            console.error(error);
-            showTooltip(JSON.parse(error.message).reason, $command, $chatView);
+            showTooltip(`${command}:${error.message}`, true);
         }
     }
 }

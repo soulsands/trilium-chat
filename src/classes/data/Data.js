@@ -1,5 +1,15 @@
-import { DEFAULT_OPTIONS, EVENT_DATA, STATUS_DATA, ROLE, COMMAND_TYPE } from '@/constants';
-import { throwImplementationError, checkNewKey, mergeOption, copy, throwOpError, isMsgExpected } from '@/utils';
+import { DEFAULT_OPTIONS, EVENT_DATA, STATUS_DATA, ROLE, NOT_SUPPORTED, NO_THREAD } from '@/constants';
+import {
+    throwImplementationError,
+    checkNewKey,
+    mergeOption,
+    copy,
+    throwError,
+    isMsgExpected,
+    getFirstUserContentOrThrow,
+    wrapP,
+    threadToText,
+} from '@/utils';
 import LittleEvent from '../LittleEvent';
 
 export default class Data extends LittleEvent {
@@ -114,50 +124,14 @@ export default class Data extends LittleEvent {
             child: this.handleSaveChild.bind(this),
             history: this.handleSaveHistory.bind(this),
         };
+
         if (map[command]) {
             await map[command](engine);
         }
     }
 
-    async handleMsgCommand(command, msg) {
-        console.log(command, msg);
-        const map = {
-            copy: this.msgCopy.bind(this),
-            insert: this.msgInsert.bind(this),
-            append: this.msgAppend.bind(this),
-            set: this.msgSet.bind(this),
-            child: this.msgChild.bind(this),
-        };
-        if (map[command]) {
-            await map[command](msg);
-        }
-    }
-
-    msgCopy(msg) {}
-
-    msgInsert(msg) {}
-
-    msgAppend(msg) {}
-
-    msgSet(msg) {}
-
-    msgChild(msg) {}
-
-    threadToText(engine, type, html) {
-        let text = engine.thread.map((v) => `role: ${v.role}\n${v.content}`).join('\n');
-
-        if (html) {
-            text = engine.thread.map((v) => `<p>role: ${v.role}</p><p>${v.content}</p>`).join('');
-        }
-
-        if (!text) {
-            throwOpError(type, 'no content');
-        }
-        return text;
-    }
-
     handleCopy(engine) {
-        const text = this.threadToText(engine, COMMAND_TYPE.copy);
+        const text = threadToText(engine.thread);
         copy(text);
     }
 
@@ -172,22 +146,71 @@ export default class Data extends LittleEvent {
     async toggleFavor(engine, favor) {
         const record = await this.getRecord(engine.threadId);
         if (!record) {
-            throwOpError(favor ? COMMAND_TYPE.favor : COMMAND_TYPE.unfavor, 'no thread');
+            throwError(NO_THREAD);
         }
         record.favor = favor;
         await this.saveRecord(record);
     }
 
-    handleSetNote() {
+    async handleSetNote(engine) {
+        await this.setNoteWith(engine.thread);
+    }
+
+    setNoteWith() {
         throwImplementationError();
     }
 
-    handleAppend() {
+    async handleAppend(engine) {
+        await this.appendToNote(engine.thread);
+    }
+
+    appendToNote() {
         throwImplementationError();
     }
 
-    handleSaveChild() {
+    async handleSaveChild(engine) {
+        const text = threadToText(engine.thread, true);
+        const content = getFirstUserContentOrThrow(engine);
+        await this.saveToChild(content, text);
+    }
+
+    saveToChild() {
         throwImplementationError();
+    }
+
+    async handleMsgCommand(command, msg) {
+        console.log(command, msg);
+        const map = {
+            copy: this.msgCopy.bind(this),
+            insert: this.insertContent.bind(this),
+            append: this.msgAppend.bind(this),
+            set: this.msgSet.bind(this),
+            child: this.msgChild.bind(this),
+        };
+        if (map[command]) {
+            await map[command](msg);
+        }
+    }
+
+    msgCopy(msg) {
+        console.log(msg);
+        copy(msg);
+    }
+
+    insertContent() {
+        throwImplementationError();
+    }
+
+    async msgAppend(msg) {
+        await this.appendToNote(msg);
+    }
+
+    async msgSet(msg) {
+        await this.setNoteWith(msg, true);
+    }
+
+    async msgChild(msg) {
+        await this.saveToChild(msg.slice(0, 20), wrapP(msg));
     }
 
     async handleSaveHistory(engine) {
@@ -217,14 +240,11 @@ export default class Data extends LittleEvent {
     }
 
     async saveRecordFromEngine(engine) {
-        const firstUserMsg = engine.thread.find((msg) => msg.role === ROLE.user);
-        if (!firstUserMsg) {
-            throwOpError(COMMAND_TYPE.history, 'no content');
-        }
+        const originTitle = getFirstUserContentOrThrow(engine);
 
         const newRecord = {
             id: engine.threadId,
-            originTitle: firstUserMsg.content,
+            originTitle,
             list: engine.thread.map((msg) => {
                 const record = { ...msg };
                 delete record.status;

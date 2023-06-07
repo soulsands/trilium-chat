@@ -1,6 +1,6 @@
-import { throttle, removeEle, closest } from '@/utils';
+import { throttle, removeEle, closest, htmlStrToElement, showTooltip } from '@/utils';
 import { EVENT_ENGINE, EVENT_VIEW, ROLE } from '@/constants';
-import Popover, { showTooltip } from '../wrappers/Popover';
+import Popover from '../wrappers/Popover';
 
 export default class EleThread {
     constructor(view) {
@@ -97,13 +97,12 @@ export default class EleThread {
             const $command = e.target;
             const command = $command.getAttribute('command');
 
-            const { $chatView, chatEngine, chatData } = this.chatView;
+            const { chatData } = this.chatView;
             try {
-                await chatData.handleMsgCommand(command, chatEngine);
-                showTooltip('success', $command, $chatView);
+                await chatData.handleMsgCommand(command, this.clickedMsg);
+                showTooltip('success');
             } catch (error) {
-                console.error(error);
-                showTooltip(JSON.parse(error.message).reason, $command, $chatView);
+                showTooltip(`${command}:${error.message}`, true);
             }
         });
     }
@@ -137,9 +136,7 @@ export default class EleThread {
             message.content
         }</div><div class='bx bx-dots-vertical-rounded dot icon-action'></div></div>`;
 
-        const template = document.createElement('template');
-        template.innerHTML = skeleton;
-        const msgDom = template.content.lastChild;
+        const msgDom = htmlStrToElement(skeleton);
 
         this.$threadMsgs.appendChild(msgDom);
 

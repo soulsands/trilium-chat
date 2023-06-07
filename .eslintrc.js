@@ -71,6 +71,7 @@ module.exports = {
     ],
     globals: {
         api: true,
+        glob: true,
         $: true,
     },
     parserOptions: {

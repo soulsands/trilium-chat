@@ -139,9 +139,9 @@ export default class Popover {
     }
 }
 
-export const showTooltip = (text, $triggerEle, $edgeEle) => {
+export const showPoptip = (text, $triggerEle, $edgeEle, placement = 'right') => {
     const tooltip = new Popover({
-        placement: 'right',
+        placement,
         text,
         $edgeEle,
         $triggerEle,

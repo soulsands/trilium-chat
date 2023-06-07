@@ -58,6 +58,7 @@ export default class View extends LittleEvent {
         this.eleHistory = new EleHistory(this);
         this.eleNewChat = new EleNewChat(this);
         this.eleCommand = new EleCommand(this);
+        // eslint-disable-next-line no-new
         new EleOption(this);
     }
 

@@ -1,13 +1,5 @@
-import { nap, sleep, throwOpError } from '@/utils';
-import {
-    DEFAULT_OPTIONS,
-    DEFAULT_PROMPTS,
-    DATA_KEYS,
-    COMMAND_TYPE,
-    TRILIUM_ONLY,
-    EVENT_DATA,
-    STATUS_DATA,
-} from '@/constants';
+import { nap, sleep, throwError } from '@/utils';
+import { DEFAULT_OPTIONS, DEFAULT_PROMPTS, DATA_KEYS, TRILIUM_ONLY, EVENT_DATA, STATUS_DATA } from '@/constants';
 
 import Data from './Data';
 
@@ -24,7 +16,6 @@ async function setLocalItem(key, value) {
 
     return { ...value };
 }
-
 export default class DataDev extends Data {
     async getOptions() {
         return getLocalItem(DATA_KEYS.CHAT_OPTIONS);
@@ -99,22 +90,20 @@ export default class DataDev extends Data {
         return setLocalItem(DATA_KEYS.HISTORY_HOME_LABEL, records);
     }
 
-    // << history
-
-    emitTriliumOnly(type) {
-        throwOpError(type, TRILIUM_ONLY);
+    setNoteWith() {
+        throwError(TRILIUM_ONLY);
     }
 
-    handleSetNote() {
-        this.emitTriliumOnly(COMMAND_TYPE.set);
+    appendToNote() {
+        throwError(TRILIUM_ONLY);
     }
 
-    handleAppend() {
-        this.emitTriliumOnly(COMMAND_TYPE.append);
+    saveToChild() {
+        throwError(TRILIUM_ONLY);
     }
 
-    handleSaveChild() {
-        this.emitTriliumOnly(COMMAND_TYPE.child);
+    insertContent() {
+        throwError(TRILIUM_ONLY);
     }
 
     // << options

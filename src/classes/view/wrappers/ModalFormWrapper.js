@@ -2,7 +2,7 @@ import LittleEvent from '@/classes/LittleEvent';
 import { EVENT_VIEW } from '@/constants';
 
 import Modal from './Modal';
-import Popover from './Popover';
+import Popover, { showPoptip } from './Popover';
 
 export default class ModalFormWrapper extends LittleEvent {
     constructor({ $content, $chatView, title, saveText = 'Save', cancelText = 'Cancel' }) {
@@ -38,39 +38,30 @@ export default class ModalFormWrapper extends LittleEvent {
     }
 
     bindEvents() {
-        this.$wrapper.$qs('.wapper_close').addEventListener('click', (e) => {
+        this.$wrapper.$qs('.wapper_close').addEventListener('click', () => {
             this.emit(EVENT_VIEW.formCancel);
         });
-        this.$save.addEventListener('click', (e) => {
-            console.dir(this.$content);
+        this.$save.addEventListener('click', () => {
             const $inputs = Array.from(this.$content.querySelectorAll('[name]'));
+            try {
+                const formData = $inputs.reduce((res, el) => {
+                    res[el.name] = el.value;
 
-            const formData = $inputs.reduce((res, el) => {
-                res[el.name] = el.value;
+                    if (!el.value) {
+                        showPoptip('no empty', this.$save, this.$chatView, 'top');
+                        throw new Error();
+                    }
+                    return res;
+                }, {});
 
-                if (!el.value) {
-                    this.showTooltip(`no empty`);
-                }
-                return res;
-            }, {});
-
-            this.emit(EVENT_VIEW.formSave, formData, this.flagObj);
+                this.emit(EVENT_VIEW.formSave, formData, this.flagObj);
+            } catch (error) {
+                console.error(error);
+            }
         });
-        this.$wrapper.$qs('.wrapper_btn_cancel').addEventListener('click', (e) => {
+        this.$wrapper.$qs('.wrapper_btn_cancel').addEventListener('click', () => {
             this.emit(EVENT_VIEW.formCancel);
         });
-    }
-
-    showTooltip(text) {
-        const tooltip = new Popover({
-            placement: 'top',
-            text,
-            $edgeEle: this.$chatView,
-            $triggerEle: this.$save,
-            offset: 8,
-            hideDelay: 1000,
-        });
-        tooltip.show();
     }
 
     show(e, { title, formData = {}, flagObj } = {}) {

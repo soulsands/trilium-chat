@@ -1,4 +1,4 @@
-import { SHOW_CLASS_NAME, FADE_CLASS_NAME, STATUS_MESSAGE } from '@/constants';
+import { SHOW_CLASS_NAME, FADE_CLASS_NAME, STATUS_MESSAGE, ROLE, NO_THREAD } from '@/constants';
 
 const lock = {};
 // eslint-disable-next-line import/prefer-default-export
@@ -25,19 +25,20 @@ export function throttle(func, delay) {
     };
 }
 
+export function throwError(msg) {
+    throw new Error(msg);
+}
+
 export function throwFalsyError(value) {
     if (!value) {
-        throw new Error(`unexpected falsy value:${value}`);
+        throwError(`unexpected falsy value:${value}`);
     }
 }
 
 export function throwImplementationError(value) {
     if (!value) {
-        throw new Error(`should implement in child classes`);
+        throwError(`should implement in child classes`);
     }
-}
-export function throwOpError(type, reason) {
-    throw new Error(JSON.stringify({ type, reason }));
 }
 
 export function toggleClassName(ele, toggle, className) {
@@ -248,3 +249,43 @@ window.addEventListener('keydown', (e) => {
     if (!enterElSet.has(e.target)) return;
     e.target.dispatchEvent(new CustomEvent('enter'));
 });
+
+export const htmlStrToElement = (str) => {
+    const template = document.createElement('template');
+
+    template.innerHTML = str;
+    return template.content.lastChild;
+};
+
+export const getFirstUserContentOrThrow = (engine) => {
+    const firstUserMsg = engine.thread.find((msg) => msg.role === ROLE.user);
+    if (!firstUserMsg) {
+        throwError(NO_THREAD);
+    }
+    return firstUserMsg.content;
+};
+
+export const showTooltip = (text, isError) => {
+    if (isError) {
+        api.showError(text, 3000);
+    } else {
+        api.showMessage(text);
+    }
+};
+
+export function wrapP(str) {
+    return `<p>${str}</p>`;
+}
+
+export function threadToText(thread, useHtml) {
+    let text = thread.map((v) => `role: ${v.role}\n${v.content}`).join('\n');
+
+    if (useHtml) {
+        text = thread.map((v) => `<p>role: ${v.role}</p><p>${v.content}</p>`).join('');
+    }
+
+    if (!text) {
+        throwError('no content');
+    }
+    return text;
+}

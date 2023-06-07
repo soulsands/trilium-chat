@@ -136,3 +136,5 @@ export const DEFAULT_PROMPTS = [
 ];
 
 export const NOT_SUPPORTED = 'NOT SUPPORTED';
+
+export const NO_THREAD = 'No thread';

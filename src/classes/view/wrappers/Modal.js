@@ -1,4 +1,4 @@
-import { toggleEleShow, toggleEleFade, removeEle, nap } from '@/utils';
+import { toggleEleShow, toggleEleFade, removeEle, nap, htmlStrToElement } from '@/utils';
 
 import { zindexInfo } from './share';
 
@@ -57,10 +57,7 @@ export default class Modal {
     }
 
     initModal() {
-        const el = document.createElement('template');
-        el.innerHTML = template;
-
-        this.$modal = el.content.lastChild;
+        this.$modal = htmlStrToElement(template);
         this.$mask = this.$modal.$qs('.modal_mask');
         this.$contentWrapper = this.$modal.$qs('.content_wrapper');
 
@@ -70,12 +67,12 @@ export default class Modal {
     }
 
     bindClick() {
-        const handleClick = (e) => {
+        const handleClick = () => {
             this.hide();
         };
 
         this.$mask.addEventListener('click', handleClick);
-        this.$contentWrapper.addEventListener('click', (e) => {});
+        this.$contentWrapper.addEventListener('click', () => {});
     }
 
     async hide() {
