@@ -124,13 +124,13 @@ export const DEFAULT_PROMPTS = [
     {
         id: 'official-0',
         name: 'translate',
-        content: 'Translate the following content to {{language:English|Chinese|Czech}} language: \n {{message}}',
+        content: 'Translate the following content to {{language:English|Chinese|Czech}} language: \n{{message}}',
         order: 0,
     },
     {
         id: 'official-1',
         name: 'translateNote',
-        content: 'Translate the following content to {{language:English|Chinese|Czech}} language: \n {{activeNote}}',
+        content: 'Translate the following content to {{language:English|Chinese|Czech}} language: \n{{activeNote}}',
         order: 1,
     },
 ];
