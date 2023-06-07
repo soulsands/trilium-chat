@@ -1,5 +1,6 @@
 const path = require('path');
 const Dotenv = require('dotenv-webpack');
+const webpack = require('webpack');
 
 const { ENV } = process.env;
 console.log(ENV);
@@ -13,11 +14,13 @@ const OUTPATH_MAP = {
     prod: 'release',
 };
 
-let outputName = 'main.js';
+let outputName = 'trilium-chat.js';
 
 if (ENV === 'preview') {
-    outputName = 'main.[fullhash].js';
+    outputName = 'trilium-chat.[fullhash].js';
 }
+
+const isBrowser = ['dev', 'preview'].includes(ENV);
 
 const outPath = OUTPATH_MAP[ENV];
 
@@ -29,6 +32,9 @@ module.exports = {
         clean: true,
     },
     plugins: [
+        new webpack.DefinePlugin({
+            'process.env.IS_BROWSER': JSON.stringify(isBrowser),
+        }),
         new Dotenv({
             path: envPath, // Path to .env file (this is the default)
         }),

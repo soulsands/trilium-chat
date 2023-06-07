@@ -27,9 +27,9 @@ class AddCode {
                     stage: Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE,
                 },
                 (/* assets */) => {
-                    const file = compilation.getAsset('main.js');
+                    const file = compilation.getAsset('trilium-chat.js');
                     const finalCode = `${versionCode}\n ${file.source.source()}`;
-                    compilation.updateAsset('main.js', new sources.RawSource(finalCode));
+                    compilation.updateAsset('trilium-chat.js', new sources.RawSource(finalCode));
                 }
             );
 
