@@ -55,7 +55,7 @@ if (genHtml) {
         })
     );
 } else {
-    options.plugins.push(new AddCode(), new PluginGetFileSize('main.js'));
+    options.plugins.push(new AddCode(), new PluginGetFileSize('trilium-chat.js'));
 }
 
 module.exports = options;

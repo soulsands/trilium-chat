@@ -3,8 +3,9 @@ import ViewDev from '@/classes/view/ViewDev';
 import ViewTrilium from '@/classes/view/ViewTrilium';
 import DataDev from '@/classes/data/DataDev';
 import DataTrilium from '@/classes/data/DataTrilium';
-import { EVENT_ENGINE, EVENT_DATA, isBrowser } from '@/constants';
+import { EVENT_ENGINE, EVENT_DATA } from '@/constants';
 import { nap } from '@/utils';
+
 // el.*\.on
 // Data.on
 // Engine.on
@@ -26,7 +27,7 @@ class TriliumChat {
     }
 
     setChatData() {
-        this.chatData = isBrowser ? new DataDev() : new DataTrilium();
+        this.chatData = process.env.IS_BROWSER ? new DataDev() : new DataTrilium();
 
         this.chatData.on(EVENT_DATA.setStatus, (data) => {
             this.chatView.eleStatus.handleDataStatus(data);
@@ -51,7 +52,7 @@ class TriliumChat {
     }
 
     async setView(viewParams) {
-        const ViewClass = isBrowser ? ViewDev : ViewTrilium;
+        const ViewClass = process.env.IS_BROWSER ? ViewDev : ViewTrilium;
 
         this.chatView = new ViewClass(viewParams);
     }

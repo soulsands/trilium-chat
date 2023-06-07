@@ -1,5 +1,4 @@
 export const isDev = process.env.NODE_ENV === 'development';
-export const isBrowser = !!process.env.IS_BROWSER;
 
 if (isDev && !process.env.APIKEY) {
     throw new Error('APIKEY not found, please create .env.dev and set your APIKEY');
