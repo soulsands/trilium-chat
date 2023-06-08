@@ -1,0 +1,142 @@
+import { SHOW_CLASS_NAME, FADE_CLASS_NAME } from '@/constants';
+
+export function toggleClassName(ele, toggle, className) {
+    if (typeof toggle === 'boolean') {
+        if (toggle) {
+            ele.classList.add(className);
+        } else {
+            ele.classList.remove(className);
+        }
+    } else if (ele.classList.contains(className)) {
+        ele.classList.remove(className);
+    } else {
+        ele.classList.add(className);
+    }
+}
+
+export function toggleEleShow(ele, show) {
+    toggleClassName(ele, show, SHOW_CLASS_NAME);
+}
+export function toggleEleFade(ele, fadein) {
+    toggleClassName(ele, fadein, FADE_CLASS_NAME);
+}
+
+export function removeEle(ele) {
+    if (!ele.parentElement) return;
+    return ele.parentElement.removeChild(ele);
+}
+
+export function closest(selector, element) {
+    if (!element?.matches) return null;
+
+    if (element.matches(selector)) {
+        return element;
+    }
+
+    const parent = element.parentNode;
+
+    return closest(selector, parent);
+}
+
+const optionReg = /{{([^}]+):([^}]+)}}/g;
+
+export const promptToHtml = (content) => {
+    let html = content;
+
+    let result;
+    // eslint-disable-next-line no-cond-assign
+    while ((result = optionReg.exec(html)) !== null) {
+        const matched = result[0];
+        const label = result[1].trim();
+        const options = result[2].split('|').map((v) => v.trim());
+
+        const optionsHtml = options.map((v) => `<option value="${v}">${v}</option>`).join('');
+        const totalHtml = `<select name="${label}">${optionsHtml}<select>`;
+        html = html.replace(matched, totalHtml);
+    }
+
+    optionReg.lastIndex = 0;
+    return html;
+};
+
+export const getParsedPromt = ($wrapper, promptContent) => {
+    /* console.log(promptContent);
+    console.log($wrapper); */
+
+    let parsed = promptContent;
+    const $selects = Array.from($wrapper.querySelectorAll('select'));
+    $selects.forEach((select) => {
+        const matched = optionReg.exec(parsed)[0];
+        parsed = parsed.replace(matched, select.value);
+    });
+
+    optionReg.lastIndex = 0;
+    return parsed;
+};
+
+export const htmlStrToElement = (str) => {
+    const template = document.createElement('template');
+
+    template.innerHTML = str;
+    return template.content.lastChild;
+};
+
+const enterElSet = new WeakSet();
+
+export const bindEnter = (el, func) => {
+    enterElSet.add(el);
+    el.addEventListener('enter', func);
+};
+
+window.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter') return;
+    if (!enterElSet.has(e.target)) return;
+    e.target.dispatchEvent(new CustomEvent('enter'));
+});
+
+const matchHtmlRegExp = /["'&<>]/;
+export function escapeHtml(string) {
+    const str = `${string}`;
+    const match = matchHtmlRegExp.exec(str);
+
+    if (!match) {
+        return str;
+    }
+
+    let escape;
+    let html = '';
+    let index = 0;
+    let lastIndex = 0;
+
+    for (index = match.index; index < str.length; index += 1) {
+        switch (str.charCodeAt(index)) {
+            case 34: // "
+                escape = '&quot;';
+                break;
+            case 38: // &
+                escape = '&amp;';
+                break;
+            case 39: // '
+                escape = '&#39;';
+                break;
+            case 60: // <
+                escape = '&lt;';
+                break;
+            case 62: // >
+                escape = '&gt;';
+                break;
+            default:
+                // eslint-disable-next-line no-continue
+                continue;
+        }
+
+        if (lastIndex !== index) {
+            html += str.substring(lastIndex, index);
+        }
+
+        lastIndex = index + 1;
+        html += escape;
+    }
+
+    return lastIndex !== index ? html + str.substring(lastIndex, index) : html;
+}

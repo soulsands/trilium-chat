@@ -1,96 +1,12 @@
-import { SHOW_CLASS_NAME, FADE_CLASS_NAME, STATUS_MESSAGE, ROLE, NO_THREAD } from '@/constants';
-
-const lock = {};
-// eslint-disable-next-line import/prefer-default-export
-export function animationFrame(callback, key = 'default') {
-    if (lock[key]) {
-        return false;
-    }
-    lock[key] = true;
-    window.requestAnimationFrame((time) => {
-        lock[key] = false;
-        callback(time);
-    });
-    return true;
-}
-
-export function throttle(func, delay) {
-    let lastTime = 0;
-    return function wrapped(...args) {
-        const now = new Date().getTime();
-        if (now - lastTime >= delay) {
-            func.apply(this, args);
-            lastTime = now;
-        }
-    };
-}
-
-export function throwError(msg) {
-    throw new Error(msg);
-}
-
-export function throwFalsyError(value) {
-    if (!value) {
-        throwError(`unexpected falsy value:${value}`);
-    }
-}
-
-export function throwImplementationError(value) {
-    if (!value) {
-        throwError(`should implement in child classes`);
-    }
-}
-
-export function toggleClassName(ele, toggle, className) {
-    if (typeof toggle === 'boolean') {
-        if (toggle) {
-            ele.classList.add(className);
-        } else {
-            ele.classList.remove(className);
-        }
-    } else if (ele.classList.contains(className)) {
-        ele.classList.remove(className);
-    } else {
-        ele.classList.add(className);
-    }
-}
-
-export function toggleEleShow(ele, show) {
-    toggleClassName(ele, show, SHOW_CLASS_NAME);
-}
-export function toggleEleFade(ele, fadein) {
-    toggleClassName(ele, fadein, FADE_CLASS_NAME);
-}
+export * from './dom';
+export * from './perf';
+export * from './error';
+export * from './trilium';
 
 export async function sleep(duration) {
     await new Promise((resolve) => {
         setTimeout(resolve, duration);
     });
-}
-
-export function checkNewKey(newObj, oldObj) {
-    let has = false;
-    Object.keys(newObj).forEach((key) => {
-        if (!(key in oldObj)) {
-            has = true;
-        }
-    });
-    return has;
-}
-
-export function mergeOption(from, to) {
-    const mixed = { ...to };
-    Object.keys(from).forEach((key) => {
-        if (key in to) {
-            mixed[key] = from[key];
-        }
-    });
-    return mixed;
-}
-
-export function removeEle(ele) {
-    if (!ele.parentElement) return;
-    return ele.parentElement.removeChild(ele);
 }
 
 export async function nap() {
@@ -125,18 +41,6 @@ export function timeAgo(date) {
         return 'just now';
     }
     return `${mathFloor(seconds)} second${mathFloor(seconds) === 1 ? '' : 's'} ago`;
-}
-
-export function closest(selector, element) {
-    if (!element?.matches) return null;
-
-    if (element.matches(selector)) {
-        return element;
-    }
-
-    const parent = element.parentNode;
-
-    return closest(selector, parent);
 }
 
 // trigger element might be coverd, but it can be avoid with proper placement
@@ -199,101 +103,8 @@ export const copy = (text) => {
     navigator.clipboard.writeText(text);
 };
 
-const optionReg = /{{([^}]+):([^}]+)}}/g;
-
-export const promptToHtml = (content) => {
-    let html = content;
-
-    let result;
-    // eslint-disable-next-line no-cond-assign
-    while ((result = optionReg.exec(html)) !== null) {
-        const matched = result[0];
-        const label = result[1].trim();
-        const options = result[2].split('|').map((v) => v.trim());
-
-        const optionsHtml = options.map((v) => `<option value="${v}">${v}</option>`).join('');
-        const totalHtml = `<select name="${label}">${optionsHtml}<select>`;
-        html = html.replace(matched, totalHtml);
-    }
-
-    optionReg.lastIndex = 0;
-    return html;
-};
-export const getParsedPromt = ($wrapper, promptContent) => {
-    /* console.log(promptContent);
-    console.log($wrapper); */
-
-    let parsed = promptContent;
-    const $selects = Array.from($wrapper.querySelectorAll('select'));
-    $selects.forEach((select) => {
-        const matched = optionReg.exec(parsed)[0];
-        parsed = parsed.replace(matched, select.value);
-    });
-
-    optionReg.lastIndex = 0;
-    return parsed;
-};
-
-export const isMsgExpected = (status) => [STATUS_MESSAGE.cancel, STATUS_MESSAGE.success].includes(status);
-
 export const random = (arr) => arr[Math.floor(Math.random() * arr.length)];
-
-const enterElSet = new WeakSet();
-
-export const bindEnter = (el, func) => {
-    enterElSet.add(el);
-    el.addEventListener('enter', func);
-};
-
-window.addEventListener('keydown', (e) => {
-    if (e.key !== 'Enter') return;
-    if (!enterElSet.has(e.target)) return;
-    e.target.dispatchEvent(new CustomEvent('enter'));
-});
-
-export const htmlStrToElement = (str) => {
-    const template = document.createElement('template');
-
-    template.innerHTML = str;
-    return template.content.lastChild;
-};
-
-export const getFirstUserContentOrThrow = (engine) => {
-    const firstUserMsg = engine.thread.find((msg) => msg.role === ROLE.user);
-    if (!firstUserMsg) {
-        throwError(NO_THREAD);
-    }
-    return firstUserMsg.content;
-};
-
-export const showTooltip = (text, isError) => {
-    if (process.env.IS_BROWSER) {
-        window.alert('trilium only');
-        return;
-    }
-
-    if (isError) {
-        api.showError(text, 3000);
-    } else {
-        api.showMessage(text);
-    }
-};
 
 export function wrapP(str) {
     return `<p>${str}</p>`;
 }
-
-export function threadToText(thread, useHtml) {
-    let text = thread.map((v) => `role: ${v.role}\n${v.content}`).join('\n');
-
-    if (useHtml) {
-        text = thread.map((v) => `<p>role: ${v.role}</p><p>${v.content}</p>`).join('');
-    }
-
-    if (!text) {
-        throwError('no content');
-    }
-    return text;
-}
-
-export const sliceTitle = (title) => title.slice(0, 20);
