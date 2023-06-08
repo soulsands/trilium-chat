@@ -9,6 +9,7 @@ import {
     getFirstUserContentOrThrow,
     wrapP,
     threadToText,
+    sliceTitle,
 } from '@/utils';
 import LittleEvent from '../LittleEvent';
 
@@ -210,7 +211,7 @@ export default class Data extends LittleEvent {
     }
 
     async msgChild(msg) {
-        await this.saveToChild(msg.slice(0, 20), wrapP(msg));
+        await this.saveToChild(sliceTitle(msg), wrapP(msg));
     }
 
     async handleSaveHistory(engine) {
@@ -240,7 +241,7 @@ export default class Data extends LittleEvent {
     }
 
     async saveRecordFromEngine(engine) {
-        const originTitle = getFirstUserContentOrThrow(engine);
+        const originTitle = sliceTitle(getFirstUserContentOrThrow(engine));
 
         const newRecord = {
             id: engine.threadId,
