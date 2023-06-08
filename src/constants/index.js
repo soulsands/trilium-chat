@@ -136,5 +136,6 @@ export const DEFAULT_PROMPTS = [
 ];
 
 export const NOT_SUPPORTED = 'NOT SUPPORTED';
+export const SUPPORT_TYPE = 'Only support text/code';
 
 export const NO_THREAD = 'No thread';

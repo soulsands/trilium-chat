@@ -1,6 +1,6 @@
 import LittleEvent from '@/classes/LittleEvent';
 import { STATUS_MESSAGE, EVENT_ENGINE, EVENT_VIEW } from '@/constants';
-import { isMsgExpected } from '@/utils';
+import { isMsgExpected, escapeHtml } from '@/utils';
 
 export default class EleInput extends LittleEvent {
     constructor(view) {
@@ -75,7 +75,7 @@ export default class EleInput extends LittleEvent {
         const sendMessage = async () => {
             const finalMsg = await this.getParsedMsg();
             if (finalMsg) {
-                if (this.chatView.chatEngine.isEngineAvailable()) {
+                if (this.chatView.chatEngine.isAvailable()) {
                     this.chatView.chatEngine.requestCompletion({ userInput: finalMsg });
                     this.clearInput();
                 }
@@ -101,10 +101,11 @@ export default class EleInput extends LittleEvent {
         let finalMsg = parsedPrompt;
         const regMsg = /{{message}}/g;
         const regNote = /{{activeNote}}/g;
-        const regClip = /{{clipboard}}/g;
+        // const regClip = /{{clipboard}}/g;
         if (regMsg.test(finalMsg)) {
             finalMsg = finalMsg.replace(regMsg, userInput);
         }
+        finalMsg = escapeHtml(finalMsg);
 
         if (regNote.test(finalMsg)) {
             try {
@@ -114,12 +115,12 @@ export default class EleInput extends LittleEvent {
             }
         }
 
-        if (regClip.test(finalMsg)) {
-            const clipText = await this.chatView.chatData.getClip();
-            finalMsg = finalMsg.replace(regClip, clipText);
-        }
+        // if (regClip.test(finalMsg)) {
+        //     const clipText = await this.chatView.chatData.getClip();
+        //     finalMsg = finalMsg.replace(regClip, clipText);
+        // }
 
-        /* console.error(parsedPrompt);
+        /*  console.error(parsedPrompt);
         console.error(regNote.test(parsedPrompt));
         console.error(finalMsg.trim()); */
         return finalMsg.trim();

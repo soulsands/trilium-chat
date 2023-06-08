@@ -23,6 +23,7 @@
                 flex-direction: column;
                 padding: 8px 10px;
                 margin-bottom: 10px;
+                background-color: var(--main-background-color);
 
                 .message-text {
                     white-space: pre-wrap;
@@ -33,7 +34,6 @@
                     position: absolute;
                     top: 50%;
                     right: -10px;
-                    display: none;
                     width: 20px;
                     height: 20px;
                     padding: 0;
@@ -41,28 +41,30 @@
                     box-shadow: 0 0 4px rgb(0 0 0 / 20%);
                     font-size: 1em;
                     line-height: 18px;
+                    opacity: 0;
+                    pointer-events: none;
                     text-align: center;
                     transform: translateY(-50%);
+                    transition: opacity 0.1s;
                 }
 
                 &:hover {
                     .dot {
-                        display: block;
+                        opacity: 1;
+                        pointer-events: auto;
                     }
                 }
             }
 
             .received {
                 align-self: flex-start;
-                background-color: var(--main-background-color);
                 border-radius: 2px 12px 12px;
             }
 
             .sent {
                 align-self: flex-end;
-                background-color: var(--trilium-green);
+                border: 1px solid var(--trilium-green);
                 border-radius: 12px 2px 12px 12px;
-                color: #fff;
 
                 .dot {
                     right: initial;

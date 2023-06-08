@@ -1,15 +1,24 @@
-import { DEFAULT_OPTIONS, DATA_KEYS, DEFAULT_PROMPTS, EVENT_DATA, STATUS_DATA, NOT_SUPPORTED } from '@/constants';
-import { throwError, threadToText } from '@/utils';
+import { DEFAULT_OPTIONS, DATA_KEYS, DEFAULT_PROMPTS, EVENT_DATA, STATUS_DATA, SUPPORT_TYPE } from '@/constants';
+import { throwError, threadToText, escapeHtml } from '@/utils';
 
 import Data from './Data';
+
+const supportedType = ['text', 'code'];
+function getSupportedActiveNoteOrThrow() {
+    const activeNote = api.getActiveContextNote();
+    if (!activeNote) throwError('no active note');
+    if (!supportedType.includes(activeNote.type)) {
+        throwError(SUPPORT_TYPE);
+    }
+    return activeNote;
+}
 
 async function getActiveEditor(content) {
     const isThread = Array.isArray(content);
 
-    await glob.appContext.initialized;
-    const activeNote = api.getActiveContextNote();
-    if (!activeNote) throwError('no active note');
+    const activeNote = getSupportedActiveNoteOrThrow();
 
+    await glob.appContext.initialized;
     const noteCtx = glob.appContext.tabManager.children.find((ctx) => ctx.noteId === activeNote.noteId);
     if (await noteCtx.isReadOnly()) {
         throwError('note is readOnly');
@@ -66,7 +75,24 @@ async function getActiveEditor(content) {
             },
         };
     }
-    throwError('support text/code');
+}
+
+async function parseTextNote(content) {
+    const includeReg = /<section\s+class="include-note"\s+data-note-id="([\w-]+)"[^>]+>.*<\/section>/gi;
+    let match;
+    // eslint-disable-next-line no-cond-assign
+    while ((match = includeReg.exec(content)) !== null) {
+        const noteId = match[1];
+
+        // eslint-disable-next-line no-await-in-loop
+        const { title } = await api.getNote(noteId);
+        content = content.replace(
+            match[0],
+            `<a class="reference-link" data-note-path="${noteId}"<span class="bx bx-note"></span>${title}</a>`
+        );
+    }
+
+    return content;
 }
 
 export default class DataTrilium extends Data {
@@ -164,36 +190,29 @@ export default class DataTrilium extends Data {
     }
 
     /**
+     *
+     * This is for rending user messages. Since we use innerHtml to render user message,content of code notes should be escaped while text note don't need that as it is already escaped in trilium.
      * @returns {Promise}
      */
-    // todo: rewrite
     async getAcitveNoteContent() {
-        const acviteNote = api.getActiveContextNote();
-        let content = null;
-        if (acviteNote.type === 'text') {
-            const editWidget = document.querySelector('.note-detail-editable-text');
-            const isEdit = editWidget && window.getComputedStyle(editWidget).display === 'block';
-            if (isEdit) {
-                content = editWidget.querySelector('.note-detail-editable-text-editor').textContent;
-            } else {
-                content = document.querySelector('.note-detail-readonly-text-content').textContent;
-            }
-        } else if (acviteNote.type === 'code') {
-            content = (await acviteNote.getNoteComplement()).content;
-        }
+        try {
+            const activeNote = getSupportedActiveNoteOrThrow();
+            let { content } = await activeNote.getNoteComplement();
 
-        if (content === null) {
+            if (activeNote.type === 'text') {
+                content = parseTextNote(content);
+            } else {
+                content = escapeHtml(content);
+            }
+            return content;
+        } catch (error) {
             this.emit(EVENT_DATA.setStatus, {
                 status: STATUS_DATA.faild,
                 key: 'acitveNote',
-                value: `type ${acviteNote.type} ${NOT_SUPPORTED}`,
+                value: error.message,
             });
-            throwError(NOT_SUPPORTED);
+            throwError(error.message);
         }
-        this.emit(EVENT_DATA.setStatus, {
-            status: STATUS_DATA.success,
-        });
-        return content;
     }
 
     // <<prompts
@@ -262,20 +281,16 @@ export default class DataTrilium extends Data {
     }
 
     async saveToChild(_title, _content) {
-        const acviteNote = api.getActiveContextNote();
+        const activeNote = api.getActiveContextNote();
         await api.runOnBackend(
-            async (id, title, content) => {
-                const activeNote = api.getNote(id);
-                if (!activeNote) throw new Error('no active note');
-
-                return api.createNewNote({
+            async (id, title, content) =>
+                api.createNewNote({
                     parentNoteId: id,
                     title,
                     content,
                     type: 'text',
-                }).note;
-            },
-            [acviteNote.noteId, _title, _content]
+                }).note,
+            [activeNote.noteId, _title, _content]
         );
     }
 

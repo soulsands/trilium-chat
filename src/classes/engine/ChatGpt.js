@@ -54,7 +54,7 @@ export default class ChatGpt extends LittleEvent {
         this.emit(EVENT_ENGINE.load, this.thread);
     }
 
-    isEngineAvailable() {
+    isAvailable() {
         if (!this.lastMessage) return true;
         return isMsgExpected(this.lastMessage.status);
     }

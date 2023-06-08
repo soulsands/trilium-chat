@@ -40,11 +40,11 @@ export default class EleThread {
         chatEngine.on(EVENT_ENGINE.create, (message) => {
             this.appendElByMessage(message);
         });
-        chatEngine.on(EVENT_ENGINE.append, (data) => {
-            this.replaceCurrentElContent(data.content);
+        chatEngine.on(EVENT_ENGINE.append, (message) => {
+            this.replaceCurrentElContent(message);
         });
-        chatEngine.on(EVENT_ENGINE.replace, (data) => {
-            this.replaceCurrentElContent(data.content);
+        chatEngine.on(EVENT_ENGINE.replace, (message) => {
+            this.replaceCurrentElContent(message);
         });
     }
 
@@ -155,7 +155,7 @@ export default class EleThread {
 
     replaceCurrentElContent(content) {
         const currentMsgDom = this.getCurrentMsgDom();
-        currentMsgDom.children[0].textContent = content;
+        currentMsgDom.children[0].innerHTML = content.content;
 
         if (!this.isHovering) {
             this.scrolToBottom();
