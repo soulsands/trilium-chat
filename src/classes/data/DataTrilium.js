@@ -11,62 +11,43 @@ async function getActiveEditor(content) {
     if (!activeNote) throwError('no active note');
 
     const noteCtx = glob.appContext.tabManager.children.find((ctx) => ctx.noteId === activeNote.noteId);
-    if (noteCtx && (await noteCtx.isReadOnly())) {
+    if (await noteCtx.isReadOnly()) {
         throwError('note is readOnly');
     }
 
     let editor;
     if (activeNote.type === 'text') {
         editor = await api.getActiveContextTextEditor();
+
+        if (isThread) {
+            content = threadToText(content, true);
+        }
+        // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_model-Model.html#function-insertContent
+        // https://stackoverflow.com/questions/61728192/replace-ckeditor-content-and-add-undo-history-entry
+        const viewFragment = editor.data.processor.toView(content);
+        const modelFragment = editor.data.toModel(viewFragment);
         return {
             insert() {
                 editor.model.change((writer) => {
                     const insertPosition = editor.model.document.selection.getLastPosition();
-                    writer.insertText(content, insertPosition);
+                    writer.insert(modelFragment, insertPosition);
                 });
             },
             set() {
-                if (isThread) {
-                    content = threadToText(content, true);
-                }
-
-                editor.setData(content);
+                const range = editor.model.createRangeIn(editor.model.document.getRoot());
+                editor.model.insertContent(modelFragment, range);
             },
-            //  content could be engine if append a thread
-            //  editor.setData(editor.get()+content) lose the state, while in this way users can use undo
             append() {
-                editor.model.change((writer) => {
-                    let ckEles;
-                    const p = 'paragraph';
-                    // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_model-Model.html#function-insertContent
-                    if (isThread) {
-                        ckEles = content.reduce((frag, msg) => {
-                            const role = writer.createElement(p);
-                            writer.insertText(`${msg.role}:`, role);
-
-                            const _content = writer.createElement(p);
-                            writer.insertText(msg.content, _content);
-
-                            writer.append(role, frag);
-                            writer.append(_content, frag);
-
-                            return frag;
-                        }, writer.createDocumentFragment());
-                    } else {
-                        ckEles = writer.createElement(p);
-                        writer.appendText(content, ckEles);
-                    }
-                    writer.append(ckEles, editor.model.document.getRoot());
-                });
+                editor.model.insertContent(modelFragment);
             },
         };
     }
     if (activeNote.type === 'code') {
         editor = await api.getActiveContextCodeEditor();
+        const doc = editor.getDoc();
 
         return {
             insert() {
-                const doc = editor.getDoc();
                 const cursor = doc.getCursor();
 
                 doc.replaceRange(content, cursor);
@@ -76,7 +57,7 @@ async function getActiveEditor(content) {
                     content = threadToText(content);
                 }
 
-                editor.getDoc().setValue(content);
+                doc.setValue(content);
             },
             append() {
                 editor.replaceRange(content, { line: Infinity });
