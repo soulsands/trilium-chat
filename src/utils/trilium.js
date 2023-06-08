@@ -57,4 +57,4 @@ export function threadToText(thread, useHtml) {
     return text;
 }
 
-export const sliceTitle = (title) => title.slice(0, 20);
+export const sliceTitle = (title) => title.slice(0, 50);
