@@ -30,7 +30,7 @@ async function getActiveEditor(content) {
             insert() {
                 editor.model.change((writer) => {
                     const insertPosition = editor.model.document.selection.getLastPosition();
-                    writer.insert(modelFragment, insertPosition);
+                    writer.insertText(content, insertPosition);
                 });
             },
             set() {
@@ -38,7 +38,9 @@ async function getActiveEditor(content) {
                 editor.model.insertContent(modelFragment, range);
             },
             append() {
-                editor.model.insertContent(modelFragment);
+                editor.model.change((writer) => {
+                    writer.append(modelFragment, editor.model.document.getRoot());
+                });
             },
         };
     }
