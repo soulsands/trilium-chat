@@ -1,7 +1,7 @@
 import { STATUS_MESSAGE, STATUS_DATA, EVENT_ENGINE } from '@/constants';
 
 const STATUS_ENGINE = {
-    [STATUS_MESSAGE.none]: 'ready!',
+    [STATUS_MESSAGE.none]: 'Ready',
     [STATUS_MESSAGE.fetching]: 'Thinking...',
     [STATUS_MESSAGE.generating]: 'Typing...',
     [STATUS_MESSAGE.success]: 'On standby',
