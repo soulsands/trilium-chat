@@ -10,6 +10,6 @@ const fs = require('fs');
 
 const tempFilePath = process.argv[2];
 if (tempFilePath) {
-    const distFile = fs.readFileSync(path.join(__dirname, 'dist/main.js'), 'utf8');
+    const distFile = fs.readFileSync(path.join(__dirname, 'dist/trilium-chat.js'), 'utf8');
     fs.writeFileSync(tempFilePath, distFile);
 }

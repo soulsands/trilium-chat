@@ -98,32 +98,33 @@ export async function nap() {
 }
 
 export function timeAgo(date) {
-    const seconds = Math.floor((new Date() - new Date(date)) / 1000);
-    let interval = Math.floor(seconds / 31536000);
+    const mathFloor = (val) => Math.floor(val);
+    const seconds = mathFloor((new Date() - new Date(date)) / 1000);
+    let interval = mathFloor(seconds / 31536000);
 
     if (interval >= 1) {
         return `${interval} year${interval === 1 ? '' : 's'} ago`;
     }
-    interval = Math.floor(seconds / 2592000);
+    interval = mathFloor(seconds / 2592000);
     if (interval >= 1) {
         return `${interval} month${interval === 1 ? '' : 's'} ago`;
     }
-    interval = Math.floor(seconds / 86400);
+    interval = mathFloor(seconds / 86400);
     if (interval >= 1) {
         return `${interval} day${interval === 1 ? '' : 's'} ago`;
     }
-    interval = Math.floor(seconds / 3600);
+    interval = mathFloor(seconds / 3600);
     if (interval >= 1) {
         return `${interval} hour${interval === 1 ? '' : 's'} ago`;
     }
-    interval = Math.floor(seconds / 60);
+    interval = mathFloor(seconds / 60);
     if (interval >= 1) {
         return `${interval} minute${interval === 1 ? '' : 's'} ago`;
     }
     if (seconds === 0) {
         return 'just now';
     }
-    return `${Math.floor(seconds)} second${Math.floor(seconds) === 1 ? '' : 's'} ago`;
+    return `${mathFloor(seconds)} second${mathFloor(seconds) === 1 ? '' : 's'} ago`;
 }
 
 export function closest(selector, element) {
@@ -266,6 +267,11 @@ export const getFirstUserContentOrThrow = (engine) => {
 };
 
 export const showTooltip = (text, isError) => {
+    if (process.env.IS_BROWSER) {
+        window.alert('trilium only');
+        return;
+    }
+
     if (isError) {
         api.showError(text, 3000);
     } else {
