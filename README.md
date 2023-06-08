@@ -85,17 +85,17 @@ Prompts will be stored under the `#CHAT_PROMPTS` note. You can manually modify t
 
 The `favor` command will prioritize the entry in the chat history and display a flag indicating its importance.
 
-The `set` command replaces the current note with the chat content. Currently, there is no support for undoing this action through the editor. If you know how to implement the undo functionality, please feel free to submit a pull request (PR).
+The `set` command replaces the current note with the chat content.
 
-The `append` command inserts the current note at the end of the note. It supports undoing the action using the editor.
+The `append` command inserts the current note at the end of the note. 
 
 #### message
 
 <img src="./media/image-20230607234443677.png" alt="image-20230607234443677" style="zoom:33%;" />
 
-Introducing a new command, `insert`, which allows you to insert the current message at the selected position of the cursor. It supports undoing the action using the editor.
+Introducing a new command, `insert`, which allows you to insert the current message at the selected position of the cursor. 
 
-The `set`, `insert`, and `append` commands support both text and code note types.
+The `set`, `insert`, and `append` commands support both text and code note types. 
 
 ### History
 
