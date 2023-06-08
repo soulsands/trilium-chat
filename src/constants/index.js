@@ -19,6 +19,7 @@ export const EVENT_VIEW = {
     formCancel: 'formCancel',
 
     promptToggle: 'promptToggle',
+    send: 'send',
 };
 
 export const EVENT_ENGINE = {

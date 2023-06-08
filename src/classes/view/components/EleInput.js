@@ -1,6 +1,6 @@
 import LittleEvent from '@/classes/LittleEvent';
 import { STATUS_MESSAGE, EVENT_ENGINE, EVENT_VIEW } from '@/constants';
-import { isMsgExpected, escapeHtml } from '@/utils';
+import { isMsgExpected, escape } from '@/utils';
 
 export default class EleInput extends LittleEvent {
     constructor(view) {
@@ -73,10 +73,14 @@ export default class EleInput extends LittleEvent {
 
     bindSendMessage() {
         const sendMessage = async () => {
-            const finalMsg = await this.getParsedMsg();
-            if (finalMsg) {
+            const { msgView, msgEngine } = await this.getParsedMsg();
+
+            // console.log(msgView, msgEngine);
+
+            if (msgEngine) {
                 if (this.chatView.chatEngine.isAvailable()) {
-                    this.chatView.chatEngine.requestCompletion({ userInput: finalMsg });
+                    this.emit(EVENT_VIEW.send, msgView);
+                    this.chatView.chatEngine.requestCompletion({ userInput: msgEngine });
                     this.clearInput();
                 }
             }
@@ -92,38 +96,58 @@ export default class EleInput extends LittleEvent {
         });
     }
 
+    /* 
+        userInput:{
+            engine:raw,
+            view:escaped
+        }
+        activaNote:{
+            engine:raw,
+            view:{
+                code:escaped,
+                text:raw
+            }
+        }
+    */
+
     async getParsedMsg() {
         const parsedPrompt = this.chatView.elePrompt.$getParsedPromt();
         const userInput = this.$userInput.value;
+        const escapedInput = escape(userInput);
 
-        if (!parsedPrompt) return userInput;
+        if (!parsedPrompt) {
+            return {
+                engine: userInput.trim(),
+                view: escapedInput.trim(),
+            };
+        }
 
-        let finalMsg = parsedPrompt;
+        let msgEngine;
+        let msgView;
+
         const regMsg = /{{message}}/g;
         const regNote = /{{activeNote}}/g;
-        // const regClip = /{{clipboard}}/g;
-        if (regMsg.test(finalMsg)) {
-            finalMsg = finalMsg.replace(regMsg, userInput);
-        }
-        finalMsg = escapeHtml(finalMsg);
 
-        if (regNote.test(finalMsg)) {
+        if (regNote.test(parsedPrompt)) {
             try {
-                finalMsg = finalMsg.replace(regNote, await this.chatView.chatData.getAcitveNoteContent());
+                const { engine, view } = await this.chatView.chatData.getAcitveNoteContent();
+
+                msgEngine = parsedPrompt.replace(regNote, engine);
+                msgView = parsedPrompt.replace(regNote, view);
             } catch (error) {
                 console.error(error);
             }
         }
+        if (regMsg.test(parsedPrompt)) {
+            msgEngine = msgEngine.replace(regMsg, userInput);
+            msgView = msgView.replace(regMsg, escapedInput);
+        }
 
-        // if (regClip.test(finalMsg)) {
-        //     const clipText = await this.chatView.chatData.getClip();
-        //     finalMsg = finalMsg.replace(regClip, clipText);
-        // }
-
-        /*  console.error(parsedPrompt);
-        console.error(regNote.test(parsedPrompt));
-        console.error(finalMsg.trim()); */
-        return finalMsg.trim();
+        // console.error(parsedPrompt);
+        return {
+            msgEngine: msgEngine.trim(),
+            msgView: msgView.trim(),
+        };
     }
 
     enableUserInput(enable) {

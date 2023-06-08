@@ -1,5 +1,5 @@
 import { DEFAULT_OPTIONS, DATA_KEYS, DEFAULT_PROMPTS, EVENT_DATA, STATUS_DATA, SUPPORT_TYPE } from '@/constants';
-import { throwError, threadToText, escapeHtml } from '@/utils';
+import { throwError, threadToText, escape } from '@/utils';
 
 import Data from './Data';
 
@@ -191,20 +191,18 @@ export default class DataTrilium extends Data {
 
     /**
      *
-     * This is for rending user messages. Since we use innerHtml to render user message,content of code notes should be escaped while text note don't need that as it is already escaped in trilium.
+     * provide two kind of messages. engine for chatgpt, view for innerHtml
      * @returns {Promise}
      */
     async getAcitveNoteContent() {
         try {
             const activeNote = getSupportedActiveNoteOrThrow();
-            let { content } = await activeNote.getNoteComplement();
+            const { content } = await activeNote.getNoteComplement();
 
-            if (activeNote.type === 'text') {
-                content = parseTextNote(content);
-            } else {
-                content = escapeHtml(content);
-            }
-            return content;
+            return {
+                engine: content,
+                view: activeNote.type === 'text' ? await parseTextNote(content) : escape(content),
+            };
         } catch (error) {
             this.emit(EVENT_DATA.setStatus, {
                 status: STATUS_DATA.faild,

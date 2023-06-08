@@ -2,6 +2,7 @@ export * from './dom';
 export * from './perf';
 export * from './error';
 export * from './trilium';
+export * from './escape';
 
 export async function sleep(duration) {
     await new Promise((resolve) => {

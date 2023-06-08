@@ -19,7 +19,7 @@ export default class EleThread {
 
         this.wrapFunction();
 
-        this.bindEngineEvents();
+        this.bindMsgEvents();
 
         this.bindThreadHover();
         this.bindPromptToggle();
@@ -32,14 +32,24 @@ export default class EleThread {
         this.scrolToBottom = throttle(this.scrolToBottom, 300);
     }
 
-    bindEngineEvents() {
-        const { chatEngine } = this.chatView;
+    bindMsgEvents() {
+        const { chatEngine, eleInput } = this.chatView;
+
+        // user message is in control. use view event to render html
+        eleInput.on(EVENT_VIEW.send, (escaped) => {
+            this.appendElByMessage({ content: escaped, role: ROLE.user });
+        });
+
         chatEngine.on(EVENT_ENGINE.load, (thread) => {
             this.renderThread(thread);
         });
+
         chatEngine.on(EVENT_ENGINE.create, (message) => {
-            this.appendElByMessage(message);
+            if (message.role !== ROLE.user) {
+                this.appendElByMessage(message);
+            }
         });
+
         chatEngine.on(EVENT_ENGINE.append, (message) => {
             this.replaceCurrentElContent(message);
         });
@@ -67,7 +77,7 @@ export default class EleThread {
     bindDotClick() {
         this.$threadMsgs.addEventListener('click', (e) => {
             const isDot = e.target.classList.contains('dot');
-            console.log(isDot);
+            // console.log(isDot);
 
             if (isDot) {
                 this.clickedMsg = e.target.previousSibling.textContent;
@@ -153,9 +163,10 @@ export default class EleThread {
         return children[children.length - 1];
     }
 
+    // if responsed with html tags, really hard to tell how to treat it: code or styles. so render as plain text
     replaceCurrentElContent(content) {
         const currentMsgDom = this.getCurrentMsgDom();
-        currentMsgDom.children[0].innerHTML = content.content;
+        currentMsgDom.children[0].textContent = content.content;
 
         if (!this.isHovering) {
             this.scrolToBottom();

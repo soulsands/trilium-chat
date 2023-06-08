@@ -145,7 +145,7 @@ export default class ElePrompt extends LittleEvent {
 
     bindFormEvents() {
         this.ModalForm.on(EVENT_VIEW.formSave, async (formData, flagObj) => {
-            console.log(flagObj);
+            // console.log(flagObj);
             this.ModalForm.enable(false);
 
             // is update
