@@ -12,7 +12,7 @@ This project is written in vanilla JavaScript, and is a frontend-only project. F
 -   Custom prompt
     -   Supports mustache syntax to render options. e.g. {{languague:chinese|English|Franch}} will be rendered as a select element
     -   {{message}} as your message
-    -   {{activeNote}} as the content of active note (only supports text/code and text note is not properly parsed for now)
+    -   {{activeNote}} as the content of active note 
 -   Commands
     -   Copy
     -   Save to history
@@ -104,6 +104,20 @@ The `set`, `insert`, and `append` commands support both text and code note types
 The chat history will be stored under the note labeled with `CHAT_HISTORY_HOME`. If such a note doesn't exist, it will be stored under the default "trilium-chat" note.
 
 When opening the history or prompts, the search bar will be focused by default. You can navigate through the options using the Tab and Shift+Tab keys, and select an option by pressing Enter.
+
+### {{activeNote}}
+
+{{activeNote}}支持text和code两种类型。对于text类型，消息会在聊天栏渲染成和笔记中的内容跟相同的样子，除了一点，如果是included note, 它会被渲染成一个link.  
+
+需要注意的是，因为trilium把text笔记储存为html格式，所以发送的消息也是以html格式发送的，这样是为了给ai提供更多信息。可以在prompt中提示以什么样的方式返回。
+
+在使用activenote的时候，ai可能返回html，但渲染仍然时是plain text，因为很难判断返回的格式信息还是html的code。后续可能支持markdown渲染。
+
+
+
+
+
+![image-20230609004533717](./media/image-20230609004533717.png)
 
 ## TODO
 
