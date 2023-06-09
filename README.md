@@ -65,7 +65,7 @@ Options is stored in a JSON note with `#CHAT_OPTIONS ` label.
 
 The prompt supports customizable options, making it highly flexible to use.
 
-<img src="./media/image-20230607233713046.png" alt="image-20230607233713046" style="zoom: 33%;" />
+<img src="https://github.com/Lolabird/trilium-chat/assets/89228316/754724ad-799d-42f1-90c4-c51f39258e23" alt="translation options" style="zoom: 33%;" />
 
 The `{{language:English|Chinese|French}}` will be rendered as a dropdown component, allowing you to select the desired option directly when using it.
 
