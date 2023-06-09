@@ -29,8 +29,6 @@ export default class ModalFormWrapper extends LittleEvent {
 
         $chatView.appendChild(this.$wrapper);
 
-        // console.log(this.$wrapper);
-
         this.modal = new Modal({ type: 'dialog', $content: this.$wrapper, $chatView });
         this.flagObj = null;
 

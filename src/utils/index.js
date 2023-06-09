@@ -113,3 +113,9 @@ export function wrapP(str) {
 export function toLowerCase(str) {
     return str.toLowerCase();
 }
+
+export function debug(...args) {
+    if (process.env.DEBUG) {
+        console.warn(...args);
+    }
+}

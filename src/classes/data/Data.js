@@ -1,4 +1,4 @@
-import { DEFAULT_OPTIONS, EVENT_DATA, STATUS_DATA, ROLE, NOT_SUPPORTED, NO_THREAD } from '@/constants';
+import { DEFAULT_OPTIONS, EVENT_DATA, STATUS_DATA, ROLE, NOT_SUPPORTED, NO_THREAD, debug } from '@/constants';
 import {
     throwImplementationError,
     checkNewKey,
@@ -115,7 +115,7 @@ export default class Data extends LittleEvent {
 
     // >> command
     async handleCommand(command, engine) {
-        console.log(command, engine);
+        debug(command, engine);
         const map = {
             copy: this.handleCopy.bind(this),
             favor: this.handleFavor.bind(this),
@@ -180,7 +180,7 @@ export default class Data extends LittleEvent {
     }
 
     async handleMsgCommand(command, msg) {
-        console.log(command, msg);
+        debug(command, msg);
         const map = {
             copy: this.msgCopy.bind(this),
             insert: this.insertContent.bind(this),
@@ -194,7 +194,7 @@ export default class Data extends LittleEvent {
     }
 
     msgCopy(msg) {
-        console.log(msg);
+        debug(msg);
         copy(msg);
     }
 

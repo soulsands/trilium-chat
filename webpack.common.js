@@ -21,6 +21,7 @@ if (ENV === 'preview') {
 }
 
 const isBrowser = ['dev', 'preview'].includes(ENV);
+const debug = ['dev', 'triliumTest'].includes(ENV);
 
 const outPath = OUTPATH_MAP[ENV];
 
@@ -34,6 +35,7 @@ module.exports = {
     plugins: [
         new webpack.DefinePlugin({
             'process.env.IS_BROWSER': JSON.stringify(isBrowser),
+            'process.env.DEBUG': JSON.stringify(debug),
         }),
         new Dotenv({
             path: envPath, // Path to .env file (this is the default)

@@ -1,6 +1,6 @@
 import LittleEvent from '@/classes/LittleEvent';
 import { STATUS_MESSAGE, EVENT_ENGINE, EVENT_VIEW } from '@/constants';
-import { isMsgExpected, escape } from '@/utils';
+import { isMsgExpected, escape, debug } from '@/utils';
 
 export default class EleInput extends LittleEvent {
     constructor(view) {
@@ -75,7 +75,7 @@ export default class EleInput extends LittleEvent {
         const sendMessage = async () => {
             const { msgView, msgEngine } = await this.getParsedMsg();
 
-            // console.log(msgView, msgEngine);
+            debug(msgView, msgEngine);
 
             if (msgEngine) {
                 if (this.chatView.chatEngine.isAvailable()) {
@@ -114,6 +114,7 @@ export default class EleInput extends LittleEvent {
         const parsedPrompt = this.chatView.elePrompt.$getParsedPromt();
         const userInput = this.$userInput.value;
         const escapedInput = escape(userInput);
+        debug(parsedPrompt, userInput, escapedInput);
 
         if (!parsedPrompt) {
             return {
@@ -134,6 +135,8 @@ export default class EleInput extends LittleEvent {
 
                 msgEngine = msgEngine.replace(regNote, engine);
                 msgView = msgView.replace(regNote, view);
+
+                debug(msgEngine, msgView);
             } catch (error) {
                 console.error(error);
             }

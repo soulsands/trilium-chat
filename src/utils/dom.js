@@ -60,9 +60,6 @@ export const promptToHtml = (content) => {
 };
 
 export const getParsedPromt = ($wrapper, promptContent) => {
-    /* console.log(promptContent);
-    console.log($wrapper); */
-
     let parsed = promptContent;
     const $selects = Array.from($wrapper.querySelectorAll('select'));
     $selects.forEach((select) => {

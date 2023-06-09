@@ -79,7 +79,6 @@ export default class EleThread {
     bindDotClick() {
         this.$threadMsgs.addEventListener('click', (e) => {
             const isDot = e.target.classList.contains('dot');
-            // console.log(isDot);
 
             if (isDot) {
                 this.clickedMsg = e.target.previousSibling.textContent;

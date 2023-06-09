@@ -1,5 +1,5 @@
 import { ROLE, EVENT_ENGINE, STATUS_MESSAGE } from '@/constants';
-import { isMsgExpected } from '@/utils';
+import { isMsgExpected, debug } from '@/utils';
 import Streamer from '../Streamer';
 import LittleEvent from '../LittleEvent';
 
@@ -167,7 +167,7 @@ export default class ChatGpt extends LittleEvent {
                 });
                 let txt = '';
                 this.activeStream.addEventListener('message', (e) => {
-                    // console.log(e.data);
+                    debug(e.data);
                     if (e.data !== '[DONE]') {
                         const payload = JSON.parse(e.data);
                         const text = payload.choices[0].delta.content;
@@ -189,7 +189,7 @@ export default class ChatGpt extends LittleEvent {
                     }
                 });
                 this.activeStream.addEventListener('readystatechange', (e) => {
-                    // console.log(e);
+                    debug(e);
                     if (e.readyState >= 2) {
                         console.log(`ReadyState: ${e.readyState}`);
                     }

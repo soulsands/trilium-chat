@@ -1,5 +1,15 @@
 import LittleEvent from '@/classes/LittleEvent';
-import { removeEle, closest, promptToHtml, getParsedPromt, nap, toggleEleShow, bindEnter, toLowerCase } from '@/utils';
+import {
+    removeEle,
+    closest,
+    promptToHtml,
+    getParsedPromt,
+    nap,
+    toggleEleShow,
+    bindEnter,
+    toLowerCase,
+    debug,
+} from '@/utils';
 import { EVENT_VIEW } from '@/constants';
 import Popover from '../wrappers/Popover';
 import ModalFormWrapper from '../wrappers/ModalFormWrapper';
@@ -120,7 +130,7 @@ export default class ElePrompt extends LittleEvent {
                     this.loadPrompts();
                     return;
                 }
-                // console.log(target);
+                debug(target);
                 this.handlePromptContent(target);
                 this.Popover.hide();
             }
@@ -145,7 +155,7 @@ export default class ElePrompt extends LittleEvent {
 
     bindFormEvents() {
         this.ModalForm.on(EVENT_VIEW.formSave, async (formData, flagObj) => {
-            // console.log(flagObj);
+            debug(flagObj);
             this.ModalForm.enable(false);
 
             // is update
