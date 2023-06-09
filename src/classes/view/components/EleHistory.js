@@ -1,5 +1,5 @@
 import LittleEvent from '@/classes/LittleEvent';
-import { removeEle, timeAgo, closest, bindEnter, sleep } from '@/utils';
+import { removeEle, timeAgo, closest, bindEnter, sleep, toLowerCase } from '@/utils';
 import { EVENT_VIEW, ROLE } from '@/constants';
 import Modal from '../wrappers/Modal';
 
@@ -126,7 +126,9 @@ export default class EleHistory extends LittleEvent {
     }
 
     renderSearch(keyword) {
-        const filterList = this.records.filter((record) => record.list.some((msg) => msg.content.includes(keyword)));
+        const filterList = this.records.filter((record) =>
+            record.list.some((msg) => toLowerCase(msg.content).includes(toLowerCase(keyword)))
+        );
         this.renderList(filterList);
     }
 }

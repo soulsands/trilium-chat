@@ -1,5 +1,5 @@
 import LittleEvent from '@/classes/LittleEvent';
-import { removeEle, closest, promptToHtml, getParsedPromt, nap, toggleEleShow, bindEnter } from '@/utils';
+import { removeEle, closest, promptToHtml, getParsedPromt, nap, toggleEleShow, bindEnter, toLowerCase } from '@/utils';
 import { EVENT_VIEW } from '@/constants';
 import Popover from '../wrappers/Popover';
 import ModalFormWrapper from '../wrappers/ModalFormWrapper';
@@ -213,7 +213,9 @@ export default class ElePrompt extends LittleEvent {
 
     renderSearch(keyword) {
         const filterList = this.prompts.filter(
-            (prompt) => prompt.name.includes(keyword) || prompt.content.includes(keyword)
+            (prompt) =>
+                toLowerCase(prompt.name).includes(toLowerCase(keyword)) ||
+                toLowerCase(prompt.content).includes(toLowerCase(keyword))
         );
         this.renderList(filterList);
     }

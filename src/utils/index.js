@@ -109,3 +109,7 @@ export const random = (arr) => arr[Math.floor(Math.random() * arr.length)];
 export function wrapP(str) {
     return `<p>${str}</p>`;
 }
+
+export function toLowerCase(str) {
+    return str.toLowerCase();
+}
