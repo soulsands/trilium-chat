@@ -1,4 +1,4 @@
-import { nap, sleep, throwError } from '@/utils';
+import { nap, sleep, throwError, showTooltip } from '@/utils';
 import { DEFAULT_OPTIONS, DEFAULT_PROMPTS, DATA_KEYS, TRILIUM_ONLY, EVENT_DATA, STATUS_DATA } from '@/constants';
 
 import Data from './Data';
@@ -45,6 +45,7 @@ export default class DataDev extends Data {
     async getAcitveNoteContent() {
         await nap();
         this.emit(EVENT_DATA.setStatus, { status: STATUS_DATA.faild, key: 'noteId', value: 'file' });
+        showTooltip(TRILIUM_ONLY);
         throw new Error('not supported');
     }
 
@@ -74,7 +75,6 @@ export default class DataDev extends Data {
      * @param {string} record.list[].role
      * @param {string} record.list[].content
      * @param {date} record.list[].stamp
-     * @param {boolean} record.list[].favor
      */
     async saveRecord(record) {
         const records = await this.getRecords();
