@@ -48,7 +48,6 @@ export default class EleInput extends LittleEvent {
 
     async setBtnStyle() {
         const allowSend = isMsgExpected(this.engineStatus) || this.engineStatus === STATUS_MESSAGE.none;
-
         let hint = '';
         if (allowSend) {
             const { msgEngine } = await this.getParsedMsg();
@@ -118,8 +117,8 @@ export default class EleInput extends LittleEvent {
 
         if (!parsedPrompt) {
             return {
-                engine: userInput.trim(),
-                view: escapedInput.trim(),
+                msgEngine: userInput.trim(),
+                msgView: escapedInput.trim(),
             };
         }
 
