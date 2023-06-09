@@ -191,7 +191,7 @@ export default class DataTrilium extends Data {
 
     /**
      *
-     * provide two kind of messages. engine for chatgpt, view for innerHtml
+     * provide two kinds of messages. engine for chatgpt, view for innerHtml
      * @returns {Promise}
      */
     async getAcitveNoteContent() {

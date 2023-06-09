@@ -15,7 +15,6 @@
     max-width: calc(100% - 40px);
     height: calc(100% - 40px);
     flex-direction: column;
-    border: 1px solid var(--main-border-color);
     border-right: none;
     border-bottom: none;
     background: var(--main-background-color);
@@ -27,6 +26,11 @@
     will-change: width;
 
     --trilium-green: #50a52c;
+
+    .bd-main,
+    & {
+        border: 1px solid var(--main-border-color);
+    }
 
     *::-webkit-scrollbar {
         width: 6px;
@@ -214,7 +218,6 @@
         .prompt_input {
             width: 100%;
             padding-left: 8px;
-            border: 1px solid var(--main-border-color);
             border-radius: 8px;
             line-height: 30px;
             transition: all 0.3s;
