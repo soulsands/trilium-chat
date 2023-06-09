@@ -83,6 +83,7 @@ async function parseTextNote(content) {
     // eslint-disable-next-line no-cond-assign
     while ((match = includeReg.exec(content)) !== null) {
         const noteId = match[1];
+        // console.error(match);
 
         // eslint-disable-next-line no-await-in-loop
         const { title } = await api.getNote(noteId);
@@ -91,7 +92,7 @@ async function parseTextNote(content) {
             `<a class="reference-link" data-note-path="${noteId}"<span class="bx bx-note"></span>${title}</a>`
         );
     }
-
+    // console.error(content);
     return content;
 }
 

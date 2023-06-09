@@ -36,8 +36,10 @@ export default class EleThread {
         const { chatEngine, eleInput } = this.chatView;
 
         // user message is in control. use view event to render html
-        eleInput.on(EVENT_VIEW.send, (escaped) => {
-            this.appendElByMessage({ content: escaped, role: ROLE.user });
+        eleInput.on(EVENT_VIEW.send, (content) => {
+            // console.error(content);
+
+            this.appendElByMessage({ content, role: ROLE.user });
         });
 
         chatEngine.on(EVENT_ENGINE.load, (thread) => {

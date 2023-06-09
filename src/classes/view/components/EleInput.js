@@ -133,7 +133,7 @@ export default class EleInput extends LittleEvent {
                 const { engine, view } = await this.chatView.chatData.getAcitveNoteContent();
 
                 msgEngine = msgEngine.replace(regNote, engine);
-                msgView = msgEngine.replace(regNote, view);
+                msgView = msgView.replace(regNote, view);
             } catch (error) {
                 console.error(error);
             }
