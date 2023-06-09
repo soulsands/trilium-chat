@@ -122,8 +122,8 @@ export default class EleInput extends LittleEvent {
             };
         }
 
-        let msgEngine;
-        let msgView;
+        let msgEngine = parsedPrompt;
+        let msgView = parsedPrompt;
 
         const regMsg = /{{message}}/g;
         const regNote = /{{activeNote}}/g;
@@ -132,8 +132,8 @@ export default class EleInput extends LittleEvent {
             try {
                 const { engine, view } = await this.chatView.chatData.getAcitveNoteContent();
 
-                msgEngine = parsedPrompt.replace(regNote, engine);
-                msgView = parsedPrompt.replace(regNote, view);
+                msgEngine = msgEngine.replace(regNote, engine);
+                msgView = msgEngine.replace(regNote, view);
             } catch (error) {
                 console.error(error);
             }
