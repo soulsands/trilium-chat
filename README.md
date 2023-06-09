@@ -95,7 +95,7 @@ The `append` command inserts the current note at the end of the note.
 
 <img src="./media/image-20230607234443677.png" alt="image-20230607234443677" style="zoom:33%;" />
 
-Introducing a new command, `insert`, which allows you to insert the current message at the selected position of the cursor. 
+The new command, `insert`, allows you to insert the current message at the selected position of the cursor. 
 
 The `set`, `insert`, and `append` commands support both text and code note types. 
 
@@ -103,7 +103,7 @@ The `set`, `insert`, and `append` commands support both text and code note types
 
 <img src="./media/image-20230607235219388.png" alt="image-20230607235219388" style="zoom:33%;" />
 
-The chat history will be stored under the note labeled with `CHAT_HISTORY_HOME`. If such a note doesn't exist, it will be stored under the default "trilium-chat" note.
+The chat history will be stored under the note labeled with the attribute `CHAT_HISTORY_HOME`. If such a note doesn't exist, it will be stored under the default "trilium-chat" note.
 
 When opening the history or prompts, the search bar will be focused by default. You can navigate through the options using the Tab and Shift+Tab keys, and select an option by pressing Enter.
 
