@@ -10,7 +10,7 @@ This project is written in vanilla JavaScript, and is a frontend-only project. F
 
 -   Normal chat
 -   Custom prompt
-    -   Supports mustache syntax to render options. e.g. {{languague:chinese|English|Franch}} will be rendered as a select element
+    -   Supports mustache syntax to render options. e.g. {{language:Enligsh|Chinese|Czech}} will be rendered as a select element (This can be changed in CHAT_PROMPTS) 
     -   {{message}} as your message
     -   {{activeNote}} as the content of active note 
 -   Commands
@@ -28,7 +28,7 @@ This project is written in vanilla JavaScript, and is a frontend-only project. F
 
 https://soulsands.github.io/trilium-chat/
 
-After save your Chatgpt apikey and refresh the page, You can use most of the features, except those that depend on Trilium.
+After you save your Chatgpt apikey and refresh the page, You can use most of the features, except those that depend on Trilium.
 
 Please feel free to experience this page as it directly calls the ChatGPT API.
 
