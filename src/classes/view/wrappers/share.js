@@ -19,3 +19,5 @@ clickOutside.globalClick = globalClick;
 document.addEventListener('click', globalClick);
 
 export const zindexInfo = { global: 0, currentModal: null };
+
+const poperStack = [];

@@ -2,7 +2,7 @@ import LittleEvent from '@/classes/LittleEvent';
 import { EVENT_VIEW } from '@/constants';
 
 import Modal from './Modal';
-import Popover, { showPoptip } from './Popover';
+import { showPoptip } from './Popover';
 
 export default class ModalFormWrapper extends LittleEvent {
     constructor({ $content, $chatView, title, saveText = 'Save', cancelText = 'Cancel' }) {
@@ -28,6 +28,8 @@ export default class ModalFormWrapper extends LittleEvent {
         this.$wrapper.$qs('.wrapper_content').appendChild($content);
 
         $chatView.appendChild(this.$wrapper);
+
+        this.$inputs = Array.from(this.$content.querySelectorAll('[name]'));
 
         this.modal = new Modal({ type: 'dialog', $content: this.$wrapper, $chatView });
         this.flagObj = null;
@@ -67,8 +69,13 @@ export default class ModalFormWrapper extends LittleEvent {
             this.$wrapper.$qs('.wapper_title').textContent = title;
         }
 
-        const $inputs = Array.from(this.$content.querySelectorAll('[name]'));
-        $inputs.forEach((el) => {
+        this.$inputs.forEach((el, index) => {
+            if (index === 0) {
+                setTimeout(() => {
+                    el.focus();
+                }, 200);
+            }
+
             // eslint-disable-next-line no-param-reassign
             el.value = formData[el.name] || '';
         });

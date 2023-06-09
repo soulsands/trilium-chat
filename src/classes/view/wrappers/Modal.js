@@ -1,4 +1,5 @@
-import { toggleEleShow, toggleEleFade, removeEle, nap, htmlStrToElement } from '@/utils';
+import { toggleEleShow, toggleEleFade, removeEle, nap, htmlStrToElement, globalEvent } from '@/utils';
+import { EVENT_GLOBAL } from '@/constants';
 
 import { zindexInfo } from './share';
 
@@ -25,6 +26,8 @@ export default class Modal {
     }
 
     async show(event) {
+        console.log(29);
+
         if (this.isShow) return;
 
         if (!this.$modal) {
@@ -76,6 +79,8 @@ export default class Modal {
     }
 
     async hide() {
+        console.log(82);
+
         if (!this.isShow) return;
 
         const handleTransitionEnd = () => {
@@ -83,6 +88,8 @@ export default class Modal {
 
             this.$contentWrapper.style.left = 'initial';
             this.$contentWrapper.style.top = 'initial';
+
+            globalEvent.emit(EVENT_GLOBAL.poperHide);
 
             this.$contentWrapper.classList.remove(this.wrapperClassName);
             removeEle(this.$modal);

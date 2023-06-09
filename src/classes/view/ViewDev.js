@@ -65,24 +65,19 @@ export default class ViewDev extends View {
     }
 
     bindShortcut() {
-        window.addEventListener(
-            'keydown',
-            (e) => {
-                if (e.altKey && e.key === 'q') {
-                    this.toggleView();
-                    return;
-                }
+        window.addEventListener('keydown', (e) => {
+            if (e.altKey && e.key === 'q') {
+                this.toggleView();
+            }
 
-                if (e.key === 'Escape') {
-                    console.log(e);
-                    if (this.isViewShow()) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        this.hideView();
-                    }
+            if (e.key === 'Escape') {
+                console.log(e);
+                if (this.isViewShow()) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.hideView();
                 }
-            },
-            true
-        );
+            }
+        });
     }
 }

@@ -20,6 +20,14 @@ export const EVENT_VIEW = {
 
     promptToggle: 'promptToggle',
     send: 'send',
+
+    p: 'p', // prompts
+    c: 'c', // command
+    h: 'h', // history
+};
+
+export const EVENT_GLOBAL = {
+    poperHide: 'ph',
 };
 
 export const EVENT_ENGINE = {

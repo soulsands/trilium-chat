@@ -1,5 +1,5 @@
-import { toggleEleFade, removeEle, nap, calculatePopoverPosition } from '@/utils';
-
+import { toggleEleFade, removeEle, nap, calculatePopoverPosition, globalEvent } from '@/utils';
+import { EVENT_GLOBAL } from '@/constants';
 import { clickOutside, zindexInfo } from './share';
 
 const templateMap = {};
@@ -44,6 +44,7 @@ export default class Popover {
     }
 
     async show() {
+        console.log(47);
         if (this.isShow) return;
 
         if (!this.$popover) {
@@ -128,6 +129,8 @@ export default class Popover {
         const handleTransitionEnd = () => {
             removeEle(this.$content);
             removeEle(this.$popover);
+
+            globalEvent.emit(EVENT_GLOBAL.poperHide);
 
             this.OutsideUnbind();
             this.$popover.removeEventListener('transitionend', handleTransitionEnd);

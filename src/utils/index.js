@@ -1,8 +1,12 @@
+import LittleEvent from '@/classes/LittleEvent';
+
 export * from './dom';
 export * from './perf';
 export * from './error';
 export * from './trilium';
 export * from './escape';
+
+export const globalEvent = new LittleEvent();
 
 export async function sleep(duration) {
     await new Promise((resolve) => {

@@ -15,7 +15,14 @@ export default class LittleEvent {
     }
 
     on(type, listener) {
-        return this.addEventListener(type, listener);
+        if (Array.isArray(type)) {
+            type.forEach((_type) => {
+                this.addEventListener(_type, listener);
+            });
+            return;
+        }
+
+        this.addEventListener(type, listener);
     }
 
     removeEventListener(type, listener) {

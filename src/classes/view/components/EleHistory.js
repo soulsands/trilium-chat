@@ -6,7 +6,7 @@ import Modal from '../wrappers/Modal';
 export default class EleHistory extends LittleEvent {
     constructor(view) {
         super();
-        this.view = view;
+        this.chatView = view;
 
         this.$content = view.$chatView.$qs('.content_select_history');
         this.Modal = new Modal({ type: 'popup', $content: this.$content, $chatView: view.$chatView });
@@ -22,10 +22,6 @@ export default class EleHistory extends LittleEvent {
 
         this.records = [];
         this.bindEvents();
-
-        view.on(EVENT_VIEW.viewHide, () => {
-            this.hide();
-        });
     }
 
     hide() {
@@ -33,12 +29,12 @@ export default class EleHistory extends LittleEvent {
     }
 
     bindEvents() {
-        this.$showBtn.addEventListener('click', async (e) => {
-            this.Modal.show(e);
-            this.loadHistory();
+        this.chatView.on(EVENT_VIEW.h, async () => {
+            this.show();
+        });
 
-            await sleep(300);
-            this.$search.focus();
+        this.$showBtn.addEventListener('click', async () => {
+            this.show();
         });
         this.$closeBtn.addEventListener('click', () => {
             this.hide();
@@ -51,15 +47,23 @@ export default class EleHistory extends LittleEvent {
             if ($record) {
                 const target = this.records.find((record) => record.id === $record.dataset.id);
 
-                this.Modal.hide();
+                this.hide();
 
-                this.view.chatEngine.loadThread(target);
+                this.chatView.chatEngine.loadThread(target);
             }
         });
     }
 
+    async show() {
+        this.Modal.show();
+        this.loadHistory();
+
+        await sleep(300);
+        this.$search.focus();
+    }
+
     async loadHistory() {
-        const records = await this.view.chatData.getRecords();
+        const records = await this.chatView.chatData.getRecords();
 
         this.records = Object.keys(records).map((id) => {
             const record = records[id];
@@ -100,8 +104,8 @@ export default class EleHistory extends LittleEvent {
             const $record = this.$recordTpl.cloneNode(true);
 
             bindEnter($record, () => {
-                this.Modal.hide();
-                this.view.chatEngine.loadThread(record);
+                this.hide();
+                this.chatView.chatEngine.loadThread(record);
             });
 
             if (record.favor) {

@@ -1,5 +1,6 @@
 import LittleEvent from '@/classes/LittleEvent';
-import { closest, getFirstUserContentOrThrow, showTooltip } from '@/utils';
+import { getFirstUserContentOrThrow, showTooltip, bindEnter, sleep } from '@/utils';
+import { EVENT_VIEW } from '@/constants';
 import Popover from '../wrappers/Popover';
 
 export default class EleCommand extends LittleEvent {
@@ -18,6 +19,10 @@ export default class EleCommand extends LittleEvent {
 
         this.$content = this.popover.$content;
 
+        view.on(EVENT_VIEW.c, () => {
+            this.show();
+        });
+
         this.bindShowClick();
         this.bindCommand();
         this.checkAutoSave();
@@ -31,18 +36,36 @@ export default class EleCommand extends LittleEvent {
 
     bindShowClick() {
         this.$showBtn.addEventListener('click', () => {
-            this.popover.show();
+            this.show();
         });
     }
 
-    bindCommand() {
-        this.$content.addEventListener('click', (e) => {
-            const $command = closest('[command]', e.target);
-            if (!$command) return;
-            const command = $command.getAttribute('command');
+    async show() {
+        this.popover.show();
 
-            this.excuteCommand(command);
+        await sleep(300);
+        this.$content.$qs('.command_item').focus();
+    }
+
+    bindCommand() {
+        this.$content.querySelectorAll('.command_item').forEach((el) => {
+            const func = () => {
+                const command = el.getAttribute('command');
+                this.excuteCommand(command);
+            };
+
+            el.addEventListener('click', () => {
+                func();
+            });
+
+            bindEnter(el, () => {
+                func();
+            });
         });
+    }
+
+    async hide() {
+        this.popover.hide();
     }
 
     async excuteCommand(command) {

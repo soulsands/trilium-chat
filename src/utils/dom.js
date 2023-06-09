@@ -84,9 +84,22 @@ export const bindEnter = (el, func) => {
     enterElSet.add(el);
     el.addEventListener('enter', func);
 };
+const escELSet = new WeakSet();
+export const bindEsc = (el, func) => {
+    escELSet.add(el);
+    el.addEventListener('esc', func);
+};
 
 window.addEventListener('keydown', (e) => {
-    if (e.key !== 'Enter') return;
-    if (!enterElSet.has(e.target)) return;
-    e.target.dispatchEvent(new CustomEvent('enter'));
+    if (e.key === 'Enter') {
+        if (!enterElSet.has(e.target)) return;
+        e.stopImmediatePropagation();
+        e.target.dispatchEvent(new CustomEvent('enter'));
+        return;
+    }
+    if (e.key === 'Escape') {
+        if (!escELSet.has(e.target)) return;
+        e.stopImmediatePropagation();
+        e.target.dispatchEvent(new CustomEvent('esc'));
+    }
 });
