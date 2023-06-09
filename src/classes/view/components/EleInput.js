@@ -51,7 +51,8 @@ export default class EleInput extends LittleEvent {
 
         let hint = '';
         if (allowSend) {
-            if (!(await this.getParsedMsg())) {
+            const { msgEngine } = await this.getParsedMsg();
+            if (!msgEngine) {
                 this.$sendBtn.classList.add('freezed');
                 this.$sendBtn.setAttribute('title', 'Type a message');
                 return;
