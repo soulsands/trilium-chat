@@ -14,8 +14,7 @@ export default class EleInput extends LittleEvent {
         this.bindInput();
         this.bindSendMessage();
 
-        this.bindEngineEvents();
-        this.bindPromptStatus();
+        this.bindDependEvents();
     }
 
     bindInput() {
@@ -24,7 +23,7 @@ export default class EleInput extends LittleEvent {
         });
     }
 
-    bindEngineEvents() {
+    bindDependEvents() {
         this.chatView.chatEngine.on(EVENT_ENGINE.setStatus, (status) => {
             this.enableUserInput(status !== STATUS_MESSAGE.faild);
             this.handleMsgStatus(status);
@@ -32,11 +31,11 @@ export default class EleInput extends LittleEvent {
         this.chatView.chatEngine.on(EVENT_ENGINE.load, async () => {
             this.$userInput.focus();
         });
-    }
-
-    bindPromptStatus() {
         this.chatView.elePrompt.on(EVENT_VIEW.promptToggle, () => {
             this.setBtnStyle();
+        });
+        this.chatView.on(EVENT_VIEW.viewShow, () => {
+            this.$userInput.focus();
         });
     }
 
