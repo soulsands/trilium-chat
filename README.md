@@ -30,7 +30,7 @@ https://soulsands.github.io/trilium-chat/
 
 After you save your Chatgpt apikey and refresh the page, You can use most of the features, except those that depend on Trilium.
 
-Please feel free to experience this page as it directly calls the ChatGPT API.
+Please feel free to reference this page as it directly calls the ChatGPT API.
 
 ## Start
 
