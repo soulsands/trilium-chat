@@ -71,9 +71,11 @@ The `{{language:English|Chinese|French}}` will be rendered as a dropdown compone
 
 <img src="./media/image-20230607233913358.png" alt="image-20230607233913358" style="zoom:33%;" />
 
-In addition, it also supports `{{activeNote}}`. However, finding a suitable method to parse notes hasn't been discovered yet. Handling simple plain text notes would be more feasible. For example, you can write an article and ask the chat to summarize or translate it. If you have any ideas or suggestions on how to handle parsing, I would be happy to provide assistance.
+`{{activeNote}}` supports two types of messages: text and code. For text messages, the content will be rendered in the chat window as it appears in the note, with one exception - if it is an included note, it will be rendered as a link.
 
-It is also possible to support `{{selection}}` and `{{clipboard}}`, but based on usage habits, they may not be necessary at the moment, so they haven't been added yet.
+It is important to note that because Trilium stores text notes in HTML format, messages sent through `{{activeNote}}` will also be sent in HTML format. This is to provide AI with more information. The prompt can specify how the response should be formatted.
+
+When using `{{activeNote}}`, AI may return HTML, but it will still be rendered as plain text because it is difficult to determine whether the returned HTML is formatting information or actual code. Markdown is easier to handle, and support for markdown rendering may be added in the future.
 
 Prompts will be stored under the `#CHAT_PROMPTS` note. You can manually modify the order or content within it.
 
@@ -104,20 +106,6 @@ The `set`, `insert`, and `append` commands support both text and code note types
 The chat history will be stored under the note labeled with `CHAT_HISTORY_HOME`. If such a note doesn't exist, it will be stored under the default "trilium-chat" note.
 
 When opening the history or prompts, the search bar will be focused by default. You can navigate through the options using the Tab and Shift+Tab keys, and select an option by pressing Enter.
-
-### {{activeNote}}
-
-{{activeNote}}支持text和code两种类型。对于text类型，消息会在聊天栏渲染成和笔记中的内容跟相同的样子，除了一点，如果是included note, 它会被渲染成一个link.  
-
-需要注意的是，因为trilium把text笔记储存为html格式，所以发送的消息也是以html格式发送的，这样是为了给ai提供更多信息。可以在prompt中提示以什么样的方式返回。
-
-在使用activenote的时候，ai可能返回html，但渲染仍然时是plain text，因为很难判断返回的格式信息还是html的code。后续可能支持markdown渲染。
-
-
-
-
-
-![image-20230609004533717](./media/image-20230609004533717.png)
 
 ## TODO
 
