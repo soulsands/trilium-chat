@@ -77,8 +77,9 @@ export default class ElePrompt extends LittleEvent {
     }
 
     show() {
-        this.Popover.show();
-        this.$search.focus();
+        this.Popover.show(() => {
+            this.$search.focus();
+        });
         this.loadPrompts();
     }
 

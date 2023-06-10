@@ -1,5 +1,5 @@
 import LittleEvent from '@/classes/LittleEvent';
-import { getFirstUserContentOrThrow, showTooltip, bindEnter, sleep } from '@/utils';
+import { getFirstUserContentOrThrow, showTooltip, bindEnter } from '@/utils';
 import { EVENT_VIEW } from '@/constants';
 import Popover from '../wrappers/Popover';
 
@@ -41,10 +41,9 @@ export default class EleCommand extends LittleEvent {
     }
 
     async show() {
-        this.popover.show();
-
-        await sleep(300);
-        this.$content.$qs('.command_item').focus();
+        this.popover.show(() => {
+            this.$content.$qs('.command_item').focus();
+        });
     }
 
     bindCommand() {

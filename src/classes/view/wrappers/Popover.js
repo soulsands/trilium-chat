@@ -51,7 +51,7 @@ export default class Popover {
         this.isShow = false;
     }
 
-    async show() {
+    async show(callback) {
         if (this.isShow) return;
 
         zindexInfo.stack.push(this);
@@ -66,6 +66,15 @@ export default class Popover {
         this.setPopoverStyle(this.$popover);
 
         await nap();
+
+        const handleTransitionEnd = () => {
+            if (callback) {
+                callback();
+            }
+            this.$popover.removeEventListener('transitionend', handleTransitionEnd);
+        };
+
+        this.$popover.addEventListener('transitionend', handleTransitionEnd);
 
         toggleEleFade(this.$popover, true);
 
@@ -134,7 +143,6 @@ export default class Popover {
 
     async hide() {
         if (!this.isShow) return;
-
         const handleTransitionEnd = () => {
             removeEle(this.$content);
             removeEle(this.$popover);
