@@ -58,21 +58,28 @@ export default class ElePrompt extends LittleEvent {
         // this.$showBtn.click();
     }
 
-    hide() {
+    async hide() {
         this.Popover.hide();
     }
 
     bindEvents() {
-        this.$showBtn.addEventListener('click', async (e) => {
-            this.Popover.show(e);
-            this.$search.focus();
+        this.chatView.on(EVENT_VIEW.p, () => {
+            this.show();
+        });
 
-            this.loadPrompts();
+        this.$showBtn.addEventListener('click', async () => {
+            this.show();
         });
 
         this.bindContentEvents();
         this.bindListEvents();
         this.bindFormEvents();
+    }
+
+    show() {
+        this.Popover.show();
+        this.$search.focus();
+        this.loadPrompts();
     }
 
     bindContentEvents() {
@@ -132,7 +139,7 @@ export default class ElePrompt extends LittleEvent {
                 }
                 debug(target);
                 this.handlePromptContent(target);
-                this.Popover.hide();
+                this.hide();
             }
         });
     }
@@ -204,7 +211,7 @@ export default class ElePrompt extends LittleEvent {
 
             bindEnter($prompt, () => {
                 this.handlePromptContent(prompt);
-                this.Popover.hide();
+                this.hide();
             });
 
             $prompt.setAttribute('data-id', prompt.id);

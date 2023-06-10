@@ -1,6 +1,6 @@
 import LittleEvent from '@/classes/LittleEvent';
-import { STATUS_MESSAGE, EVENT_ENGINE, EVENT_VIEW } from '@/constants';
-import { isMsgExpected, escape, debug } from '@/utils';
+import { STATUS_MESSAGE, EVENT_ENGINE, EVENT_VIEW, EVENT_GLOBAL } from '@/constants';
+import { isMsgExpected, escape, debug, globalEvent } from '@/utils';
 
 export default class EleInput extends LittleEvent {
     constructor(view) {
@@ -24,17 +24,19 @@ export default class EleInput extends LittleEvent {
     }
 
     bindDependEvents() {
+        globalEvent.on(EVENT_GLOBAL.poperHide, () => {
+            this.$userInput.focus();
+        });
+
         this.chatView.chatEngine.on(EVENT_ENGINE.setStatus, (status) => {
             this.enableUserInput(status !== STATUS_MESSAGE.faild);
             this.handleMsgStatus(status);
         });
-        this.chatView.chatEngine.on(EVENT_ENGINE.load, async () => {
-            this.$userInput.focus();
-        });
+
         this.chatView.elePrompt.on(EVENT_VIEW.promptToggle, () => {
             this.setBtnStyle();
         });
-        this.chatView.on(EVENT_VIEW.viewShow, () => {
+        this.chatView.on([EVENT_VIEW.viewShow], () => {
             this.$userInput.focus();
         });
     }
@@ -48,6 +50,9 @@ export default class EleInput extends LittleEvent {
     async setBtnStyle() {
         const allowSend = isMsgExpected(this.engineStatus) || this.engineStatus === STATUS_MESSAGE.none;
         let hint = '';
+
+        this.$userInput.focus();
+
         if (allowSend) {
             const { msgEngine } = await this.getParsedMsg();
             if (!msgEngine) {
@@ -58,7 +63,6 @@ export default class EleInput extends LittleEvent {
 
             this.$sendBtn.classList.remove('freezed');
             hint = 'Send(Enter to send, Shift+Enter to break line)';
-            this.$userInput.focus();
         } else {
             this.$sendBtn.classList.add('freezed');
             if (this.engineStatus === STATUS_MESSAGE.faild) {
@@ -72,6 +76,8 @@ export default class EleInput extends LittleEvent {
 
     bindSendMessage() {
         const sendMessage = async () => {
+            if (this.checkShortcut()) return;
+
             const { msgView, msgEngine } = await this.getParsedMsg();
 
             debug(msgView, msgEngine);
@@ -95,6 +101,23 @@ export default class EleInput extends LittleEvent {
         });
     }
 
+    checkShortcut() {
+        const userInput = this.$userInput.value.trim();
+
+        const map = {
+            '/p': EVENT_VIEW.p,
+            '/c': EVENT_VIEW.c,
+            '/h': EVENT_VIEW.h,
+        };
+
+        const shortcutEvent = map[userInput];
+        if (shortcutEvent) {
+            this.clearInput();
+            this.chatView.emit(shortcutEvent);
+            return true;
+        }
+    }
+
     /* 
         userInput:{
             engine:raw,
@@ -108,7 +131,6 @@ export default class EleInput extends LittleEvent {
             }
         }
     */
-
     async getParsedMsg() {
         const parsedPrompt = this.chatView.elePrompt.$getParsedPromt();
         const userInput = this.$userInput.value;

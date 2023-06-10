@@ -1,6 +1,14 @@
-import { toggleEleShow, toggleEleFade, removeEle, nap, htmlStrToElement } from '@/utils';
-
-import { zindexInfo } from './share';
+import {
+    toggleEleShow,
+    toggleEleFade,
+    removeEle,
+    nap,
+    htmlStrToElement,
+    globalEvent,
+    zindexInfo,
+    arrayRemove,
+} from '@/utils';
+import { EVENT_GLOBAL } from '@/constants';
 
 const template = `<div class="chat_modal">
 <div class="modal_mask"></div>
@@ -43,9 +51,10 @@ export default class Modal {
         if (this.type !== 'popup') {
             const { offsetWidth, offsetHeight } = this.$contentWrapper;
             const { offsetLeft, offsetTop } = this.$chatView;
+            const { left, width, top, height } = event.target.getBoundingClientRect();
 
-            this.$contentWrapper.style.left = `${event.x - offsetLeft - offsetWidth / 2}px`;
-            this.$contentWrapper.style.top = `${event.y - offsetTop - offsetHeight / 2}px`;
+            this.$contentWrapper.style.left = `${left + width / 2 - offsetLeft - offsetWidth / 2}px`;
+            this.$contentWrapper.style.top = `${top + height / 2 - offsetTop - offsetHeight / 2}px`;
         }
 
         await nap();
@@ -54,6 +63,7 @@ export default class Modal {
         toggleEleFade(this.$contentWrapper, true);
 
         this.isShow = true;
+        zindexInfo.stack.push(this);
     }
 
     initModal() {
@@ -84,6 +94,8 @@ export default class Modal {
             this.$contentWrapper.style.left = 'initial';
             this.$contentWrapper.style.top = 'initial';
 
+            globalEvent.emit(EVENT_GLOBAL.poperHide);
+
             this.$contentWrapper.classList.remove(this.wrapperClassName);
             removeEle(this.$modal);
 
@@ -92,6 +104,8 @@ export default class Modal {
 
             this.$mask.removeEventListener('transitionend', handleTransitionEnd);
         };
+
+        arrayRemove(zindexInfo.stack, this);
 
         this.$mask.addEventListener('transitionend', handleTransitionEnd);
 

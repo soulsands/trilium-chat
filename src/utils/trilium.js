@@ -33,7 +33,7 @@ export const getFirstUserContentOrThrow = (engine) => {
 
 export const showTooltip = (text, isError) => {
     if (process.env.IS_BROWSER) {
-        window.alert('trilium only');
+        window.alert(text);
         return;
     }
 

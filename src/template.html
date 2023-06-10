@@ -66,7 +66,9 @@
                         <i class="header_face bx icon-view" title="home"></i>
                     </a>
                 </div>
-                <div class="header_right"><i title="hide" class="header_hide bx bx-minus icon-action"></i></div>
+                <div class="header_right">
+                    <button title="hide" class="header_hide bx bx-minus icon-action"></button>
+                </div>
             </div>
 
             <div class="thread">
@@ -95,15 +97,18 @@
                 <div class="operate_top flex-center-between">
                     <div class="operate_top_left flex-center">
                         <button class="operate_btn operate_btn_new chat_button">New Chat</button>
-                        <div
+                        <button
                             class="operate_btn operate_btn_prompt bx bx-book-bookmark icon-action"
                             title="Prompt"
-                        ></div>
-                        <div class="operate_btn operate_btn_command bx bx-terminal icon-action" title="Command"></div>
+                        ></button>
+                        <button
+                            class="operate_btn operate_btn_command bx bx-terminal icon-action"
+                            title="Command"
+                        ></button>
                         <div class="operate_btn operate_btn_history bx bx-history icon-action" title="History"></div>
                     </div>
                     <div class="operate_top_right">
-                        <div class="operate_btn operate_btn_option bx bx-cog icon-action" title="Options"></div>
+                        <button class="operate_btn operate_btn_option bx bx-cog icon-action" title="Options"></button>
                     </div>
                 </div>
 
@@ -123,9 +128,9 @@
                 <div class="select_top flex-center-between">
                     <div class="flex-center">
                         <div class="select_count pointer">Prompt(<span class="select_num">0</span>)</div>
-                        <div class="ml-2 select_add bx bx-plus icon-action"></div>
+                        <button class="ml-2 select_add bx bx-plus icon-action"></button>
                     </div>
-                    <div class="select_close bx bx-chevron-down icon-action"></div>
+                    <button class="select_close bx bx-chevron-down icon-action"></button>
                 </div>
                 <div class="select_search bd-main flex-center">
                     <i class="bx bx-search"></i>
@@ -185,13 +190,13 @@
             <div class="content_command">
                 <div class="command_title">Commands</div>
                 <div class="command_list">
-                    <div class="command_item" command="copy">Copy thread</div>
-                    <div class="command_item" command="history">Save to history</div>
-                    <div class="command_item" command="favor">Favor in history</div>
-                    <div class="command_item" command="unfavor">Unfavor in history</div>
-                    <div class="command_item" command="set">Set to active note</div>
-                    <div class="command_item" command="append">Append to active note</div>
-                    <div class="command_item" command="child">Save to new child</div>
+                    <div class="command_item" command="copy" tabindex="0">Copy thread</div>
+                    <div class="command_item" command="history" tabindex="0">Save to history</div>
+                    <div class="command_item" command="favor" tabindex="0">Favor in history</div>
+                    <div class="command_item" command="unfavor" tabindex="0">Unfavor in history</div>
+                    <div class="command_item" command="set" tabindex="0">Set to active note</div>
+                    <div class="command_item" command="append" tabindex="0">Append to active note</div>
+                    <div class="command_item" command="child" tabindex="0">Save to new child</div>
                 </div>
             </div>
         </div>

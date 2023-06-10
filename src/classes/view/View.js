@@ -1,7 +1,7 @@
 import './styles/main.less';
 import LittleEvent from '@/classes/LittleEvent';
 import { SHOW_CLASS_NAME, EVENT_VIEW, OPTION_KEY } from '@/constants';
-import { throwImplementationError } from '@/utils';
+import { throwImplementationError, keydownHandler } from '@/utils';
 
 import EleThread from './components/EleThread';
 import EleResizer from './components/EleResizer';
@@ -48,8 +48,8 @@ export default class View extends LittleEvent {
 
     activateElements() {
         this.elePrompt = new ElePrompt(this);
-        this.eleResizer = new EleResizer(this);
         this.eleInput = new EleInput(this);
+        this.eleResizer = new EleResizer(this);
         this.eleThread = new EleThread(this);
         this.eleGenerate = new EleGenerate(this);
         this.eleStatus = new EleStatus(this);
@@ -67,6 +67,7 @@ export default class View extends LittleEvent {
     }
 
     bindListeners() {
+        this.$chatView.addEventListener('keydown', keydownHandler);
         this.bindShortcut();
     }
 

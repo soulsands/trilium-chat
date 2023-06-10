@@ -78,15 +78,57 @@ export const htmlStrToElement = (str) => {
     return template.content.lastChild;
 };
 
+const callbacks = new Map();
+export function clickOutside(el, fn) {
+    callbacks.set(el, fn);
+
+    return function unbind() {
+        callbacks.delete(el);
+    };
+}
+
+function globalClick(e) {
+    callbacks.forEach((fn, el) => {
+        if (!el.contains(e.target)) {
+            // click outside
+            fn.call(el, e);
+        }
+    });
+}
+clickOutside.globalClick = globalClick;
+document.addEventListener('click', globalClick);
+
+export const zindexInfo = { global: 0, currentModal: null, stack: [] };
 const enterElSet = new WeakSet();
 
 export const bindEnter = (el, func) => {
     enterElSet.add(el);
     el.addEventListener('enter', func);
 };
+const escELSet = new WeakSet();
+export const bindEsc = (el, func) => {
+    escELSet.add(el);
+    el.addEventListener('esc', func);
+};
 
-window.addEventListener('keydown', (e) => {
-    if (e.key !== 'Enter') return;
-    if (!enterElSet.has(e.target)) return;
-    e.target.dispatchEvent(new CustomEvent('enter'));
-});
+export const keydownHandler = (e) => {
+    if (e.key === 'Enter') {
+        if (!enterElSet.has(e.target)) return;
+        e.stopImmediatePropagation();
+        e.target.dispatchEvent(new CustomEvent('enter'));
+        return;
+    }
+    if (e.key === 'Escape') {
+        const popper = zindexInfo.stack.pop();
+        if (popper) {
+            e.stopImmediatePropagation();
+
+            popper.hide();
+            return;
+        }
+        if (escELSet.has(e.target)) {
+            e.stopImmediatePropagation();
+            e.target.dispatchEvent(new CustomEvent('esc'));
+        }
+    }
+};
