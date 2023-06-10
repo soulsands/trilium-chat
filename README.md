@@ -10,7 +10,7 @@ This project is written in vanilla JavaScript, and is a frontend-only project. F
 
 -   Normal chat
 -   Custom prompt
-    -   Supports mustache syntax to render options. e.g. {{languague:chinese|English|Franch}} will be rendered as a select element
+    -   Supports mustache syntax to render options. e.g. {{language:Enligsh|Chinese|Czech}} will be rendered as a select element (This can be changed in CHAT_PROMPTS) 
     -   {{message}} as your message
     -   {{activeNote}} as the content of active note 
 -   Commands
@@ -28,15 +28,15 @@ This project is written in vanilla JavaScript, and is a frontend-only project. F
 
 https://soulsands.github.io/trilium-chat/
 
-After save your Chatgpt apikey and refresh the page, You can use most of the features, except those that depend on Trilium.
+After you save your Chatgpt apikey and refresh the page, You can use most of the features, except those that depend on Trilium.
 
-Please feel free to experience this page as it directly calls the ChatGPT API.
+Please feel free to reference this page as it directly calls the ChatGPT API.
 
 ## Start
 
-1. Create a JS frontend note then copy the contents from the release file "main.js" into the note, or alternatively, import the 'main.js' file.
-2. Set the note with `#run=frontendStartup `
-3. Reload. An options note will be created as a child of the script note.
+1. Create a JS frontend note, then copy the contents from the release file "main.js" into the note, or alternatively, import the 'main.js' file.
+2. Set the note with the attribute `#run=frontendStartup `
+3. Reload. An options note and a prompt note will be created as children of the script note.
 4. Configure your ChatGPT API key and reload.
 
 
@@ -65,7 +65,7 @@ Options is stored in a JSON note with `#CHAT_OPTIONS ` label.
 
 The prompt supports customizable options, making it highly flexible to use.
 
-<img src="./media/image-20230607233713046.png" alt="image-20230607233713046" style="zoom: 33%;" />
+<img src="https://github.com/Lolabird/trilium-chat/assets/89228316/754724ad-799d-42f1-90c4-c51f39258e23" alt="translation options" style="zoom: 33%;" />
 
 The `{{language:English|Chinese|French}}` will be rendered as a dropdown component, allowing you to select the desired option directly when using it.
 
@@ -95,7 +95,7 @@ The `append` command inserts the current note at the end of the note.
 
 <img src="./media/image-20230607234443677.png" alt="image-20230607234443677" style="zoom:33%;" />
 
-Introducing a new command, `insert`, which allows you to insert the current message at the selected position of the cursor. 
+The new command, `insert`, allows you to insert the current message at the selected position of the cursor. 
 
 The `set`, `insert`, and `append` commands support both text and code note types. 
 
@@ -103,7 +103,7 @@ The `set`, `insert`, and `append` commands support both text and code note types
 
 <img src="./media/image-20230607235219388.png" alt="image-20230607235219388" style="zoom:33%;" />
 
-The chat history will be stored under the note labeled with `CHAT_HISTORY_HOME`. If such a note doesn't exist, it will be stored under the default "trilium-chat" note.
+The chat history will be stored under the note labeled with the attribute `CHAT_HISTORY_HOME`. If such a note doesn't exist, it will be stored under the default "trilium-chat" note.
 
 When opening the history or prompts, the search bar will be focused by default. You can navigate through the options using the Tab and Shift+Tab keys, and select an option by pressing Enter.
 
