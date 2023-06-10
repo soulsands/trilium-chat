@@ -1,7 +1,14 @@
-import { toggleEleShow, toggleEleFade, removeEle, nap, htmlStrToElement, globalEvent } from '@/utils';
+import {
+    toggleEleShow,
+    toggleEleFade,
+    removeEle,
+    nap,
+    htmlStrToElement,
+    globalEvent,
+    zindexInfo,
+    arrayRemove,
+} from '@/utils';
 import { EVENT_GLOBAL } from '@/constants';
-
-import { zindexInfo } from './share';
 
 const template = `<div class="chat_modal">
 <div class="modal_mask"></div>
@@ -56,6 +63,7 @@ export default class Modal {
         toggleEleFade(this.$contentWrapper, true);
 
         this.isShow = true;
+        zindexInfo.stack.push(this);
     }
 
     initModal() {
@@ -78,8 +86,6 @@ export default class Modal {
     }
 
     async hide() {
-        console.log(82);
-
         if (!this.isShow) return;
 
         const handleTransitionEnd = () => {
@@ -98,6 +104,8 @@ export default class Modal {
 
             this.$mask.removeEventListener('transitionend', handleTransitionEnd);
         };
+
+        arrayRemove(zindexInfo.stack, this);
 
         this.$mask.addEventListener('transitionend', handleTransitionEnd);
 

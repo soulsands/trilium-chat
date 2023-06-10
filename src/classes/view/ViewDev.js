@@ -71,7 +71,6 @@ export default class ViewDev extends View {
             }
 
             if (e.key === 'Escape') {
-                console.log(e);
                 if (this.isViewShow()) {
                     e.preventDefault();
                     e.stopPropagation();

@@ -1,4 +1,4 @@
-import { DEFAULT_OPTIONS, EVENT_DATA, STATUS_DATA, ROLE, NOT_SUPPORTED, NO_THREAD, debug } from '@/constants';
+import { DEFAULT_OPTIONS, EVENT_DATA, STATUS_DATA, ROLE, NOT_SUPPORTED, NO_THREAD } from '@/constants';
 import {
     throwImplementationError,
     checkNewKey,
@@ -10,6 +10,7 @@ import {
     wrapP,
     threadToText,
     sliceTitle,
+    debug,
 } from '@/utils';
 import LittleEvent from '../LittleEvent';
 

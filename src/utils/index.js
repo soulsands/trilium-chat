@@ -5,18 +5,9 @@ export * from './perf';
 export * from './error';
 export * from './trilium';
 export * from './escape';
+export * from './func';
 
 export const globalEvent = new LittleEvent();
-
-export async function sleep(duration) {
-    await new Promise((resolve) => {
-        setTimeout(resolve, duration);
-    });
-}
-
-export async function nap() {
-    await sleep(10);
-}
 
 export function timeAgo(date) {
     const mathFloor = (val) => Math.floor(val);
@@ -107,19 +98,3 @@ export function calculatePopoverPosition(edgeRect, triggerRect, contentWidth, co
 export const copy = (text) => {
     navigator.clipboard.writeText(text);
 };
-
-export const random = (arr) => arr[Math.floor(Math.random() * arr.length)];
-
-export function wrapP(str) {
-    return `<p>${str}</p>`;
-}
-
-export function toLowerCase(str) {
-    return str.toLowerCase();
-}
-
-export function debug(...args) {
-    if (process.env.DEBUG) {
-        console.warn(...args);
-    }
-}

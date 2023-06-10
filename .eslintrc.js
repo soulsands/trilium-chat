@@ -80,8 +80,8 @@ module.exports = {
     },
     rules: {
         'prettier/prettier': ['error', { endOfLine: 'auto' }],
-        'no-console': 'off',
         'consistent-return': 'off',
+        'no-console': ['error', { allow: ['warn', 'error'] }],
         'no-underscore-dangle': 'off',
         'import/no-extraneous-dependencies': 'off',
         'class-methods-use-this': 'off',

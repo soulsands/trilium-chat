@@ -145,7 +145,7 @@ export default class EleThread {
             message.role === 'user' ? 'sent' : 'received'
         }'><div class='message-text'>${
             message.content
-        }</div><div class='bx bx-dots-vertical-rounded dot icon-action'></div></div>`;
+        }</div><button  class='bx bx-dots-vertical-rounded dot icon-action'></button></div>`;
 
         const msgDom = htmlStrToElement(skeleton);
 

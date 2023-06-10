@@ -1,7 +1,7 @@
 import './styles/main.less';
 import LittleEvent from '@/classes/LittleEvent';
 import { SHOW_CLASS_NAME, EVENT_VIEW, OPTION_KEY } from '@/constants';
-import { throwImplementationError } from '@/utils';
+import { throwImplementationError, keydownHandler } from '@/utils';
 
 import EleThread from './components/EleThread';
 import EleResizer from './components/EleResizer';
@@ -67,6 +67,7 @@ export default class View extends LittleEvent {
     }
 
     bindListeners() {
+        this.$chatView.addEventListener('keydown', keydownHandler);
         this.bindShortcut();
     }
 

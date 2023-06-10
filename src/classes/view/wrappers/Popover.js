@@ -1,6 +1,14 @@
-import { toggleEleFade, removeEle, nap, calculatePopoverPosition, globalEvent } from '@/utils';
+import {
+    toggleEleFade,
+    removeEle,
+    nap,
+    calculatePopoverPosition,
+    globalEvent,
+    clickOutside,
+    zindexInfo,
+    arrayRemove,
+} from '@/utils';
 import { EVENT_GLOBAL } from '@/constants';
-import { clickOutside, zindexInfo } from './share';
 
 const templateMap = {};
 export default class Popover {
@@ -44,8 +52,9 @@ export default class Popover {
     }
 
     async show() {
-        console.log(47);
         if (this.isShow) return;
+
+        zindexInfo.stack.push(this);
 
         if (!this.$popover) {
             this.initPopover();
@@ -134,11 +143,13 @@ export default class Popover {
 
             this.OutsideUnbind();
             this.$popover.removeEventListener('transitionend', handleTransitionEnd);
+            this.isShow = false;
         };
+
+        arrayRemove(zindexInfo.stack, this);
 
         this.$popover.addEventListener('transitionend', handleTransitionEnd);
         toggleEleFade(this.$popover, false);
-        this.isShow = false;
     }
 }
 
