@@ -55,6 +55,8 @@ export default class ElePrompt extends LittleEvent {
         this.prompts = [];
         this.bindEvents();
 
+        this.currentPrompt = null;
+
         // this.$showBtn.click();
     }
 
@@ -94,7 +96,7 @@ export default class ElePrompt extends LittleEvent {
     }
 
     clearContent() {
-        this.promptContent = '';
+        this.currentPrompt = null;
         this.$text.innerHTML = '';
     }
 
@@ -146,7 +148,7 @@ export default class ElePrompt extends LittleEvent {
     }
 
     async handlePromptContent(prompt) {
-        this.promptContent = prompt.content;
+        this.currentPrompt = prompt;
 
         toggleEleShow(this.$promptContent, true);
         this.renderContent(prompt);
@@ -174,6 +176,11 @@ export default class ElePrompt extends LittleEvent {
                     content: formData['prompt-content'],
                 };
                 await this.chatView.chatData.updatePrompt(prompt);
+
+                if (flagObj.id === this.currentPrompt.id) {
+                    this.currentPrompt = prompt;
+                    this.renderContent(prompt);
+                }
             } else {
                 const prompt = {
                     name: formData['prompt-name'],
@@ -240,8 +247,8 @@ export default class ElePrompt extends LittleEvent {
 
     // called in eleInput
     $getParsedPromt() {
-        if (!this.promptContent) return '';
+        if (!this.currentPrompt) return '';
 
-        return getParsedPromt(this.$promptContent, this.promptContent);
+        return getParsedPromt(this.$promptContent, this.currentPrompt.content);
     }
 }
