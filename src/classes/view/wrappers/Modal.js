@@ -26,8 +26,6 @@ export default class Modal {
     }
 
     async show(event) {
-        console.log(29);
-
         if (this.isShow) return;
 
         if (!this.$modal) {
@@ -46,9 +44,10 @@ export default class Modal {
         if (this.type !== 'popup') {
             const { offsetWidth, offsetHeight } = this.$contentWrapper;
             const { offsetLeft, offsetTop } = this.$chatView;
+            const { left, width, top, height } = event.target.getBoundingClientRect();
 
-            this.$contentWrapper.style.left = `${event.x - offsetLeft - offsetWidth / 2}px`;
-            this.$contentWrapper.style.top = `${event.y - offsetTop - offsetHeight / 2}px`;
+            this.$contentWrapper.style.left = `${left + width / 2 - offsetLeft - offsetWidth / 2}px`;
+            this.$contentWrapper.style.top = `${top + height / 2 - offsetTop - offsetHeight / 2}px`;
         }
 
         await nap();
