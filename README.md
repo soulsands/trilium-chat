@@ -21,6 +21,10 @@ This project is written in vanilla JavaScript, and is a frontend-only project. F
     -   Append to active note
     -   Save to new child note
     -   Insert(for message)
+-   input shortcuts 
+    -   /p - prompt
+    -   /c - command 
+    -   /h - history
 -   Automatic history saving
 -   Supports light and dark themes
 
