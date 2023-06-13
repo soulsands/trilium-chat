@@ -35,7 +35,11 @@
             .chat-wrapper {
                 transform: translateZ(0);
                 display: none;
-                /* min-width: 0 !important; */
+            }
+            @media screen and (max-width: 600px) {
+                .chat-wrapper {
+                    min-width: 100% !important;
+                }
             }
         </style>
     </head>
