@@ -3,6 +3,7 @@ const Dotenv = require('dotenv-webpack');
 const webpack = require('webpack');
 
 const { ENV } = process.env;
+// eslint-disable-next-line no-console
 console.log(ENV);
 
 const envPath = `./.env.${ENV}`;

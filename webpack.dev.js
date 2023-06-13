@@ -6,6 +6,7 @@ module.exports = merge(common, {
     mode: 'development',
     devServer: {
         hot: true,
+        port: 8081,
         watchFiles: ['./src/template.html'],
         client: {
             overlay: {

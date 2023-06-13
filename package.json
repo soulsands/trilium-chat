@@ -1,10 +1,10 @@
 {
     "name": "trilium-chat",
     "version": "0.3.0",
-    "description": "",
+    "description": "The chat plugin highly integrated with Trilium.",
     "keywords": [],
-    "license": "ISC",
-    "author": "",
+    "license": "AGPL-3.0-only",
+    "author": "soulsands <407221377@qq.com>",
     "main": "index.js",
     "repository": {
         "type": "git",

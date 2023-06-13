@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The chat plugin for Trilium currently supports Chatgpt.
+The chat plugin highly integrated with Trilium.
 
 This project is written in vanilla JavaScript, and is a frontend-only project. For those interested in developing Trilium plugins, there are some details within that can be referenced.
 
