@@ -111,10 +111,7 @@ The chat history will be stored under the note labeled with the attribute `CHAT_
 
 When opening the history or prompts, the search bar will be focused by default. You can navigate through the options using the Tab and Shift+Tab keys, and select an option by pressing Enter.
 
-## TODO
 
--   [ ] operation shortcut
--   [ ] new bing
 
 ## Contribute
 
