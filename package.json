@@ -12,7 +12,7 @@
     },
     "scripts": {
         "dev": "cross-env ENV=dev webpack serve --open --config webpack.dev.js",
-        "build:test": "npm run html && cross-env ENV=triliumTest webpack --config webpack.prod.js && node syncDistToTrilium.js",
+        "build:test": "npm run html && cross-env ENV=triliumTest webpack --config webpack.prod.js && node ./scripts/syncDistToTrilium.js",
         "build:preview": "npm run html && cross-env ENV=preview webpack --config webpack.prod.js ",
         "html": "webpack --config webpack.html.js",
         "build": "npm run html && cross-env ENV=prod webpack --config webpack.prod.js && npm run build:preview",

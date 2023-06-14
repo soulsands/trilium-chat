@@ -4,7 +4,6 @@ use the function "open note externally" then copy the temporary file path and pa
 example on windows:   yarn buld:test 'C:\Users\***\AppData\Local\Temp\tmp-29816-wzQ9MJ9Dm6f3-runFrontendStartup  (dup)'
 
 */
-
 const path = require('path');
 const fs = require('fs');
 
