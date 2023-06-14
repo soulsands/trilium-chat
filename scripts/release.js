@@ -2,6 +2,10 @@ const cp = require('child_process');
 
 const { version } = require('../package.json');
 
+cp.execSync('git add');
+cp.execSync(`git commit -m "release ${version}"`);
+cp.execSync(`git push`);
+
 const command = `gh release create ${version}  ./release/trilium-chat.js   --title ${version} `;
 
 try {

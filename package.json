@@ -16,6 +16,7 @@
         "build:preview": "npm run html && cross-env ENV=preview webpack --config webpack.prod.js ",
         "html": "webpack --config webpack.html.js",
         "build": "npm run html && cross-env ENV=prod webpack --config webpack.prod.js && npm run build:preview",
+        "release": "npm run build && node ./scripts/syncDistToTrilium.js",
         "lint:js": "eslint . --cache --fix",
         "lint:style": "stylelint \"**/*.less\" --fix",
         "lint": "npm run lint:js && npm run lint:style",
