@@ -48,6 +48,8 @@ Please feel free to reference this page as it directly calls the ChatGPT API.
 
 4. Configure your ChatGPT API key in the options note and reload.
 
+5. Alt+q is the default shortcut to toggle the UI, or you can click the chat icon on the top right corner.
+
 ## Documentation
 
 ### OPTIONS
