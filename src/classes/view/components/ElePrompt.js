@@ -29,7 +29,7 @@ export default class ElePrompt extends LittleEvent {
             contentSelector: '.content_select_prompt',
             $edgeEle: view.$chatView,
             $triggerEle: this.$showBtn,
-            offset: 5,
+            offset: 6,
             popoverClass: 'popover_prompt',
         });
 
