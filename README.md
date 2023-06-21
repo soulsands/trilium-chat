@@ -39,11 +39,14 @@ Please feel free to reference this page as it directly calls the ChatGPT API.
 ## Start
 
 1. Create a JS frontend note, then copy the contents from the release file "trilium-chat.js" into the note, or alternatively, import the "trilium-chat.js" file.
+
 2. Set the note with the attribute `#run=frontendStartup `
-3. Reload. An options note and a prompt note will be created as children of the script note.
-4. Configure your ChatGPT API key and reload.
 
+   ![1687307963633](./media/1687307963633.png)
 
+3. Reload (then an options note and a prompt note will be created as children of the script note).
+
+4. Configure your ChatGPT API key in the options note and reload.
 
 ## Documentation
 
