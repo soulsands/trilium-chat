@@ -114,7 +114,7 @@ export default class DataTrilium extends Data {
     }
 
     async setOptions(value) {
-        await api.runOnBackend(
+        const isExisted = await api.runOnBackend(
             async (label, content) => {
                 const strContent = JSON.stringify(content, null, '\t');
 
@@ -132,9 +132,15 @@ export default class DataTrilium extends Data {
 
                     newNote.setLabel(label);
                 }
+
+                return existedNote;
             },
             [DATA_KEYS.CHAT_OPTIONS, value]
         );
+
+        if (!isExisted) {
+            this.goOptions();
+        }
 
         return { ...value };
     }

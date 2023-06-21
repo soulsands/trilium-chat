@@ -128,7 +128,11 @@ export default class ChatGpt extends LittleEvent {
         };
 
         if (!this.apiKey) {
-            this.replaceMessage('please config your apikey in options file', STATUS_MESSAGE.faild, ROLE.error);
+            this.replaceMessage(
+                'please config your apikey in options file and reload',
+                STATUS_MESSAGE.faild,
+                ROLE.error
+            );
             return;
         }
 
@@ -191,7 +195,7 @@ export default class ChatGpt extends LittleEvent {
                 this.activeStream.addEventListener('readystatechange', (e) => {
                     debug(e);
                     if (e.readyState >= 2) {
-                        console.log(`ReadyState: ${e.readyState}`);
+                        debug(`ReadyState: ${e.readyState}`);
                     }
                 });
                 this.activeStream.addEventListener('error', (e) => {
