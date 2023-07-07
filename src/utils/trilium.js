@@ -44,11 +44,22 @@ export const showTooltip = (text, isError) => {
     }
 };
 
+export function contentToHtml(str) {
+    if (typeof str !== 'string') {
+        throw new TypeError('should be string');
+    }
+    const reg = /[^\n]+\n?/g;
+    return str
+        .match(reg)
+        .map((v) => `<p>${v}</p>`)
+        .join('');
+}
+
 export function threadToText(thread, useHtml) {
     let text = thread.map((v) => `role: ${v.role}\n${v.content}`).join('\n');
 
     if (useHtml) {
-        text = thread.map((v) => `<p>role: ${v.role}</p><p>${v.content}</p>`).join('');
+        text = thread.map((v) => `<p>role: ${v.role}</p>${contentToHtml(v.content)}`).join('');
     }
 
     if (!text) {

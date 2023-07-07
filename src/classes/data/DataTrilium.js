@@ -1,5 +1,5 @@
 import { DEFAULT_OPTIONS, DATA_KEYS, DEFAULT_PROMPTS, EVENT_DATA, STATUS_DATA, SUPPORT_TYPE } from '@/constants';
-import { throwError, threadToText, escape } from '@/utils';
+import { throwError, threadToText, escape, contentToHtml } from '@/utils';
 
 import Data from './Data';
 
@@ -11,6 +11,21 @@ function getSupportedActiveNoteOrThrow() {
         throwError(SUPPORT_TYPE);
     }
     return activeNote;
+}
+
+function getModalFragment(content, isThread, editor) {
+    if (isThread) {
+        content = threadToText(content, true);
+    } else {
+        content = contentToHtml(content);
+    }
+
+    // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_model-Model.html#function-insertContent
+    // https://stackoverflow.com/questions/61728192/replace-ckeditor-content-and-add-undo-history-entry
+    const viewFragment = editor.data.processor.toView(content);
+    const modelFragment = editor.data.toModel(viewFragment);
+
+    return modelFragment;
 }
 
 async function getActiveEditor(content) {
@@ -28,13 +43,6 @@ async function getActiveEditor(content) {
     if (activeNote.type === 'text') {
         editor = await api.getActiveContextTextEditor();
 
-        if (isThread) {
-            content = threadToText(content, true);
-        }
-        // https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_model_model-Model.html#function-insertContent
-        // https://stackoverflow.com/questions/61728192/replace-ckeditor-content-and-add-undo-history-entry
-        const viewFragment = editor.data.processor.toView(content);
-        const modelFragment = editor.data.toModel(viewFragment);
         return {
             insert() {
                 editor.model.change((writer) => {
@@ -44,11 +52,11 @@ async function getActiveEditor(content) {
             },
             set() {
                 const range = editor.model.createRangeIn(editor.model.document.getRoot());
-                editor.model.insertContent(modelFragment, range);
+                editor.model.insertContent(getModalFragment(content, isThread, editor), range);
             },
             append() {
                 editor.model.change((writer) => {
-                    writer.append(modelFragment, editor.model.document.getRoot());
+                    writer.append(getModalFragment(content, isThread, editor), editor.model.document.getRoot());
                 });
             },
         };
