@@ -1,17 +1,7 @@
 import { SHOW_CLASS_NAME, FADE_CLASS_NAME } from '@/constants';
 
-export function toggleClassName(ele, toggle, className) {
-    if (typeof toggle === 'boolean') {
-        if (toggle) {
-            ele.classList.add(className);
-        } else {
-            ele.classList.remove(className);
-        }
-    } else if (ele.classList.contains(className)) {
-        ele.classList.remove(className);
-    } else {
-        ele.classList.add(className);
-    }
+export function toggleClassName(ele, force, className) {
+    ele.classList.toggle(className, force);
 }
 
 export function toggleEleShow(ele, show) {
