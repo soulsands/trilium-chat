@@ -223,12 +223,13 @@ export default class ElePrompt extends LittleEvent {
             });
 
             $prompt.setAttribute('data-id', prompt.id);
+            $prompt.setAttribute('title', prompt.content);
 
             $prompt.$qs('.item_title').textContent = prompt.name;
 
-            const $preview = $prompt.$qs('.item_preview');
-            $preview.setAttribute('title', prompt.content);
-            $preview.textContent = prompt.content;
+            // const $preview = $prompt.$qs('.item_preview');
+            // $preview.setAttribute('title', prompt.content);
+            // $preview.textContent = prompt.content;
 
             fragment.appendChild($prompt);
         });
