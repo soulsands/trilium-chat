@@ -282,6 +282,21 @@ export default class DataTrilium extends Data {
         return { ...record };
     }
 
+    async goHistorys() {
+        const note = await api.runOnBackend(
+            async (label) => api.getNoteWithLabel(label) || api.currentNote,
+            [DATA_KEYS.HISTORY_HOME_LABEL]
+        );
+        api.activateNote(note.noteId);
+    }
+
+    async goHistory(hid) {
+        const note = await api.runOnBackend(
+            async (label, id) => api.getNoteWithLabel(label, id),
+            [DATA_KEYS.HISTORY_LABEL, hid]
+        );
+        api.activateNote(note.noteId);
+    }
     // <<history
 
     // >> command

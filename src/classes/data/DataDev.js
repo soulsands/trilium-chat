@@ -16,6 +16,8 @@ async function setLocalItem(key, value) {
 
     return { ...value };
 }
+
+const storageHint = 'stored in localstorage';
 export default class DataDev extends Data {
     async getOptions() {
         return getLocalItem(DATA_KEYS.CHAT_OPTIONS);
@@ -106,9 +108,17 @@ export default class DataDev extends Data {
         throwError(TRILIUM_ONLY);
     }
 
+    goHistorys() {
+        window.alert(storageHint);
+    }
+
+    goHistory() {
+        window.alert(storageHint);
+    }
+
     // << options
     async goOptions() {
-        window.alert('preview: options is stored in localstorage');
+        window.alert(storageHint);
     }
     // >> options
 }

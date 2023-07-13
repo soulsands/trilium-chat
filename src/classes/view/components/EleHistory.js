@@ -13,6 +13,7 @@ export default class EleHistory extends LittleEvent {
 
         this.$showBtn = view.$chatView.$qs('.operate_btn_history');
 
+        this.$historyLabel = this.$content.$qs('.select_count');
         this.$num = this.$content.$qs('.select_num');
         this.$closeBtn = this.$content.$qs('.select_close');
         this.$search = this.$content.$qs('.select_search_input');
@@ -39,6 +40,9 @@ export default class EleHistory extends LittleEvent {
         this.$closeBtn.addEventListener('click', () => {
             this.hide();
         });
+        this.$historyLabel.addEventListener('click', () => {
+            this.chatView.chatData.goHistorys();
+        });
         this.$search.addEventListener('input', (e) => {
             this.renderSearch(e.target.value);
         });
@@ -46,6 +50,10 @@ export default class EleHistory extends LittleEvent {
             const $record = closest('[data-id]', e.target);
             if ($record) {
                 const target = this.records.find((record) => record.id === $record.dataset.id);
+                if (e.target.classList.contains('bx-edit-alt')) {
+                    this.chatView.chatData.goHistory($record.dataset.id);
+                    return;
+                }
 
                 this.hide();
 

@@ -256,10 +256,18 @@ export default class Data extends LittleEvent {
 
         await this.saveRecord(newRecord);
     }
+
+    goHistorys() {
+        throwImplementationError();
+    }
+
+    goHistory() {
+        throwImplementationError();
+    }
     // << history
 
     // << options
-    async goOptions() {
+    goOptions() {
         throwImplementationError();
     }
     // >> options
