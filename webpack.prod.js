@@ -2,7 +2,7 @@ const { merge } = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const common = require('./webpack.common');
-const { AddCode } = require('./webpack.addCode');
+const { AddVersion } = require('./webpack.addVersion');
 const { PluginGetFileSize } = require('./webpack.fileSize');
 
 const options = merge(common, {
@@ -28,7 +28,7 @@ if (genHtml) {
         })
     );
 } else {
-    options.plugins.push(new AddCode(), new PluginGetFileSize('trilium-chat.js'));
+    options.plugins.push(new AddVersion(), new PluginGetFileSize('trilium-chat.js'));
 }
 
 module.exports = options;
