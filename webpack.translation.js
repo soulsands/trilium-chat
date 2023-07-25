@@ -1,5 +1,5 @@
 const { Compilation, sources } = require('webpack');
-const translationMap = require('./webpack.translation.json');
+const translationMap = require('./in18/lang/en.json');
 
 class Translation {
     apply(compiler) {
@@ -13,7 +13,7 @@ class Translation {
                     Object.entries(assets).forEach(([pathname, source]) => {
                         if (/trilium-chat/.test(pathname)) {
                             let souceCode = source.source();
-                            const reg = /i{(.+)}/;
+                            const reg = /i{(.+)}/gi;
                             let match;
                             // eslint-disable-next-line no-cond-assign
                             while ((match = reg.exec(souceCode)) !== null) {
