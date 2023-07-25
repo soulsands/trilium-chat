@@ -2,6 +2,7 @@ const path = require('path');
 const Dotenv = require('dotenv-webpack');
 const webpack = require('webpack');
 const { Skeleton } = require('./webpack.skeleton');
+const { Translation } = require('./webpack.translation');
 
 const { ENV } = process.env;
 // eslint-disable-next-line no-console
@@ -43,6 +44,7 @@ module.exports = {
             path: envPath, // Path to .env file (this is the default)
         }),
         new Skeleton(),
+        new Translation(),
     ],
     resolve: {
         alias: {
