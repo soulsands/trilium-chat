@@ -1,7 +1,7 @@
 import './styles/main.less';
 import LittleEvent from '@/classes/LittleEvent';
 import { SHOW_CLASS_NAME, EVENT_VIEW, OPTION_KEY } from '@/constants';
-import { throwImplementationError, keydownHandler } from '@/utils';
+import { throwImplementationError, keydownHandler, htmlStrToElement } from '@/utils';
 
 import EleThread from './components/EleThread';
 import EleResizer from './components/EleResizer';
@@ -15,6 +15,9 @@ import EleNewChat from './components/EleNewChat';
 import EleCommand from './components/EleCommand';
 import ElePrompt from './components/ElePrompt';
 import EleOption from './components/EleOption';
+/* skeleton-flag */
+const skeleton = ` `;
+/* skeleton-flag */
 
 export default class View extends LittleEvent {
     constructor({ options, chatData, chatEngine }) {
@@ -34,15 +37,18 @@ export default class View extends LittleEvent {
         this.bindListeners();
     }
 
+    initSkeleton(wrapperSelector = 'body') {
+        const wrapper = document.$qs(wrapperSelector);
+        this.$chatView = htmlStrToElement(skeleton);
+
+        wrapper.appendChild(this.$chatView);
+    }
+
     appendEleToHost() {
         this.appendToggleBtn();
     }
 
     appendToggleBtn() {
-        throwImplementationError();
-    }
-
-    initSkeleton() {
         throwImplementationError();
     }
 

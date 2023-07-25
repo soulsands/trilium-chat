@@ -2,11 +2,6 @@ import { ROLE, isDev } from '@/constants';
 import View from './View';
 
 export default class ViewDev extends View {
-    initSkeleton() {
-        this.$chatView = document.$qs('.chat-wrapper');
-        this.$chatView.style.display = 'flex';
-    }
-
     appendEleToHost() {
         this.appendToggleBtn();
         if (isDev) {
