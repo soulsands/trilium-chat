@@ -95,7 +95,7 @@ export const DEFAULT_OPTIONS = {
         completion: 'https://api.openai.com/v1/chat/completions',
     },
     engineOptions: {
-        model: 'gpt-3.5-turbo-16k-0613',
+        model: 'gpt-3.5-turbo-16k',
         max_tokens: 2500,
         temperature: 0.3,
         top_p: 1,
