@@ -1,5 +1,5 @@
 import { STATUS_MESSAGE, NO_THREAD, ROLE } from '@/constants';
-
+import { debug } from './func';
 import { throwError } from './error';
 
 export function checkNewKey(newObj, oldObj) {
@@ -49,10 +49,34 @@ export function contentToHtml(str) {
         throw new TypeError('should be string');
     }
     const reg = /[^\n]+\n?/g;
-    return str
-        .match(reg)
-        .map((v) => `<p>${v}</p>`)
-        .join('');
+    const handler = str.match(reg).reduce(
+        (config, p, index, arr) => {
+            const codeReg = /```/;
+            const codeCatched = codeReg.test(p);
+
+            if (codeCatched) {
+                config.inCode = !config.inCode;
+
+                if (config.codeStr) {
+                    config.strs.push(`<pre><code>${config.codeStr}</code></pre>`);
+                    config.codeStr = '';
+                }
+            } else if (config.inCode) {
+                config.codeStr += p;
+            } else {
+                config.strs.push(`<p>${p.replace('\n', '')}</p>`);
+            }
+
+            if (index === arr.length - 1 && config.inCode) {
+                config.strs.push(`<pre><code>${config.codeStr}</code></pre>`);
+            }
+
+            return config;
+        },
+        { inCode: false, strs: [], codeStr: '' }
+    );
+    debug(handler);
+    return handler.strs.join('');
 }
 
 export function threadToText(thread, useHtml) {

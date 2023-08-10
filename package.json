@@ -1,6 +1,6 @@
 {
     "name": "trilium-chat",
-    "version": "0.4.0",
+    "version": "0.4.1",
     "description": "The chat plugin highly integrated with Trilium.",
     "keywords": [],
     "license": "AGPL-3.0-only",
