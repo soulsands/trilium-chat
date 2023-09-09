@@ -129,7 +129,7 @@ export default class ChatGpt extends LittleEvent {
 
         if (!this.apiKey) {
             this.replaceMessage(
-                'please config your apikey in options file and reload',
+                'Please verify your API Key is correct in the note titled "CHAT_OPTIONS", and then reload via (F5) or (Ctrl + R), or Trilium menu: Advanced > Reload Frontend',
                 STATUS_MESSAGE.failed,
                 ROLE.error
             );
@@ -144,7 +144,11 @@ export default class ChatGpt extends LittleEvent {
             }
         } catch (error) {
             console.error(error);
-            this.replaceMessage('API Error. See console logs for details.', STATUS_MESSAGE.failed, ROLE.error);
+            this.replaceMessage(
+                'API Error. See console logs for details. (ctrl + shift + i)',
+                STATUS_MESSAGE.failed,
+                ROLE.error
+            );
         }
     }
 

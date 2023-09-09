@@ -62,11 +62,11 @@ export const STATUS_DATA = {
 
 export const STATUS_MESSAGE = {
     none: 'none',
-    fetching: 'fetching',
-    generating: 'generating',
-    success: 'success',
-    failed: 'failed',
-    cancel: 'cancel',
+    fetching: 'Fetching information for task.',
+    generating: 'Generating information for task.',
+    success: 'Successfully completed task.',
+    failed: 'Failed to complete task. Please try again, or view the console for more information. (ctrl + shift + i)',
+    cancel: 'Canceled task.',
 };
 
 export const SHOW_CLASS_NAME = 'show';
