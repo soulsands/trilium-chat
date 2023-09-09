@@ -10,7 +10,7 @@ export default class EleGenerate extends LittleEvent {
         this.$stop = view.$chatView.$qs('.thread_op_stop');
 
         this.$stop.addEventListener('click', () => {
-            view.chatEngine.cencelGenerating();
+            view.chatEngine.cancelGenerating();
         });
 
         this.$regenerate = view.$chatView.$qs('.thread_op_regenerate');

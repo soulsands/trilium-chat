@@ -49,7 +49,7 @@ export default class ElePrompt extends LittleEvent {
         this.ModalForm = new ModalFormWrapper({
             $content: this.$contentForm,
             $chatView: view.$chatView,
-            title: 'Add temlate',
+            title: 'Add prompt template',
         });
 
         this.prompts = [];
@@ -106,7 +106,7 @@ export default class ElePrompt extends LittleEvent {
         });
 
         this.$addBtn.addEventListener('click', async (e) => {
-            this.ModalForm.show(e, { title: 'Add temlate' });
+            this.ModalForm.show(e, { title: 'Add prompt template' });
         });
 
         this.$closeBtn.addEventListener('click', () => {
@@ -129,7 +129,7 @@ export default class ElePrompt extends LittleEvent {
 
                 if (type === 'edit') {
                     this.ModalForm.show(e, {
-                        title: 'Edit temlate',
+                        title: 'Edit prompt template',
                         formData: { 'prompt-name': target.name, 'prompt-content': target.content },
                         flagObj: target,
                     });

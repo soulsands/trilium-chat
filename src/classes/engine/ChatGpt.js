@@ -115,9 +115,11 @@ export default class ChatGpt extends LittleEvent {
 
     async sendRequest(overrideOptions = {}) {
         const messages = this.thread.reduce((handleMessages, msg) => {
+            // title = msg.content;
             if (isMsgExpected(msg.status)) {
                 handleMessages.push({ role: msg.role, content: msg.content });
             }
+
             return handleMessages;
         }, []);
 
@@ -129,7 +131,7 @@ export default class ChatGpt extends LittleEvent {
 
         if (!this.apiKey) {
             this.replaceMessage(
-                'Please verify your API Key is correct in the note titled "CHAT_OPTIONS", and then reload via (F5) or (Ctrl + R), or Trilium menu: Advanced > Reload Frontend',
+                'Please verify your API Key is correct in the note titled "CHAT_OPTIONS", and then reload via (F5) or (Ctrl + R), or use the Trilium menu: Advanced > Reload Frontend',
                 STATUS_MESSAGE.failed,
                 ROLE.error
             );
@@ -143,12 +145,21 @@ export default class ChatGpt extends LittleEvent {
                 await this.requestChatBatch(finalOptions);
             }
         } catch (error) {
-            console.error(error);
-            this.replaceMessage(
-                'API Error. See console logs for details. (ctrl + shift + i)',
-                STATUS_MESSAGE.failed,
-                ROLE.error
-            );
+            // Check if the error contains a CustomEvent which has an entry called "data", if it does, display that to the user
+            if (error.data) {
+                this.replaceMessage(
+                    `The API returned the following error:\n ${error.data}`,
+                    STATUS_MESSAGE.failed,
+                    ROLE.error
+                );
+            } else {
+                console.error(error);
+                this.replaceMessage(
+                    'API Error. See console logs for details. (ctrl + shift + i)',
+                    STATUS_MESSAGE.failed,
+                    ROLE.error
+                );
+            }
         }
     }
 
@@ -219,7 +230,7 @@ export default class ChatGpt extends LittleEvent {
         });
     }
 
-    cencelGenerating() {
+    cancelGenerating() {
         this.setLastMessageStatus(STATUS_MESSAGE.cancel);
         this.emit(EVENT_ENGINE.cancel, { ...this.lastMessage });
 
