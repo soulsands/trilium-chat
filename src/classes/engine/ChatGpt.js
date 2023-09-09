@@ -115,7 +115,7 @@ export default class ChatGpt extends LittleEvent {
 
     async sendRequest(overrideOptions = {}) {
         const messages = this.thread.reduce((handleMessages, msg) => {
-            // title = msg.content;
+            // Maybe there's some way to set msg.content the title of the note instead?
             if (isMsgExpected(msg.status)) {
                 handleMessages.push({ role: msg.role, content: msg.content });
             }
