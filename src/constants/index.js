@@ -142,6 +142,12 @@ export const DEFAULT_PROMPTS = [
         content: 'Translate the following content to {{language:English|Chinese|Czech}} language: \n{{activeNote}}',
         order: 1,
     },
+    {
+        id: 'official-2',
+        name: 'summarizeNote',
+        content: 'Summarize the following content: \n{{activeNote}}',
+        order: 2,
+    },
 ];
 
 export const NOT_SUPPORTED = 'NOT SUPPORTED';
