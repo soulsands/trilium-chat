@@ -25,7 +25,7 @@ export default class EleGenerate extends LittleEvent {
     bindEngineEvents() {
         this.chatView.chatEngine.on(EVENT_ENGINE.setStatus, (status) => {
             this.toggleStopGenerating([STATUS_MESSAGE.generating, STATUS_MESSAGE.fetching].includes(status));
-            this.toggleRegenerate([STATUS_MESSAGE.cancel, STATUS_MESSAGE.faild].includes(status));
+            this.toggleRegenerate([STATUS_MESSAGE.cancel, STATUS_MESSAGE.failed].includes(status));
         });
     }
 

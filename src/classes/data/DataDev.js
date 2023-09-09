@@ -44,9 +44,9 @@ export default class DataDev extends Data {
         return setLocalItem(DATA_KEYS.CHAT_PROMPTS, DEFAULT_PROMPTS);
     }
 
-    async getAcitveNoteContent() {
+    async getActiveNoteContent() {
         await nap();
-        this.emit(EVENT_DATA.setStatus, { status: STATUS_DATA.faild, key: 'noteId', value: 'file' });
+        this.emit(EVENT_DATA.setStatus, { status: STATUS_DATA.failed, key: 'noteId', value: 'file' });
         showTooltip(TRILIUM_ONLY);
         throw new Error('not supported');
     }

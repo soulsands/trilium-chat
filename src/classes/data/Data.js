@@ -100,7 +100,7 @@ export default class Data extends LittleEvent {
         await this.updatePrompt(prompt, true);
     }
 
-    getAcitveNoteContent() {
+    getActiveNoteContent() {
         throwImplementationError();
     }
 

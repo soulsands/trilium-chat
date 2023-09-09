@@ -130,7 +130,7 @@ export default class ChatGpt extends LittleEvent {
         if (!this.apiKey) {
             this.replaceMessage(
                 'please config your apikey in options file and reload',
-                STATUS_MESSAGE.faild,
+                STATUS_MESSAGE.failed,
                 ROLE.error
             );
             return;
@@ -144,7 +144,7 @@ export default class ChatGpt extends LittleEvent {
             }
         } catch (error) {
             console.error(error);
-            this.replaceMessage('API Error. See console logs for details.', STATUS_MESSAGE.faild, ROLE.error);
+            this.replaceMessage('API Error. See console logs for details.', STATUS_MESSAGE.failed, ROLE.error);
         }
     }
 

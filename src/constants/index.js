@@ -57,7 +57,7 @@ export const EVENT_DATA = {
 export const STATUS_DATA = {
     optionSyncing: 'optionSyncing',
     success: 'success',
-    faild: 'faild',
+    failed: 'failed',
 };
 
 export const STATUS_MESSAGE = {
@@ -65,7 +65,7 @@ export const STATUS_MESSAGE = {
     fetching: 'fetching',
     generating: 'generating',
     success: 'success',
-    faild: 'faild',
+    failed: 'failed',
     cancel: 'cancel',
 };
 

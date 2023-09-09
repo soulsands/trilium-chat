@@ -209,7 +209,7 @@ export default class DataTrilium extends Data {
      * provide two kinds of messages. engine for chatgpt, view for innerHtml
      * @returns {Promise}
      */
-    async getAcitveNoteContent() {
+    async getActiveNoteContent() {
         try {
             const activeNote = getSupportedActiveNoteOrThrow();
             const { content } = await activeNote.getNoteComplement();
@@ -220,8 +220,8 @@ export default class DataTrilium extends Data {
             };
         } catch (error) {
             this.emit(EVENT_DATA.setStatus, {
-                status: STATUS_DATA.faild,
-                key: 'acitveNote',
+                status: STATUS_DATA.failed,
+                key: 'activeNote',
                 value: error.message,
             });
             throwError(error.message);
