@@ -110,7 +110,7 @@ export default class EleThread {
 
             const { chatData } = this.chatView;
             try {
-                await chatData.handleMsgCommand(command, this.clickedMsg);
+                await chatData.handleMsgCommand(command, this.clickedMsg, this.chatView.chatEngine);
                 showTooltip('success');
             } catch (error) {
                 showTooltip(`${command}:${error.message}`, true);
