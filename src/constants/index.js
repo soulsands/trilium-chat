@@ -65,7 +65,7 @@ export const STATUS_MESSAGE = {
     fetching: 'Fetching information for task.',
     generating: 'Generating information for task.',
     success: 'Successfully completed task.',
-    failed: 'Failed to complete task, view the console for more information. (ctrl + shift + i)',
+    failed: 'Failed, view the console for more information. (ctrl + shift + i)',
     cancel: 'Canceled task.',
 };
 
