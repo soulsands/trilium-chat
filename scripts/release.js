@@ -3,7 +3,7 @@ const cp = require('child_process');
 const { version } = require('../package.json');
 
 try {
-    cp.execSync('git add');
+    cp.execSync('git add .');
     cp.execSync(`git commit -m "release ${version}"`);
     cp.execSync(`git push`);
 } catch (error) {
