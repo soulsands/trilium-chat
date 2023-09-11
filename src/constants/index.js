@@ -57,16 +57,16 @@ export const EVENT_DATA = {
 export const STATUS_DATA = {
     optionSyncing: 'optionSyncing',
     success: 'success',
-    faild: 'faild',
+    failed: 'failed',
 };
 
 export const STATUS_MESSAGE = {
     none: 'none',
-    fetching: 'fetching',
-    generating: 'generating',
-    success: 'success',
-    faild: 'faild',
-    cancel: 'cancel',
+    fetching: 'Fetching information for task.',
+    generating: 'Generating information for task.',
+    success: 'Successfully completed task.',
+    failed: 'Failed, view the console for more information. (ctrl + shift + i)',
+    cancel: 'Canceled task.',
 };
 
 export const SHOW_CLASS_NAME = 'show';
@@ -141,6 +141,12 @@ export const DEFAULT_PROMPTS = [
         name: 'translateNote',
         content: 'Translate the following content to {{language:English|Chinese|Czech}} language: \n{{activeNote}}',
         order: 1,
+    },
+    {
+        id: 'official-2',
+        name: 'summarizeNote',
+        content: 'Summarize the following content: \n{{activeNote}}',
+        order: 2,
     },
 ];
 

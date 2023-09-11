@@ -100,7 +100,7 @@ export default class Data extends LittleEvent {
         await this.updatePrompt(prompt, true);
     }
 
-    getAcitveNoteContent() {
+    getActiveNoteContent() {
         throwImplementationError();
     }
 
@@ -180,7 +180,7 @@ export default class Data extends LittleEvent {
         throwImplementationError();
     }
 
-    async handleMsgCommand(command, msg) {
+    async handleMsgCommand(command, msg, engine) {
         debug(command, msg);
         const map = {
             copy: this.msgCopy.bind(this),
@@ -190,7 +190,7 @@ export default class Data extends LittleEvent {
             child: this.msgChild.bind(this),
         };
         if (map[command]) {
-            await map[command](msg);
+            await map[command](msg, engine);
         }
     }
 
@@ -211,8 +211,10 @@ export default class Data extends LittleEvent {
         await this.setNoteWith(msg, true);
     }
 
-    async msgChild(msg) {
-        await this.saveToChild(sliceTitle(msg), wrapP(msg));
+    async msgChild(msg, engine) {
+        const content = getFirstUserContentOrThrow(engine);
+
+        await this.saveToChild(content, wrapP(msg));
     }
 
     async handleSaveHistory(engine) {

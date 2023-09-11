@@ -29,7 +29,7 @@ export default class EleThread {
     }
 
     wrapFunction() {
-        this.scrolToBottom = throttle(this.scrolToBottom, 300);
+        this.scrollToBottom = throttle(this.scrollToBottom, 300);
     }
 
     bindMsgEvents() {
@@ -110,7 +110,7 @@ export default class EleThread {
 
             const { chatData } = this.chatView;
             try {
-                await chatData.handleMsgCommand(command, this.clickedMsg);
+                await chatData.handleMsgCommand(command, this.clickedMsg, this.chatView.chatEngine);
                 showTooltip('success');
             } catch (error) {
                 showTooltip(`${command}:${error.message}`, true);
@@ -151,11 +151,11 @@ export default class EleThread {
 
         this.$threadMsgs.appendChild(msgDom);
 
-        this.scrolToBottom();
+        this.scrollToBottom();
         return msgDom;
     }
 
-    scrolToBottom() {
+    scrollToBottom() {
         this.$threadMsgs.scrollTop = 10e10;
     }
 
@@ -170,7 +170,7 @@ export default class EleThread {
         currentMsgDom.children[0].textContent = content.content;
 
         if (!this.isHovering) {
-            this.scrolToBottom();
+            this.scrollToBottom();
         }
     }
 

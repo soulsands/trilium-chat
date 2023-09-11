@@ -29,7 +29,7 @@ export default class EleInput extends LittleEvent {
         });
 
         this.chatView.chatEngine.on(EVENT_ENGINE.setStatus, (status) => {
-            this.enableUserInput(status !== STATUS_MESSAGE.faild);
+            this.enableUserInput(status !== STATUS_MESSAGE.failed);
             this.handleMsgStatus(status);
         });
 
@@ -65,7 +65,7 @@ export default class EleInput extends LittleEvent {
             hint = 'Send(Enter to send, Shift+Enter to break line)';
         } else {
             this.$sendBtn.classList.add('freezed');
-            if (this.engineStatus === STATUS_MESSAGE.faild) {
+            if (this.engineStatus === STATUS_MESSAGE.failed) {
                 hint = 'Regenerating is worth a try';
             } else {
                 hint = 'Wait a moment';
@@ -152,7 +152,7 @@ export default class EleInput extends LittleEvent {
 
         if (regNote.test(parsedPrompt)) {
             try {
-                const { engine, view } = await this.chatView.chatData.getAcitveNoteContent();
+                const { engine, view } = await this.chatView.chatData.getActiveNoteContent();
 
                 msgEngine = msgEngine.replace(regNote, engine);
                 msgView = msgView.replace(regNote, view);
