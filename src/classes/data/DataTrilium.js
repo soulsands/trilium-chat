@@ -107,8 +107,8 @@ async function parseTextNote(content) {
 export default class DataTrilium extends Data {
     // >>options
     async getOptions() {
-        return api.runAsyncOnBackendWithManualTransactionHandling(
-            async (label) => {
+        return api.runOnBackend(
+            (label) => {
                 const targetNote = api.getNoteWithLabel(label);
                 if (!targetNote) return null;
 
@@ -122,8 +122,8 @@ export default class DataTrilium extends Data {
     }
 
     async setOptions(value) {
-        const isExisted = await api.runAsyncOnBackendWithManualTransactionHandling(
-            async (label, content) => {
+        const isExisted = await api.runOnBackend(
+            (label, content) => {
                 const strContent = JSON.stringify(content, null, '\t');
 
                 const existedNote = api.getNoteWithLabel(label);
@@ -160,8 +160,8 @@ export default class DataTrilium extends Data {
 
     // >>prompts
     async getPrompts() {
-        return api.runAsyncOnBackendWithManualTransactionHandling(
-            async (label) => {
+        return api.runOnBackend(
+            (label) => {
                 const targetNote = api.getNoteWithLabel(label);
                 if (!targetNote) return null;
 
@@ -175,8 +175,8 @@ export default class DataTrilium extends Data {
     }
 
     async setPrompts(value) {
-        await api.runAsyncOnBackendWithManualTransactionHandling(
-            async (label, content) => {
+        await api.runOnBackend(
+            (label, content) => {
                 const strContent = JSON.stringify(content, null, '\t');
 
                 const existedNote = api.getNoteWithLabel(label);
@@ -232,8 +232,8 @@ export default class DataTrilium extends Data {
 
     // >>history
     async getRecords() {
-        return api.runAsyncOnBackendWithManualTransactionHandling(
-            async (label) => {
+        return api.runOnBackend(
+            (label) => {
                 const targetNotes = api.getNotesWithLabel(label) || [];
 
                 return targetNotes.map((note) => ({ ...note.getJsonContent(), title: note.title }));
@@ -243,8 +243,8 @@ export default class DataTrilium extends Data {
     }
 
     async getRecord(id) {
-        return api.runAsyncOnBackendWithManualTransactionHandling(
-            async (label, recordId) => {
+        return api.runOnBackend(
+            (label, recordId) => {
                 const targetNote = api.getNoteWithLabel(label, recordId);
                 if (!targetNote) return null;
 
@@ -255,8 +255,8 @@ export default class DataTrilium extends Data {
     }
 
     async saveRecord(record) {
-        await api.runAsyncOnBackendWithManualTransactionHandling(
-            async (homeLabel, historyLabel, _record) => {
+        await api.runOnBackend(
+            (homeLabel, historyLabel, _record) => {
                 const existedNote = api.getNoteWithLabel(historyLabel, `${_record.id}`);
                 const strContent = JSON.stringify(_record, null, '\t');
 
@@ -283,16 +283,16 @@ export default class DataTrilium extends Data {
     }
 
     async goHistorys() {
-        const note = await api.runAsyncOnBackendWithManualTransactionHandling(
-            async (label) => api.getNoteWithLabel(label) || api.currentNote,
+        const note = await api.runOnBackend(
+            (label) => api.getNoteWithLabel(label) || api.currentNote,
             [DATA_KEYS.HISTORY_HOME_LABEL]
         );
         api.activateNote(note.noteId);
     }
 
     async goHistory(hid) {
-        const note = await api.runAsyncOnBackendWithManualTransactionHandling(
-            async (label, id) => api.getNoteWithLabel(label, id),
+        const note = await api.runOnBackend(
+            (label, id) => api.getNoteWithLabel(label, id),
             [DATA_KEYS.HISTORY_LABEL, hid]
         );
         api.activateNote(note.noteId);
@@ -310,8 +310,8 @@ export default class DataTrilium extends Data {
 
     async saveToChild(_title, _content) {
         const activeNote = api.getActiveContextNote();
-        await api.runAsyncOnBackendWithManualTransactionHandling(
-            async (id, title, content) =>
+        await api.runOnBackend(
+            (id, title, content) =>
                 api.createNewNote({
                     parentNoteId: id,
                     title,
@@ -329,10 +329,7 @@ export default class DataTrilium extends Data {
 
     // << options
     async goOptions() {
-        const optionNote = await api.runAsyncOnBackendWithManualTransactionHandling(
-            async (label) => api.getNoteWithLabel(label),
-            [DATA_KEYS.CHAT_OPTIONS]
-        );
+        const optionNote = await api.runOnBackend((label) => api.getNoteWithLabel(label), [DATA_KEYS.CHAT_OPTIONS]);
         api.activateNote(optionNote.noteId);
     }
     // >> options
