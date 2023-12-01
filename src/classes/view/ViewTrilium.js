@@ -13,9 +13,13 @@ export default class ViewTrilium extends View {
             },
         });
 
-        const $ribbonButtonContainer = $('.tab-row-filler');
-
-        $ribbonButtonContainer.prepend(showBtn.render());
+        const $topRightBtns = $('.title-bar-buttons');
+        if ($topRightBtns.length) {
+            $topRightBtns.prepend(showBtn.render());
+        } else {
+            const $ribbonButtonContainer = $('.tab-row-filler');
+            $ribbonButtonContainer.prepend(showBtn.render());
+        }
     }
 
     bindShortcut() {
