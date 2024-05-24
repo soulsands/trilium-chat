@@ -259,7 +259,8 @@ export default class ChatGpt extends LittleEvent {
             },
             body: JSON.stringify(options),
         });
-        const { content } = (await response.json()).choices[0].message;
+        const responseJson = await response.json();
+        const { content } = responseJson.choices ? responseJson.choices[0].message : responseJson.message;
 
         return content;
     }

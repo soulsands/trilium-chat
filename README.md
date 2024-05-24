@@ -70,6 +70,19 @@ Options is stored in a JSON note with `#CHAT_OPTIONS ` label.
 | systemPrompt  | Background prompt used for system messages, e.g., set it to: "You are a helpful assistant for Trilium note-taking." | ‘’                                                           |
 | checkUpdates  | Whether to automatically check for updates. If enabled, a dot will be displayed on the face icon when an update is available. | true                                                         |
 
+### Use with Ollama
+
+If you want to use your own locally hosted [Ollama](https://github.com/ollama/ollama), you need to set the values of `requestUrls.completion` to `https://<your-endpoint>/api/chat`, set `stream` to `false`, and set `model` to whichever model you want to use from your Ollama:
+```json
+	"requestUrls": {
+		"completion": "https://ollama.local/api/chat"
+	},
+	"engineOptions": {
+		"model": "llama3",
+		"stream": false
+	},
+```
+
 ### Prompt
 
 The prompt supports customizable options, making it highly flexible to use.
