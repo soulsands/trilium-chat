@@ -2,13 +2,16 @@
 
 ## Introduction
 
-The chat plugin highly integrated with Trilium.
+This chat plugin is highly integrated with Trilium, and allows you to access ChatGPT right inside Trilium!
+
+You can even use your own locally hosted Ollama.
 
 This project is written in vanilla JavaScript, and is a frontend-only project. For those interested in developing Trilium plugins, there are some details within that can be referenced.
 
 ## Features
 
 -   Normal chat
+-   Use Ollama
 -   Custom prompt
     -   Supports mustache syntax to render options. e.g. {{language:Enligsh|Chinese|Czech}} will be rendered as a select element (This can be changed in CHAT_PROMPTS) 
     -   {{message}} as your message
@@ -80,7 +83,7 @@ If you want to use your own locally hosted [Ollama](https://github.com/ollama/ol
 	"engineOptions": {
 		"model": "llama3",
 		"stream": false
-	},
+	}
 ```
 
 ### Prompt
