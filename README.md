@@ -2,13 +2,16 @@
 
 ## Introduction
 
-The chat plugin highly integrated with Trilium.
+This chat plugin is highly integrated with Trilium, and allows you to access ChatGPT right inside Trilium!
+
+You can even use your own locally hosted Ollama.
 
 This project is written in vanilla JavaScript, and is a frontend-only project. For those interested in developing Trilium plugins, there are some details within that can be referenced.
 
 ## Features
 
 -   Normal chat
+-   Use Ollama
 -   Custom prompt
     -   Supports mustache syntax to render options. e.g. {{language:Enligsh|Chinese|Czech}} will be rendered as a select element (This can be changed in CHAT_PROMPTS) 
     -   {{message}} as your message
@@ -69,6 +72,19 @@ Options is stored in a JSON note with `#CHAT_OPTIONS ` label.
 | autoSave      | Whether to automatically save the conversation history, if set to false, a save command will be displayed in the command list. | true                                                         |
 | systemPrompt  | Background prompt used for system messages, e.g., set it to: "You are a helpful assistant for Trilium note-taking." | ‘’                                                           |
 | checkUpdates  | Whether to automatically check for updates. If enabled, a dot will be displayed on the face icon when an update is available. | true                                                         |
+
+### Use with Ollama
+
+If you want to use your own locally hosted [Ollama](https://github.com/ollama/ollama), you need to set the values of `requestUrls.completion` to `https://<your-endpoint>/api/chat`, set `stream` to `false`, and set `model` to whichever model you want to use from your Ollama:
+```json
+	"requestUrls": {
+		"completion": "https://ollama.local/api/chat"
+	},
+	"engineOptions": {
+		"model": "llama3",
+		"stream": false
+	}
+```
 
 ### Prompt
 
