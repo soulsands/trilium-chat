@@ -189,16 +189,23 @@ export default class ChatGpt extends LittleEvent {
                     debug(e.data);
                     if (e.data !== '[DONE]') {
                         const payload = JSON.parse(e.data);
-                        const text = payload.choices[0].delta.content;
-                        if (!text) {
-                            return;
-                        }
-                        txt += text;
+                        if (payload?.choices[0]?.finish_reason === 'stop') {
+                            this.endStream();
 
-                        if (this.lastMessage.content === HINTS.waiting) {
-                            this.replaceMessage(text, STATUS_MESSAGE.generating);
+                            this.setLastMessageStatus(STATUS_MESSAGE.success);
+                            resolve(txt);
                         } else {
-                            this.appendMessageWords(text);
+                            const text = payload.choices[0].delta.content;
+                            if (!text) {
+                                return;
+                            }
+                            txt += text;
+
+                            if (this.lastMessage.content === HINTS.waiting) {
+                                this.replaceMessage(text, STATUS_MESSAGE.generating);
+                            } else {
+                                this.appendMessageWords(text);
+                            }
                         }
                     } else {
                         this.endStream();
