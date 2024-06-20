@@ -75,15 +75,33 @@ Options is stored in a JSON note with `#CHAT_OPTIONS ` label.
 
 ### Use with Ollama
 
-If you want to use your own locally hosted [Ollama](https://github.com/ollama/ollama), you need to set the values of `requestUrls.completion` to `https://<your-endpoint>/api/chat`, set `stream` to `false`, and set `model` to whichever model you want to use from your Ollama:
+If you want to use your own locally hosted [Ollama](https://github.com/ollama/ollama), you need to set the values of `requestUrls.completion` to `https://<your-endpoint>/api/chat`, set `stream` to `false`, and set `model` to whichever model you want to use from your Ollama. You should keep the rest of the settings as if they were pointed to ChatGpt. An example of my settings can be seen below:
 ```json
+{
+	"viewWidth": 364,
+	"engine": "ChatGpt",
+	"apiKey": "asdfasdfasdfasdfasdf",
 	"requestUrls": {
-		"completion": "https://ollama.local/api/chat"
+		"completion": "https://ollama.internal.network/api/chat"
 	},
 	"engineOptions": {
 		"model": "llama3",
-		"stream": false
-	}
+		"max_tokens": 2500,
+		"temperature": 0.3,
+		"top_p": 1,
+		"presence_penalty": 0.5,
+		"frequency_penalty": 0.5,
+		"stream": false,
+		"n": 1
+	},
+	"shortcut": {
+		"toggle": "Alt+Q",
+		"hide": "Esc"
+	},
+	"autoSave": true,
+	"systemPrompt": "",
+	"checkUpdates": true
+}
 ```
 
 ### Prompt
