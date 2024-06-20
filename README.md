@@ -104,6 +104,19 @@ If you want to use your own locally hosted [Ollama](https://github.com/ollama/ol
 }
 ```
 
+You may also need to modify the Ollama Nginx configuration with the following, to allow it to accept the `Authorization` header (you can see if this is needed by inspecting the traffic from Trilium to your Ollama):
+```
+server {
+    listen 80;
+    server_name example.com;  # Replace with your domain or IP
+    location / {
+        proxy_pass http://localhost:11434;
+        proxy_set_header Host localhost:11434;
+	add_header Access-Control-Allow-Headers "Authorization";
+    }
+}
+```
+
 ### Prompt
 
 The prompt supports customizable options, making it highly flexible to use.
