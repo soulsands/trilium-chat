@@ -78,7 +78,19 @@ export default class EleInput extends LittleEvent {
         const sendMessage = async () => {
             if (this.checkShortcut()) return;
 
-            const { msgView, msgEngine } = await this.getParsedMsg();
+            var { msgView, msgEngine } = await this.getParsedMsg();
+            
+            //Replace {{activeNote}} in current message
+            const regNote = /{{activeNote}}/g;
+            if (regNote.test(msgEngine)) {
+                try {
+                    const { engine, view } = await this.chatView.chatData.getActiveNoteContent();
+                    msgEngine = msgEngine.replace(regNote, engine);
+                    msgView = msgView.replace(regNote, view);              
+                } catch (error) {
+                    console.error(error);
+                }
+            }
 
             debug(msgView, msgEngine);
 
