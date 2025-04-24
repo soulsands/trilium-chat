@@ -28,6 +28,87 @@
                 .message-text {
                     white-space: pre-wrap;
                     word-wrap: break-word;
+                    line-height: 1.2; /* Standard line height for overall text */
+
+                    h1 {
+                        margin: 0; /* Remove margins */
+                        padding: 0; /* Remove padding */
+                        font-size: 2em; /* Keep h1 size */
+                        line-height: 1; /* Reduced line height */
+                    }
+
+                    h2 {
+                        margin-top: 2px;
+                        margin-bottom: 2px;
+                        padding: 0;
+                        line-height: 1.2; /* Adjusted line height */
+                    }
+
+                    h3 {
+                        margin-top: 2px;
+                        margin-bottom: 2px;
+                        padding: 0;
+                        line-height: 1.2; /* Adjusted line height */
+                    }
+
+                    h4 {
+                        margin-top: 2px;
+                        margin-bottom: 2px;
+                        padding: 0;
+                        line-height: 1.2; /* Adjusted line height */
+                    }
+
+                    h5 {
+                        margin-top: 2px;
+                        margin-bottom: 2px;
+                        padding: 0;
+                        line-height: 1.2; /* Adjusted line height */
+                    }
+
+                    h6 {
+                        margin-top: 2px;
+                        margin-bottom: 2px;
+                        padding: 0;
+                        line-height: 1.2; /* Adjusted line height */
+                    }
+
+                    ul, ol {
+                        margin-top: 2px;
+                        margin-bottom: 2px;
+                        line-height: 1.2; /* Adjusted line height */
+                    }
+
+                    li, p {
+                        margin-top: 2px;
+                        margin-bottom: 2px;
+                        padding: 0;
+                        line-height: 1.2; /* Adjusted line height */
+                    }
+
+                    p + p {
+                        margin-top: 0; /* Ensure no extra space between paragraphs */
+                    }
+
+                    /* Styles for code highlighting */
+                    pre {
+                        background-color: var(--code-background-color);
+                        border: 1px solid var(--main-border-color); /* Add border for card look */
+                        border-radius: 5px;
+                        padding: 10px;
+                        overflow-x: auto; /* Add horizontal scroll for long lines */
+                        margin-bottom: 10px; /* Add space below code block */
+                    }
+
+                    code {
+                        font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+                        font-size: 0.9em;
+                    }
+
+                    pre code {
+                        display: block; /* Ensure code block takes full width */
+                        padding: 0; /* Remove padding from code inside pre */
+                        background-color: transparent; /* Remove background from code inside pre */
+                    }
                 }
 
                 .dot {
@@ -53,6 +134,27 @@
                         opacity: 1;
                         pointer-events: auto;
                     }
+                }
+
+                .think-toggle-button {
+                    background: none;
+                    border: none;
+                    color: var(--trilium-green);
+                    cursor: pointer;
+                    text-decoration: underline;
+                    padding: 0;
+                    font-size: 0.9em;
+                    align-self: flex-start; /* Align button to the left */
+                }
+
+                .think-content {
+                    padding: 10px;
+                    margin-bottom: 10px; /* Add space below thinking content */
+                    border: 1px solid var(--main-border-color);
+                    border-radius: 5px;
+                    background-color: var(--left-pane-background-color);
+                    white-space: pre-wrap;
+                    word-wrap: break-word;
                 }
             }
 

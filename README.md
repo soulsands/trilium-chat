@@ -31,6 +31,21 @@ This project is written in vanilla JavaScript, and is a frontend-only project. F
 -   Automatic history saving
 -   Supports light and dark themes
 
+## Enhancement (Updates)
+
+1. Response format markdown `( more clean )`
+
+![image](https://github.com/user-attachments/assets/cd1dd619-d09e-45ef-b2ac-9ab0aea364ef)
+
+2. `Show` or `Hide` Thinking (in case of thinking models like DeepSeek)
+
+![image](https://github.com/user-attachments/assets/044cabe2-3404-4390-8e56-8b41a30d3723)
+
+3. `{{activeNote}}` works in chat request 
+
+![image](https://github.com/user-attachments/assets/d0fbf4e3-cf2a-41ca-b026-aa6bd4af8530)
+
+
 ## Preview
 
 https://soulsands.github.io/trilium-chat/

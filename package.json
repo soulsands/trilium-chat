@@ -11,7 +11,7 @@
         "url": "https://gitee.com/soulsands/trilium-chat.git"
     },
     "scripts": {
-        "dev": "cross-env ENV=dev webpack serve --open --config webpack.dev.js",
+        "dev": "cross-env ENV=dev webpack serve --open --config webpack.dev.js --port 8082",
         "build:test": "npm run html && cross-env ENV=triliumTest webpack --config webpack.prod.js && node ./scripts/syncDistToTrilium.js",
         "build:preview": "npm run html && cross-env ENV=preview webpack --config webpack.prod.js ",
         "html": "webpack --config webpack.html.js",
@@ -56,5 +56,8 @@
     "lint-staged": {
         "src/**/*.js": "eslint --cache --fix",
         "src/**/*.less": "stylelint --fix"
+    },
+    "dependencies": {
+        "marked": "^15.0.10"
     }
 }

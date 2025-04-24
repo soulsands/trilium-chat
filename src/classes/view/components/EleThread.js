@@ -1,4 +1,5 @@
 import { throttle, removeEle, closest, htmlStrToElement, showTooltip } from '@/utils';
+import { marked } from 'marked';
 import { EVENT_ENGINE, EVENT_VIEW, ROLE } from '@/constants';
 import Popover from '../wrappers/Popover';
 
@@ -89,15 +90,14 @@ export default class EleThread {
     }
 
     showMsgCommand($dot) {
-        const placement = closest('.message', $dot).classList.contains('sent') ? 'left' : 'right';
-
         this.Popover = new Popover({
-            placement,
+            placement: closest('.message', $dot).classList.contains('sent') ? 'left' : 'right',
             contentSelector: '.msg-command',
             $edgeEle: this.$thread,
             $triggerEle: $dot,
             offset: 0,
         });
+
         this.Popover.show();
 
         this.bindCommand();
@@ -141,15 +141,44 @@ export default class EleThread {
     appendElByMessage(message) {
         if (message.role === ROLE.system) return;
 
+        let renderedContent = message.content; // Initialize with original content
+        let thinkContent = '';
+        let displayThinkButton = false;
+
+        const thinkMatch = renderedContent.match(/<think>(.*?)<\/think>/s); // Match against the initial content
+        if (thinkMatch) {
+            thinkContent = thinkMatch[1].trim();
+            renderedContent = renderedContent.replace(/<think>(.*?)<\/think>/s, '').trim(); // Update renderedContent
+            displayThinkButton = true;
+        }
+
+        // Only parse if not a user message starting with '<'
+        if (!(message.role === ROLE.user && renderedContent.trim().startsWith('<'))) {
+            renderedContent = marked.parse(renderedContent);
+        }
+
+        const thinkButtonHtml = displayThinkButton ? `<button class="think-toggle-button">Show Thinking</button>` : '';
+        const thinkContentHtml = displayThinkButton ? `<div class="think-content" style="display: none;">${marked.parse(thinkContent)}</div>` : '';
+
+
         const skeleton = `<div class='message ${
             message.role === 'user' ? 'sent' : 'received'
-        }'><div class='message-text'>${
-            message.content
-        }</div><button  class='bx bx-dots-vertical-rounded dot icon-action'></button></div>`;
+        }'>${thinkButtonHtml}${thinkContentHtml}<div class='message-text'>${renderedContent}</div><button  class='bx bx-dots-vertical-rounded dot icon-action'></button></div>`;
 
         const msgDom = htmlStrToElement(skeleton);
 
         this.$threadMsgs.appendChild(msgDom);
+
+        if (displayThinkButton) {
+            const thinkButton = msgDom.$qs('.think-toggle-button');
+            const thinkContentDiv = msgDom.$qs('.think-content');
+            thinkButton.addEventListener('click', () => {
+                const isHidden = thinkContentDiv.style.display === 'none';
+                thinkContentDiv.style.display = isHidden ? 'block' : 'none';
+                thinkButton.textContent = isHidden ? 'Hide Thinking' : 'Show Thinking';
+            });
+        }
+
 
         this.scrollToBottom();
         return msgDom;
@@ -167,7 +196,56 @@ export default class EleThread {
     // if responsed with html tags, really hard to tell how to treat it: code or styles. so render as plain text
     replaceCurrentElContent(content) {
         const currentMsgDom = this.getCurrentMsgDom();
-        currentMsgDom.children[0].textContent = content.content;
+        let renderedContent = content.content; // Initialize with original content
+        let thinkContent = '';
+        let displayThinkButton = false;
+
+        const thinkMatch = renderedContent.match(/<think>(.*?)<\/think>/s); // Match against the initial content
+        if (thinkMatch) {
+            thinkContent = thinkMatch[1].trim();
+            renderedContent = renderedContent.replace(/<think>(.*?)<\/think>/s, '').trim(); // Update renderedContent
+            displayThinkButton = true;
+        }
+
+        // Only parse if not a user message starting with '<'
+        if (!(content.role === ROLE.user && renderedContent.trim().startsWith('<'))) {
+             currentMsgDom.$qs('.message-text').innerHTML = marked.parse(renderedContent); // Update only the message-text content
+        } else {
+             currentMsgDom.$qs('.message-text').innerHTML = renderedContent; // Keep as is if user message starting with '<'
+        }
+
+
+        // Update or add the think button and content if they exist
+        let thinkButton = currentMsgDom.$qs('.think-toggle-button');
+        let thinkContentDiv = currentMsgDom.$qs('.think-content');
+
+        if (displayThinkButton) {
+            if (!thinkButton) {
+                // Add button and content if they don't exist
+                const thinkButtonHtml = `<button class="think-toggle-button">Show Thinking</button>`;
+                const thinkContentHtml = `<div class="think-content" style="display: none;">${marked.parse(thinkContent)}</div>`;
+                // Insert before the message-text div (which is currentMsgDom.children[0])
+                currentMsgDom.children[0].insertAdjacentHTML('beforebegin', thinkButtonHtml + thinkContentHtml);
+
+                thinkButton = currentMsgDom.$qs('.think-toggle-button');
+                thinkContentDiv = currentMsgDom.$qs('.think-content');
+
+                 thinkButton.addEventListener('click', () => {
+                    const isHidden = thinkContentDiv.style.display === 'none';
+                    thinkContentDiv.style.display = isHidden ? 'block' : 'none';
+                    thinkButton.textContent = isHidden ? 'Hide Thinking' : 'Show Thinking';
+                });
+
+            } else {
+                // Update content if they exist
+                thinkContentDiv.innerHTML = marked.parse(thinkContent);
+            }
+        } else {
+            // Remove button and content if they exist but shouldn't
+            if (thinkButton) removeEle(thinkButton);
+            if (thinkContentDiv) removeEle(thinkContentDiv);
+        }
+
 
         if (!this.isHovering) {
             this.scrollToBottom();
